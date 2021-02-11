@@ -1,0 +1,203 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\App\\Ap_DeskTop\\CRMFinanceiro\\SistemaControle\\SistemaControle.csproj": {}
+  },
+  "projects": {
+    "D:\\App\\Ap_DeskTop\\CRMFinanceiro\\SistemaControle\\SistemaControle.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\App\\Ap_DeskTop\\CRMFinanceiro\\SistemaControle\\SistemaControle.csproj",
+        "projectName": "SistemaControle",
+        "projectPath": "D:\\App\\Ap_DeskTop\\CRMFinanceiro\\SistemaControle\\SistemaControle.csproj",
+        "packagesPath": "C:\\Users\\Valfran\\.nuget\\packages\\",
+        "outputPath": "D:\\App\\Ap_DeskTop\\CRMFinanceiro\\SistemaControle\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Valfran\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0-windows7.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0-windows7.0": {
+            "targetAlias": "net5.0-windows",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0-windows7.0": {
+          "targetAlias": "net5.0-windows",
+          "dependencies": {
+            "AForge": {
+              "target": "Package",
+              "version": "[2.2.5, )"
+            },
+            "AForge.Video": {
+              "target": "Package",
+              "version": "[2.2.5, )"
+            },
+            "AForge.Video.DirectShow": {
+              "target": "Package",
+              "version": "[2.2.5, )"
+            },
+            "Correios.NET": {
+              "target": "Package",
+              "version": "[1.3.1, )"
+            },
+            "FireSharp": {
+              "target": "Package",
+              "version": "[2.0.4, )"
+            },
+            "MaterialDesignThemes": {
+              "target": "Package",
+              "version": "[3.2.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.3, )"
+            },
+            "ShowMeTheXAML": {
+              "target": "Package",
+              "version": "[2.0.0, )"
+            },
+            "Syncfusion.Licensing": {
+              "target": "Package",
+              "version": "[18.4.0.30, )"
+            },
+            "Syncfusion.SfAccordion.WPF": {
+              "target": "Package",
+              "version": "[18.4.0.30, )"
+            },
+            "Syncfusion.SfGrid.WPF": {
+              "target": "Package",
+              "version": "[18.4.0.30, )"
+            },
+            "Syncfusion.SfInput.WPF": {
+              "target": "Package",
+              "version": "[18.4.0.30, )"
+            },
+            "Syncfusion.SfNavigationDrawer.WPF": {
+              "target": "Package",
+              "version": "[18.4.0.30, )"
+            },
+            "Syncfusion.SfSkinManager.WPF": {
+              "target": "Package",
+              "version": "[18.4.0.30, )"
+            },
+            "Syncfusion.SfTextInputLayout.WPF": {
+              "target": "Package",
+              "version": "[18.4.0.30, )"
+            },
+            "Syncfusion.Shared.WPF": {
+              "target": "Package",
+              "version": "[18.4.0.30, )"
+            },
+            "Syncfusion.Themes.Blend.WPF": {
+              "target": "Package",
+              "version": "[18.4.0.30, )"
+            },
+            "Syncfusion.Themes.Lime.WPF": {
+              "target": "Package",
+              "version": "[18.4.0.30, )"
+            },
+            "Syncfusion.Themes.MaterialDark.WPF": {
+              "target": "Package",
+              "version": "[18.4.0.30, )"
+            },
+            "Syncfusion.Themes.MaterialLight.WPF": {
+              "target": "Package",
+              "version": "[18.4.0.30, )"
+            },
+            "Syncfusion.Themes.MaterialLightBlue.WPF": {
+              "target": "Package",
+              "version": "[18.4.0.30, )"
+            },
+            "Syncfusion.Themes.Metro.WPF": {
+              "target": "Package",
+              "version": "[18.4.0.30, )"
+            },
+            "Syncfusion.Themes.Office2013DarkGray.WPF": {
+              "target": "Package",
+              "version": "[18.4.0.30, )"
+            },
+            "Syncfusion.Themes.Office2013LightGray.WPF": {
+              "target": "Package",
+              "version": "[18.4.0.30, )"
+            },
+            "Syncfusion.Themes.Office2016DarkGray.WPF": {
+              "target": "Package",
+              "version": "[18.4.0.30, )"
+            },
+            "Syncfusion.Themes.Saffron.WPF": {
+              "target": "Package",
+              "version": "[18.4.0.30, )"
+            },
+            "Syncfusion.Tools.WPF": {
+              "target": "Package",
+              "version": "[18.4.0.30, )"
+            },
+            "System.Configuration.ConfigurationManager": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "System.Management": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            },
+            "Microsoft.WindowsDesktop.App.WPF": {
+              "privateAssets": "none"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

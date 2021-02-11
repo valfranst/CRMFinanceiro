@@ -1,0 +1,59 @@
+﻿<Application x:Class="SistemaControle.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:SistemaControle"
+             
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             
+             xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+             xmlns:smtx="clr-namespace:ShowMeTheXAML;assembly=ShowMeTheXAML"
+             xmlns:system="clr-namespace:System;assembly=netstandard"
+             xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"  
+             
+             
+             StartupUri="MainWindow.xaml">
+    
+    <Application.Resources>
+
+        <ResourceDictionary>
+
+            <ResourceDictionary.MergedDictionaries>
+
+                <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="Indigo" SecondaryColor="Cyan" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />                              
+
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style x:Key="rowStyleBlack" TargetType="syncfusion:VirtualizingCellsControl">
+                <Setter Property="Foreground" Value="Black" />
+                <Setter Property="Background" Value="White" />
+            </Style>
+            <Style x:Key="rowStyleRed" TargetType="syncfusion:VirtualizingCellsControl">
+                <Setter Property="Foreground" Value="Red" />
+                <Setter Property="Background" Value="White" />
+            </Style>
+            <Style x:Key="rowStyleGreem" TargetType="syncfusion:VirtualizingCellsControl">
+                <Setter Property="Foreground" Value="DarkGreen" />
+                <Setter Property="Background" Value="White" />
+            </Style>
+             <!--**********************************************************************************-->
+            <Style x:Key="rowStyleBlack2" TargetType="syncfusion:VirtualizingCellsControl">
+                <Setter Property="Foreground" Value="Black" />
+                <Setter Property="Background" Value="Gray" />
+            </Style>
+            <Style x:Key="rowStyleRed2" TargetType="syncfusion:VirtualizingCellsControl">
+                <Setter Property="Foreground" Value="Red" />
+                <Setter Property="Background" Value="Gray" />
+            </Style>
+            <Style x:Key="rowStyleGreem2" TargetType="syncfusion:VirtualizingCellsControl">
+                <Setter Property="Foreground" Value="DarkGreen" />
+                <Setter Property="Background" Value="Gray" />
+            </Style>
+
+            <sys:Double x:Key="{x:Static SystemParameters.VerticalScrollBarWidthKey}">30</sys:Double>
+            <sys:Double x:Key="{x:Static SystemParameters.HorizontalScrollBarHeightKey}">20</sys:Double>
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

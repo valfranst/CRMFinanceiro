@@ -1,0 +1,136 @@
+﻿<Window x:Class="SistemaControle.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:local="clr-namespace:SistemaControle"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        
+        xmlns:syncfusion="http://schemas.syncfusion.com/wpf"        
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:syncfusionskin ="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
+		syncfusionskin:SfSkinManager.VisualStyle="{Binding ElementName=comboVisualStyle, Path=SelectedValue, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+        
+        
+        mc:Ignorable="d" xml:lang="pt-BR"
+        Title="APLICAÇÕES" MinHeight="703" MinWidth="1100" Height="{x:Static SystemParameters.PrimaryScreenHeight}" Width="{x:Static SystemParameters.PrimaryScreenWidth}"
+        WindowState="Maximized" Icon="/refresh.ico"
+        Loaded="Window_Loaded" Closing="Window_Closing" >
+
+    <Window.Resources>
+              
+    </Window.Resources>
+
+
+    <StackPanel Orientation="Vertical" Margin="0 0 0 10" >
+        <!-- Height => 703 - 40 - 10 - 3 = 650-->
+        <!-- Width => 1100 - 5 - 5 = 1090-->
+
+        <materialDesign:ColorZone Mode="PrimaryMid" Padding="2" Height="50" >
+            <DockPanel>
+                
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" HorizontalAlignment="Left">
+
+                    <Button x:Name="btCliente" Height="40" Margin="5 0 0 0" Style="{StaticResource MaterialDesignRaisedAccentButton}" Width="120" ToolTip="Cliente" Click="btCliente_Click" >
+                        <StackPanel Orientation="Horizontal" Margin="0 0">
+                            <materialDesign:PackIcon Kind="AccountSearch" Width="30" Height="30" VerticalAlignment="Center" Margin="0"/>
+                            <TextBlock Text="CLIENTE" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="btProducao" Height="40" Margin="15 0 0 0" Style="{StaticResource MaterialDesignRaisedAccentButton}" Width="140" ToolTip="Produção" Click="btProducao_Click">
+                        <StackPanel Orientation="Horizontal" Margin="0 0">
+                            <materialDesign:PackIcon Kind="CashRegister" Width="30" Height="30" VerticalAlignment="Center" Margin="0"/>
+                            <TextBlock Text="PRODUÇÃO" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="btRecebimento" Height="40" Margin="15 0 0 0" Style="{StaticResource MaterialDesignRaisedAccentButton}" Width="160" ToolTip="Recebimento" Click="btRecebimento_Click">
+                        <StackPanel Orientation="Horizontal" Margin="0 0">
+                            <materialDesign:PackIcon Kind="CashUsd" Width="30" Height="30" VerticalAlignment="Center" Margin="0"/>
+                            <TextBlock Text="RECEBIMENTO" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="btRefinanciamento" Height="40" Margin="15 0 0 0" Style="{StaticResource MaterialDesignRaisedAccentButton}" Width="190" ToolTip="Refinanciamento" Click="btRefinanciamento_Click">
+                        <StackPanel Orientation="Horizontal" Margin="0 0">
+                            <materialDesign:PackIcon Kind="CashRefund" Width="30" Height="30" VerticalAlignment="Center" Margin="0"/>
+                            <TextBlock Text="REFINANCIAMENTO" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="btAddCliente" Height="40" Margin="15 0 0 0" Style="{StaticResource MaterialDesignRaisedAccentButton}" Width="150" ToolTip="Refinanciamento" Click="btAddCliente_Click" >
+                        <StackPanel Orientation="Horizontal" Margin="0 0">
+                            <materialDesign:PackIcon Kind="PersonAdd" Width="30" Height="30" VerticalAlignment="Center" Margin="0"/>
+                            <TextBlock Text="ADD CLIENTE" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="btReset" Margin="10 0 0 0" Background="Red" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" ToolTip="Status Banco de Dados" BorderBrush="Cyan" Click="btReset_Click"/>
+
+                    <Button x:Name="btUpload" Margin="10 0 0 0" Style="{StaticResource MaterialDesignFloatingActionAccentButton}" ToolTip="Salvar Dados na Nuvem" Click="btUpload_Click" Background="Cyan" IsEnabled="False" Visibility="Collapsed"
+                        Height="40" Width="50" VerticalAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center">
+                        <materialDesign:PackIcon Kind="CloudUpload" Height="30" Width="40"  />
+                    </Button>
+
+                    <Button x:Name="btDownload" Margin="10 0 0 0" Style="{StaticResource MaterialDesignFloatingActionAccentButton}" ToolTip="Baixar Dados da Nuvem" Click="btDownload_Click" Background="Cyan" IsEnabled="False" Visibility="Collapsed"
+                         Height="40" Width="50"  VerticalAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center">
+                        <materialDesign:PackIcon Kind="CloudDownload" Height="30" Width="40"  />
+                    </Button>
+
+                    <ToggleButton x:Name="btPenDriver" Width="50" Height="30" Margin="10 0 0 0"  VerticalAlignment="Center" HorizontalAlignment="Left"
+                            Style="{DynamicResource MaterialDesignSwitchToggleButton}" Click="btPenDriver_Click" IsEnabled="False" Visibility="Collapsed" />
+                    <Label x:Name="txtPemDriver" Content="Nulo" VerticalAlignment="Center" FontSize="20" FontFamily="Cooper Black" FontWeight="Bold" Foreground="White" IsEnabled="False" Visibility="Collapsed" />
+
+                </StackPanel>
+
+
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
+
+                    <syncfusion:RibbonTextBox x:Name="txtPesquisa" Width="220" Margin="0 0 5 0"  FontSize="18" Height="35" 
+                    Background="White" Foreground="Black" TextChanged="txtPesquisa_TextChanged" BorderBrush="White"/>
+
+                    <materialDesign:PopupBox DockPanel.Dock="Right"  PlacementMode="BottomAndAlignRightEdges" StaysOpen="False" Margin="0 0 5 0" >
+                        <StackPanel Height="Auto" Width="175" >
+
+                            <!--LISTA EXTRA button-->
+                            <Button x:Name="btExtra" Click="btExtra_Click" >
+                                <StackPanel Orientation="Horizontal" Margin="0 0">
+                                    <materialDesign:PackIcon Kind="FormatListChecks" Width="30" Height="30" VerticalAlignment="Center" Margin="0"/>
+                                    <TextBlock Text="LISTAS" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+
+                            <!--CONFIGURAÇÃO button-->
+                            <Button x:Name="btConfiguracao" Click="btConfiguracao_Click">
+                                <StackPanel Orientation="Horizontal" Margin="0 0">
+                                    <materialDesign:PackIcon Kind="Settings" Width="30" Height="30" VerticalAlignment="Center" Margin="0"/>
+                                    <TextBlock Text="CONFIGURAÇÕES" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+
+                            <!--Atualizar endereço button-->
+                            <Button x:Name="btEndereco" Click="btEndereco_Click" IsEnabled="False" Visibility="Collapsed">
+                                <StackPanel Orientation="Horizontal" Margin="0 0">
+                                    <materialDesign:PackIcon Kind="LocalAtm" Width="30" Height="30" VerticalAlignment="Center" Margin="0"/>
+                                    <TextBlock Text="AtEnd" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+
+                        </StackPanel>
+                    </materialDesign:PopupBox>
+
+                </StackPanel>
+
+
+            </DockPanel>
+
+        </materialDesign:ColorZone>
+        
+        
+
+        <Grid x:Name="GridMain" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="5 3 5 0" MinHeight="660" MinWidth="1090" >
+
+        </Grid>
+    </StackPanel>
+
+
+</Window>

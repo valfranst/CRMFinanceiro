@@ -1,0 +1,244 @@
+﻿<UserControl x:Class="SistemaControle.View.Refinanciamento"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             
+             xmlns:local="clr-namespace:SistemaControle.View"
+             xmlns:local2="clr-namespace:SistemaControle.Model"
+             mc:Ignorable="d" MinHeight="660" MinWidth="1090" Loaded="UserControl_Loaded">
+
+    <UserControl.Resources>
+
+        <local:RowStyleRefinanciamento x:Key="rowStyle" />
+
+        <Style TargetType="syncfusion:GridHeaderCellControl" x:Key="headerStyle">
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+
+        <Style x:Key="descricao" TargetType="Label">
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Foreground" Value="#515151" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+
+    </UserControl.Resources>
+
+    <Grid x:Name="MainRefinanciamento" MinWidth="1090" MinHeight="620" Margin="0 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Top">
+
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10 10 0 0">
+
+            <Button Name="btMenos" Width="30" Height="30" Margin="30 0 10 0" IsEnabled="True" ToolTip="Ficha do Clientes" Cursor="Hand" Click="btMenos_Click" Style="{StaticResource MaterialDesignFloatingActionAccentButton}"  >
+                <StackPanel Orientation="Vertical" >
+                    <Path Data="M7,12L12,7V10H16V14H12V17L7,12M21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3H19A2,2 0 0,1 21,5M19,5H5V19H19V5Z"
+                              Fill="{Binding Path=Foreground,RelativeSource={RelativeSource AncestorType={x:Type Button}}}" 
+                              HorizontalAlignment="Center" VerticalAlignment="Center" Height="20" Width="20" Stretch="Fill"/>
+                </StackPanel>
+            </Button>
+
+            <syncfusion:IntegerTextBox x:Name="AnoTxt" Width="100" Height="30" FontSize="20" CornerRadius="5" BorderThickness="2" HorizontalContentAlignment="Center" GroupSeperatorEnabled="False"
+                VerticalContentAlignment="Center" VerticalAlignment="Center" TextChanged="AnoTxt_TextChanged" MinValue="1999" MaxValue="9999" ToolTip="Digite o Ano desejado" IsEnabled="False"
+                UseNullOption="True"  NullValue="{x:Null}" />
+
+            <Button Name="btMais" Width="30" Height="30" Margin="10 0 0 0" IsEnabled="True" ToolTip="Nova Aplicação" Cursor="Hand" Click="btMais_Click" Style="{StaticResource MaterialDesignFloatingActionAccentButton}" >
+                <StackPanel Orientation="Vertical" >
+                    <Path Data="M17,12L12,17V14H8V10H12V7L17,12M3,19V5A2,2 0 0,1 5,3H19A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19M5,19H19V5H5V19Z"
+                              Fill="{Binding Path=Foreground,RelativeSource={RelativeSource AncestorType={x:Type Button}}}" 
+                              HorizontalAlignment="Center" VerticalAlignment="Center" Height="20" Width="20" Stretch="Fill"/>
+                </StackPanel>
+            </Button>
+
+            <ToggleButton x:Name="btAlternarDados" Width="50" Height="30" Margin="30 0 0 0"  VerticalAlignment="Center" HorizontalAlignment="Left"
+            Style="{DynamicResource MaterialDesignSwitchToggleButton}" Click="btAlternarDados_Click" />
+
+            <Label x:Name="Titulo" Content="PRODUÇÃO MENSAL" FontSize="22" FontWeight="Bold" Margin="200 0 0 0" Height="40"/>
+
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical" Margin="0 60 0 90" >
+
+            <syncfusion:SfDataGrid x:Name="view_RefinanciarDataGrid" 
+                                FontSize="16" Margin="10 0 0 10" HorizontalAlignment="Center" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Visible" RowHeight="35" ColumnSizer="SizeToCells"
+                                HeaderStyle="{StaticResource headerStyle}" 
+                                RowStyleSelector="{StaticResource rowStyle}"
+                                ItemsSource="{Binding ViewRefinanciar}" SourceType="{x:Type local2:ViewRefinanciar}"
+                                AutoGenerateColumns="False"
+                                NavigationMode="Cell"                                       
+                                SelectionUnit="Cell"  
+                                SelectionMode="Single"                                           
+                                LiveDataUpdateMode="AllowDataShaping"
+                                EditTrigger="OnTap"
+                                MouseDoubleClick="view_RefinanciarDataGrid_MouseDoubleClick" PreviewMouseRightButtonDown="view_RefinanciarDataGrid_PreviewMouseRightButtonDown" >
+
+                <syncfusion:SfDataGrid.Columns>
+
+                    <syncfusion:GridTextColumn x:Name="IdCliente" MappingName="IdCliente" HeaderText="" Width="0" AllowSorting="False" />
+                    <syncfusion:GridTextColumn x:Name="IdEmprestimo" MappingName="IdEmprestimo" HeaderText="" Width="0" AllowSorting="False" />
+
+                    <syncfusion:GridTextColumn x:Name="CodEmprestimo" MappingName="CodEmprestimo" HeaderText="CÓDIGO" Width="100" TextAlignment="Center" AllowEditing="False" />
+                    <syncfusion:GridDateTimeColumn x:Name="UltimaParcela" MappingName="UltimaParcela" HeaderText="DATA" Width="100" TextAlignment="Center" AllowEditing="False" />
+                    <syncfusion:GridTextColumn x:Name="NomeCliente" MappingName="NomeCliente" HeaderText="NOME" MinimumWidth="300" TextAlignment="Left" Padding="5 0 0 0" AllowEditing="False" />
+                    <syncfusion:GridCurrencyColumn x:Name="ValorParcela" MappingName="ValorParcela" HeaderText="A REFINANCIAR" MinimumWidth="120" TextAlignment="Center" AllowEditing="False"
+                                            CurrencyGroupSizes="3"  CurrencyGroupSeparator="." CurrencyDecimalSeparator="," />
+                    <syncfusion:GridCurrencyColumn x:Name="Complemento" MappingName="Complemento" HeaderText="COMPLEMENTO" MinimumWidth="120" TextAlignment="Center" AllowEditing="True"
+                                            CurrencyGroupSizes="3"  CurrencyGroupSeparator="." CurrencyDecimalSeparator="," />
+                    <syncfusion:GridCurrencyColumn x:Name="TotalRefinanciado" MappingName="TotalRefinanciado" HeaderText="REFINANCIADO" MinimumWidth="120" TextAlignment="Center" AllowEditing="True"
+                                            CurrencyGroupSizes="3"  CurrencyGroupSeparator="." CurrencyDecimalSeparator="," />
+
+                    <syncfusion:GridTemplateColumn x:Name="Excluir" HeaderText="EXCLUIR" Width="80">
+                        <syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="EXCLUIR" x:Name="btExcluirRefinanciamento" Height="20" Width="70"  VerticalContentAlignment="Center"  Style="{DynamicResource AllButton}"
+                                                    FontSize="12" Padding="0 0 0 0" ToolTip="Excluir Aplicação da tabela Refinanciamento" Click="ExcluirRefinanciamento_Click"
+                                                    HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </DataTemplate>
+                        </syncfusion:GridTemplateColumn.CellTemplate>
+                    </syncfusion:GridTemplateColumn>
+
+                    <syncfusion:GridTemplateColumn x:Name="Incluir" HeaderText="INCLUIR" Width="80">
+                        <syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="INCLUIR" x:Name="btIncluirRefinanciamento" Height="20" Width="70"  VerticalContentAlignment="Center"  Style="{DynamicResource AllButton}"
+                                                    FontSize="12" Padding="0 0 0 0" ToolTip="Incluir Aplicação na tabela Refinanciamento" Click="IncluirRefinanciamento_Click"
+                                                    HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </DataTemplate>
+                        </syncfusion:GridTemplateColumn.CellTemplate>
+                    </syncfusion:GridTemplateColumn>
+
+                    <syncfusion:GridTemplateColumn MappingName="Refinanciado" HeaderText="SIM/NÃO" Width="80" >
+                        <syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="SALVAR" x:Name="btAtualizarRefinanciamento" Height="20" Width="70"  VerticalContentAlignment="Center"  Style="{DynamicResource AllButton}"
+                                                    FontSize="12" Padding="0 0 0 0" ToolTip="Incluir Aplicação na tabela Refinanciamento" Click="btAtualizarRefinanciamento_Click"
+                                                    HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </DataTemplate>
+                        </syncfusion:GridTemplateColumn.CellTemplate>
+                    </syncfusion:GridTemplateColumn>
+
+                    <syncfusion:GridTextColumn x:Name="Observacao" MappingName="Observacao" HeaderText="OBSERVAÇÃO" MinimumWidth="600" TextAlignment="Left" AllowEditing="True" Padding="5 0 5 0" />
+
+
+                </syncfusion:SfDataGrid.Columns>
+
+            </syncfusion:SfDataGrid>
+
+            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="2" Margin="200 0 0 0" VerticalAlignment="Bottom" HorizontalAlignment="Left" >
+                <Label Content="A REFINANCIAR" Style="{StaticResource descricao}" />
+                <syncfusion:CurrencyTextBox x:Name="aRefinanciarTextBox" Width="200" Height="30" FontSize="20" CornerRadius="5" HorizontalContentAlignment="Center" IsReadOnly="True" />
+                <Label Content="COMPLEMENTO" Style="{StaticResource descricao}" Margin="20 0 0 0"/>
+                <syncfusion:CurrencyTextBox x:Name="complementoTextBox" Width="200" Height="30" FontSize="20" CornerRadius="5" HorizontalContentAlignment="Center" IsReadOnly="True" />
+                <Label Content="REFINANCIADO" Style="{StaticResource descricao}" Margin="20 0 0 0"/>
+                <syncfusion:CurrencyTextBox x:Name="refinanciadoTextBox" Width="200" Height="30" FontSize="20" CornerRadius="5" HorizontalContentAlignment="Center" IsReadOnly="True" />
+            </StackPanel>
+
+        </StackPanel>
+
+
+        <ListBox x:Name="lstAnos" Margin="0 10 0 50" VerticalAlignment="Bottom" HorizontalAlignment="Center" SelectionChanged="lstAnos_SelectionChanged"  >
+            <ListBox.ToolTip>
+                <TextBlock Text="Selecione o Mês" />
+            </ListBox.ToolTip>
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+
+            <ListBoxItem Padding="10 2 0 2">
+                <materialDesign:Chip  Content="JAN" IsEnabled="False" IconBackground="{DynamicResource PrimaryHueDarkBrush}" IconForeground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+                    <materialDesign:Chip.Icon>
+                        <materialDesign:PackIcon Kind="AlphabetJCircle"/>
+                    </materialDesign:Chip.Icon>
+                </materialDesign:Chip>
+            </ListBoxItem>
+            <ListBoxItem Padding="10 2 0 2">
+                <materialDesign:Chip Content="FEV" IsEnabled="False" IconBackground="{DynamicResource PrimaryHueDarkBrush}" IconForeground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+                    <materialDesign:Chip.Icon>
+                        <materialDesign:PackIcon Kind="AlphabetFCircle"/>
+                    </materialDesign:Chip.Icon>
+                </materialDesign:Chip>
+            </ListBoxItem>
+            <ListBoxItem  Padding="10 2 0 2">
+                <materialDesign:Chip Content="MAR" IsEnabled="False" IconBackground="{DynamicResource PrimaryHueDarkBrush}" IconForeground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+                    <materialDesign:Chip.Icon>
+                        <materialDesign:PackIcon Kind="AlphabetMCircle"/>
+                    </materialDesign:Chip.Icon>
+                </materialDesign:Chip>
+            </ListBoxItem>
+            <ListBoxItem  Padding="10 2 0 2">
+                <materialDesign:Chip Content="ABR" IsEnabled="False" IconBackground="{DynamicResource PrimaryHueDarkBrush}" IconForeground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+                    <materialDesign:Chip.Icon>
+                        <materialDesign:PackIcon Kind="AlphabetACircle"/>
+                    </materialDesign:Chip.Icon>
+                </materialDesign:Chip>
+            </ListBoxItem>
+            <ListBoxItem  Padding="10 2 0 2">
+                <materialDesign:Chip Content="MAI" IsEnabled="False" IconBackground="{DynamicResource PrimaryHueDarkBrush}" IconForeground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+                    <materialDesign:Chip.Icon>
+                        <materialDesign:PackIcon Kind="AlphabetMCircle"/>
+                    </materialDesign:Chip.Icon>
+                </materialDesign:Chip>
+            </ListBoxItem>
+            <ListBoxItem  Padding="10 2 0 2">
+                <materialDesign:Chip Content="JUN" IsEnabled="False" IconBackground="{DynamicResource PrimaryHueDarkBrush}" IconForeground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+                    <materialDesign:Chip.Icon>
+                        <materialDesign:PackIcon Kind="AlphabetJCircle"/>
+                    </materialDesign:Chip.Icon>
+                </materialDesign:Chip>
+            </ListBoxItem>
+            <ListBoxItem Padding="10 2 0 2">
+                <materialDesign:Chip Content="JUL" IsEnabled="False" IconBackground="{DynamicResource PrimaryHueDarkBrush}" IconForeground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+                    <materialDesign:Chip.Icon>
+                        <materialDesign:PackIcon Kind="AlphabetJCircle"/>
+                    </materialDesign:Chip.Icon>
+                </materialDesign:Chip>
+            </ListBoxItem>
+            <ListBoxItem Padding="10 2 0 2">
+                <materialDesign:Chip Content="AGO" IsEnabled="False" IconBackground="{DynamicResource PrimaryHueDarkBrush}" IconForeground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+                    <materialDesign:Chip.Icon>
+                        <materialDesign:PackIcon Kind="AlphabetACircle"/>
+                    </materialDesign:Chip.Icon>
+                </materialDesign:Chip>
+            </ListBoxItem>
+            <ListBoxItem Padding="10 2 0 2">
+                <materialDesign:Chip Content="SET" IsEnabled="False" IconBackground="{DynamicResource PrimaryHueDarkBrush}" IconForeground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+                    <materialDesign:Chip.Icon>
+                        <materialDesign:PackIcon Kind="AlphabetSCircle"/>
+                    </materialDesign:Chip.Icon>
+                </materialDesign:Chip>
+            </ListBoxItem>
+            <ListBoxItem Padding="10 2 0 2">
+                <materialDesign:Chip Content="OUT" IsEnabled="False" IconBackground="{DynamicResource PrimaryHueDarkBrush}" IconForeground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+                    <materialDesign:Chip.Icon>
+                        <materialDesign:PackIcon Kind="AlphabetOCircle"/>
+                    </materialDesign:Chip.Icon>
+                </materialDesign:Chip>
+            </ListBoxItem>
+            <ListBoxItem Padding="10 2 0 2">
+                <materialDesign:Chip Content="NOV" IsEnabled="False" IconBackground="{DynamicResource PrimaryHueDarkBrush}" IconForeground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+                    <materialDesign:Chip.Icon>
+                        <materialDesign:PackIcon Kind="AlphabetNCircle"/>
+                    </materialDesign:Chip.Icon>
+                </materialDesign:Chip>
+            </ListBoxItem>
+            <ListBoxItem Padding="10 2 0 2">
+                <materialDesign:Chip Content="DEZ" IsEnabled="False" IconBackground="{DynamicResource PrimaryHueDarkBrush}" IconForeground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+                    <materialDesign:Chip.Icon>
+                        <materialDesign:PackIcon Kind="AlphabetDCircle"/>
+                    </materialDesign:Chip.Icon>
+                </materialDesign:Chip>
+            </ListBoxItem>
+
+        </ListBox>
+
+
+
+    </Grid>
+</UserControl>
