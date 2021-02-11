@@ -51,7 +51,7 @@ namespace SistemaControle
             else
             {
                 btReset.Background = Brushes.Red;
-                MessageBox.Show(result.mensagem, "ERRO", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(result.mensagem, "ERRO!", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
 
             if (File.Exists(myConfig.Local + @"\exportar.json"))
