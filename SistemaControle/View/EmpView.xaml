@@ -55,7 +55,7 @@
     </UserControl.Resources>
 
     <ScrollViewer x:Name="SV_EmprestimoView" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" 
-            Margin="0 0 5 5" Padding="0 0 10 10" HorizontalAlignment="Center" VerticalAlignment="Top" Height="Auto" Width="Auto" >
+            Margin="0 0 5 15" Padding="0 0 10 10" HorizontalAlignment="Center" VerticalAlignment="Top" Height="Auto" Width="Auto" >
         
         <StackPanel Orientation="Vertical"  HorizontalAlignment="Center"  VerticalAlignment="Top">
 
@@ -128,7 +128,7 @@
 
 
             <DataGrid x:Name="DG_EmprestimoView" AutoGenerateColumns="False" RowDetailsVisibilityMode="Visible" Height="Auto" Width="Auto"
-                Margin="10 5 20 0"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="16" MinWidth="1200" MinHeight="700"
+                Margin="10 5 20 5"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="16" MinWidth="1200" MinHeight="700"
                 HorizontalAlignment="Center" VerticalAlignment="Top" LoadingRowDetails="DG_EmprestimoView_LoadingRowDetails" ItemsSource="{Binding}"
                 CanUserAddRows="False" PreviewMouseWheel="dataGrid_MouseWheel" SelectionChanged="DG_EmprestimoView_SelectionChanged" >
 

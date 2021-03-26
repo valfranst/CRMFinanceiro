@@ -123,3 +123,4 @@ D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle\obj\Release\net5.0-windows\Siste
 D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle\obj\Release\net5.0-windows\ref\SistemaControle.dll
 D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle\obj\Release\net5.0-windows\SistemaControle.pdb
 D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle\obj\Release\net5.0-windows\SistemaControle.genruntimeconfig.cache
+D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle\obj\Release\net5.0-windows\SistemaControle.csprojAssemblyReference.cache

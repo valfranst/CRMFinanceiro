@@ -150,7 +150,7 @@ namespace SistemaControle.View
             DataGridRow linha = e.Row as DataGridRow;
             Emprestimo emprestimo = (Emprestimo)linha.DataContext;
             SfDataGrid detais = e.DetailsElement as SfDataGrid;
-            detais.ItemsSource = dc.ViewParcelaEmprestimos.Where(par => par.IdEmprestimo == emprestimo.IdEmprestimo).ToList();
+            detais.ItemsSource = dc.ViewParcelaEmprestimos.Where(par => par.IdEmprestimo == emprestimo.IdEmprestimo).ToList().OrderBy(a => a.Vencimento);
             linhasParcelas = detais.GetRecordsCount();
         }
 

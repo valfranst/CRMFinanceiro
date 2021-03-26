@@ -22,6 +22,7 @@ namespace SistemaControle.View
         RepresaContext dc = new RepresaContext();
         Cliente cliente;
         int idEmprestimo = 0;
+        int diaUtil = 0;
 
         List<Parcela> parcelas = new List<Parcela>();
         List<Feriado> feriados = new List<Feriado>();
@@ -63,6 +64,7 @@ namespace SistemaControle.View
                 }
                 cbAtendente.ItemsSource = dc.Atendentes.Select(at => at.NomeAtendente).ToList();
                 FPagamento.ItemsSource = dc.FormaPagamentos.Select(fp => fp.NomeFormaPagamento).ToList();
+                feriados = dc.Feriados.ToList();
             }
             
         }
@@ -177,31 +179,39 @@ namespace SistemaControle.View
                 if (!ValidarCampos()) return;
 
                 DateTime datainicio = PrimeiraParcela.DateTime ?? DateTime.Now;
+
                 parcelas.Clear();
                 parcelaDataGrid.ItemsSource = null;
                 long qtd = QtdParcela.Value ?? 0;
-
-                feriados = dc.Feriados.ToList();
 
                 for (int i = 0; i < qtd; i++)
                 {
                     parcela = new Parcela();
                     DateTime dataParcela = datainicio.AddMonths(i);
-                    foreach (var feriado in feriados)
+
+                    
+                    if (diaUtil > 0)
                     {
-                        if (dataParcela.Date == feriado.DataFeriado)
+                        dataParcela = new DateTime(dataParcela.Year, dataParcela.Month, 1);
+                        int contDiaUtil = 0, cont = 0;
+                        
+                        while(contDiaUtil < diaUtil)
                         {
-                            dataParcela = dataParcela.AddDays(1);
+                            dataParcela = dataParcela.AddDays(cont);
+                            dataParcela = getDiaUltil(dataParcela);
+                            contDiaUtil++;
+                            cont = 1;
                         }
+                        
                     }
-                    if (dataParcela.DayOfWeek == DayOfWeek.Saturday) dataParcela = dataParcela.AddDays(2);
-                    if (dataParcela.DayOfWeek == DayOfWeek.Sunday) dataParcela = dataParcela.AddDays(1);
+                    else dataParcela = getDiaUltil(dataParcela);                      
 
                     parcela.Vencimento = dataParcela;
                     parcela.ValorParcela = ValorParcela.Value ?? 0;
                     parcela.FormaPagamento = FPagamento.Text;
                     parcelas.Add(parcela);
                 }
+
                 parcelaDataGrid.ItemsSource = parcelas;
                 btInsert.IsEnabled = true;
 
@@ -363,13 +373,13 @@ namespace SistemaControle.View
         {
             if (DataCadastro.DateTime == null) { MessageBox.Show("O Campo DATA CADASTRO não está preenchido", "ERRO!", MessageBoxButton.OK, MessageBoxImage.Exclamation); return false; }
             if (CodEmprestimo.Value.ToString() == null) { MessageBox.Show("O Campo CODEMPRESTIMO não está preenchido", "ERRO!", MessageBoxButton.OK, MessageBoxImage.Exclamation); return false; }
-            if (Aplicacao.Value < 1) { MessageBox.Show("O Campo APLICAÇÃO não está preenchido", "ERRO!", MessageBoxButton.OK, MessageBoxImage.Exclamation); return false; }
-            if (Taxa.PercentValue < 1) { MessageBox.Show("O Campo TAXA não está preenchido", "ERRO!", MessageBoxButton.OK, MessageBoxImage.Exclamation); return false; }
+            if (Aplicacao.Value < 0) { MessageBox.Show("O Campo APLICAÇÃO deve ser maior ou igual a Zero", "ERRO!", MessageBoxButton.OK, MessageBoxImage.Exclamation); return false; }
+            if (Taxa.PercentValue < 0) { MessageBox.Show("O Campo TAXA deve ser maior ou igual a Zero", "ERRO!", MessageBoxButton.OK, MessageBoxImage.Exclamation); return false; }
             if (QtdParcela.Value < 1) { MessageBox.Show("O Campo QTD PARCELA não está preenchido", "ERRO!", MessageBoxButton.OK, MessageBoxImage.Exclamation); return false; }
-            if (ValorParcela.Value < 1) { MessageBox.Show("O Campo VALOR PARCELA não está preenchido", "ERRO!", MessageBoxButton.OK, MessageBoxImage.Exclamation); return false; }
-            if (ValorTotal.Value < 1) { MessageBox.Show("O Campo VALOR TOTAL não está preenchido", "ERRO!", MessageBoxButton.OK, MessageBoxImage.Exclamation); return false; }
+            if (ValorParcela.Value < 0) { MessageBox.Show("O Campo VALOR PARCELA deve ser maior ou igual a Zero", "ERRO!", MessageBoxButton.OK, MessageBoxImage.Exclamation); return false; }
+            if (ValorTotal.Value < 0) { MessageBox.Show("O Campo VALOR TOTAL deve ser maior ou igual a Zero", "ERRO!", MessageBoxButton.OK, MessageBoxImage.Exclamation); return false; }
             if (PrimeiraParcela.DateTime == null) { MessageBox.Show("O Campo PRIMEIRA PARCELA não está preenchido", "ERRO!", MessageBoxButton.OK, MessageBoxImage.Exclamation); return false; }
-            if (ValorComissao.Value < 1) { MessageBox.Show("O Campo VALOR COMISSÃO não está preenchido", "ERRO!", MessageBoxButton.OK, MessageBoxImage.Exclamation); return false; }
+            if (ValorComissao.Value < 0) { MessageBox.Show("O Campo VALOR COMISSÃO deve ser maior ou igual a Zero", "ERRO!", MessageBoxButton.OK, MessageBoxImage.Exclamation); return false; }
             if (cbAtendente.Text == "") { MessageBox.Show("O Campo ATENDENTE não está preenchido", "ERRO!", MessageBoxButton.OK, MessageBoxImage.Exclamation); return false; }
             if (FPagamento.Text == "") { MessageBox.Show("O Campo FORMA PAGAMENTO não está preenchido", "ERRO!", MessageBoxButton.OK, MessageBoxImage.Exclamation); return false; }
             return true;
@@ -446,5 +456,57 @@ namespace SistemaControle.View
         {
             getIdEmprestimo();
         }
+
+
+        private void PrimeiraParcela_Loaded(object sender, RoutedEventArgs e)
+        {
+            PrimeiraParcela.DateTime = DateTime.Now.AddMonths(1);
+            DataCadastro.Focus();
+            CodEmprestimo.Focus();
+        }
+
+        private void lstUtil_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (lstUtil.SelectedIndex >= 0 && lstUtil.SelectedIndex < 11)
+            {
+                this.diaUtil = lstUtil.SelectedIndex;
+            }
+        }
+
+
+
+
+        private DateTime getDiaUltil(DateTime data)
+        {
+            while(true)
+            {
+                if (data.DayOfWeek == DayOfWeek.Saturday)
+                {
+                    data = data.AddDays(2);
+                    return getDiaUltil(data);
+                }
+                else if (data.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    data = data.AddDays(1);
+                    return getDiaUltil(data);
+                }
+                else if (isFeriado(data) == true)
+                {
+                    data = data.AddDays(1);
+                    return getDiaUltil(data);
+                }
+                else return data;
+            }
+        }
+
+        private bool isFeriado(DateTime data)
+        {
+            foreach (Feriado feriado in this.feriados)
+            {
+                if(data.Date == feriado.DataFeriado) return true;                                 
+            }
+            return false;
+        }
+        
     }  //fim class
 }

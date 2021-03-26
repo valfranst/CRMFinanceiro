@@ -1,0 +1,22 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+#nullable disable
+
+namespace SistemaControle_V3
+{
+    [Table("DespesaMensal")]
+    public partial class DespesaMensal
+    {
+        [Key]
+        [StringLength(6)]
+        public string IdDespesaMensal { get; set; }
+        [Column(TypeName = "decimal(10, 3)")]
+        public decimal Valor { get; set; }
+        [Column(TypeName = "date")]
+        public DateTime DataCadastro { get; set; }
+    }
+}

@@ -177,8 +177,7 @@
                         FontSize="16" Height="30" Width="140" HorizontalContentAlignment="Left" LostFocus="nascimentoDT_LostFocus"  />
 
                     <Label Content="Tel.Residêncial" Style="{StaticResource Descricao}" />
-                    <syncfusion:SfMaskedEdit x:Name="telResidencialTextBox" Width="160" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" 
-                        MaskType="RegEx" Mask="\(\d{2}\)\d{4,5}-\d{4}" ErrorBorderBrush="Red" Watermark="(21) ?XXXX-XXXX" />
+                    <TextBox x:Name="telResidencialTextBox" Width="160" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" />
                 </StackPanel>
 
                 
@@ -186,12 +185,10 @@
                 <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0">
 
                     <Label Content="WhatsApp" Style="{StaticResource Descricao}" />
-                    <syncfusion:SfMaskedEdit x:Name="telCelularzapTextBox" Width="150" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" 
-                        MaskType="RegEx" Mask="\(\d{2}\)\d{4,5}-\d{4}" ErrorBorderBrush="Red" Watermark="(21) ?XXXX-XXXX"/>
+                    <TextBox x:Name="telCelularzapTextBox" Width="150" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" />
 
                     <Label Content="Celular02" Style="{StaticResource Descricao}" />
-                    <syncfusion:SfMaskedEdit x:Name="telCelular2TextBox" Width="150" Height="30" Margin="1 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center"
-                       MaskType="RegEx" Mask="\(\d{2}\)\d{4,5}-\d{4}" ErrorBorderBrush="Red" Watermark="(21) ?XXXX-XXXX" />
+                    <TextBox x:Name="telCelular2TextBox" Width="150" Height="30" Margin="1 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" />
 
                     <Label Content="Email" Style="{StaticResource Descricao}"/>
                     <TextBox x:Name="emailTextBox" Width="380" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" MaxLength="50"  />
@@ -270,16 +267,13 @@
                     <TextBox x:Name="tempoServicoTextBox" Width="210" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" TabIndex="205" MaxLength="50" />
 
                     <Label Content="Tel. Comercial 01" Style="{StaticResource Descricao}" />
-                    <syncfusion:SfMaskedEdit x:Name="telComercial1TextBox" Width="155" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" 
-                            MaskType="RegEx" Mask="\(\d{2}\)\d{4,5}-\d{4}" ErrorBorderBrush="Red" Watermark="(21) ?XXXX-XXXX"  />
+                    <TextBox x:Name="telComercial1TextBox" Width="155" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" />
 
                     <Label Content="Tel. Comercial 02" Style="{StaticResource Descricao}" />
-                    <syncfusion:SfMaskedEdit x:Name="telComercial2TextBox" Width="150" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" 
-                             MaskType="RegEx" Mask="\(\d{2}\)\d{4,5}-\d{4}" ErrorBorderBrush="Red" Watermark="(21) ?XXXX-XXXX"  />
+                    <TextBox x:Name="telComercial2TextBox" Width="150" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" />
 
                     <Label Content="Tel. Comercial 03" Style="{StaticResource Descricao}" />
-                    <syncfusion:SfMaskedEdit x:Name="telComercial3TextBox" Width="150" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center"
-                         MaskType="RegEx" Mask="\(\d{2}\)\d{4,5}-\d{4}" ErrorBorderBrush="Red" Watermark="(21) ?XXXX-XXXX" />
+                    <TextBox x:Name="telComercial3TextBox" Width="150" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" />
                     
                 </StackPanel>
 
@@ -323,8 +317,7 @@
                     <TextBox x:Name="referencia01TextBox" Width="800" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" MaxLength="100" />
 
                     <Label Content="Telefone" Style="{StaticResource Descricao}" />
-                    <syncfusion:SfMaskedEdit x:Name="telReferencia01TextBox" Width="150" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center"  
-                            MaskType="RegEx" Mask="\(\d{2}\)\d{4,5}-\d{4}" ErrorBorderBrush="Red" Watermark="(21) ?XXXX-XXXX" />
+                    <TextBox x:Name="telReferencia01TextBox" Width="150" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" />
 
                 </StackPanel>
 
@@ -334,8 +327,7 @@
                     <TextBox x:Name="referencia02TextBox" Width="800" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" MaxLength="100" />
 
                     <Label Content="Telefone" Style="{StaticResource Descricao}" />
-                    <syncfusion:SfMaskedEdit x:Name="telReferencia02TextBox" Width="150" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" 
-                            MaskType="RegEx" Mask="\(\d{2}\)\d{4,5}-\d{4}" ErrorBorderBrush="Red" Watermark="(21) ?XXXX-XXXX" />
+                    <TextBox x:Name="telReferencia02TextBox" Width="150" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
                 </StackPanel>
 
@@ -345,15 +337,14 @@
                     <TextBox x:Name="referencia03TextBox" Width="800" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" MaxLength="100" />
 
                     <Label Content="Telefone" Style="{StaticResource Descricao}" />
-                    <syncfusion:SfMaskedEdit x:Name="telReferencia03TextBox" Width="150" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center"  
-                             MaskType="RegEx" Mask="\(\d{2}\)\d{4,5}-\d{4}" ErrorBorderBrush="Red" Watermark="(21) ?XXXX-XXXX" />
+                    <TextBox x:Name="telReferencia03TextBox" Width="150" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" />
 
                 </StackPanel>
 
                 <!--L16 Indicação -->
                 <StackPanel Orientation="Horizontal" Grid.Row="14" Grid.Column="0" >
                     <Label Content="Indicação" Style="{StaticResource Descricao}" />
-                    <TextBox x:Name="indicacaoTextBox" Width="1050" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" Text="{Binding indicacao, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" MaxLength="150" />
+                    <TextBox x:Name="indicacaoTextBox" Width="1050" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" MaxLength="150" />
 
                 </StackPanel>
 

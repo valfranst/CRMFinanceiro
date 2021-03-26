@@ -76,9 +76,9 @@ namespace SistemaControle.View
 
                     rgTextBox.Text = cliente.Rg;
 
-                    telResidencialTextBox.Value = cliente.TelResidencial;
-                    telCelularzapTextBox.Value = cliente.TelCelularzap;
-                    telCelular2TextBox.Value = cliente.TelCelular2;
+                    telResidencialTextBox.Text = cliente.TelResidencial;
+                    telCelularzapTextBox.Text = cliente.TelCelularzap;
+                    telCelular2TextBox.Text = cliente.TelCelular2;
 
                     emailTextBox.Text = cliente.Email;
                     facebookTextBox.Text = cliente.Facebook;
@@ -109,9 +109,9 @@ namespace SistemaControle.View
                         tempoServicoTextBox.Text = anos2 + " anos e " + meses2 + " meses";
                     }
 
-                   telComercial1TextBox.Value = cliente.TelComercial1;                     
-                   telComercial2TextBox.Value = cliente.TelComercial2;
-                   telComercial3TextBox.Value = cliente.TelComercial3;
+                   telComercial1TextBox.Text = cliente.TelComercial1;                     
+                   telComercial2TextBox.Text = cliente.TelComercial2;
+                   telComercial3TextBox.Text = cliente.TelComercial3;
                     
 
                                          
@@ -132,9 +132,9 @@ namespace SistemaControle.View
                         referencia01TextBox.Text = referencia.Referencia01;
                         referencia02TextBox.Text = referencia.Referencia02;
                         referencia03TextBox.Text = referencia.Referencia03;
-                        telReferencia01TextBox.Value = referencia.Telefone01;
-                        telReferencia02TextBox.Value = referencia.Telefone02;
-                        telReferencia03TextBox.Value = referencia.Telefone03; 
+                        telReferencia01TextBox.Text = referencia.Telefone01;
+                        telReferencia02TextBox.Text = referencia.Telefone02;
+                        telReferencia03TextBox.Text = referencia.Telefone03; 
                     }
                     
 

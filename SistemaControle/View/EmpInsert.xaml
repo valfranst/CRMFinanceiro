@@ -32,12 +32,12 @@
     </UserControl.Resources>
 
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Margin="0 0 0 50" VerticalAlignment="Top" HorizontalAlignment="Center" >
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Margin="0 0 0 60" VerticalAlignment="Top" HorizontalAlignment="Center" >
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center"  Background="White">
 
             <DockPanel  HorizontalAlignment="Center" VerticalAlignment="Top" >
 
-                <Button x:Name="button" HorizontalAlignment="Left" Margin="15 5 10 5"  Width="130" Height="130" >
+                <Button x:Name="button" HorizontalAlignment="Left" Margin="15 5 10 10"  Width="130" Height="130" >
                     <Button.Background>
                         <ImageBrush x:Name="btImagem"  Stretch="None" ImageSource="/Resources/usuario.png"/>
                     </Button.Background>
@@ -148,8 +148,8 @@
                 <!--PRIMEIRA PARCELA-->
                 <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="0" Margin="30 30 0 0" VerticalAlignment="Center" HorizontalAlignment="Center">
                     <Label Content="1° PARCELA" Style="{StaticResource descricao}" />
-                    <syncfusion:DateTimeEdit x:Name="PrimeiraParcela" InputScope="Number" CustomPattern="d/M/yyyy"
-                        FontSize="20" Height="50" Width="140" HorizontalContentAlignment="Left"  />
+                    <syncfusion:DateTimeEdit x:Name="PrimeiraParcela" InputScope="Number" CustomPattern="d/M/yyyy" IsEmptyDateEnabled="True" NullValue="{x:Null}"
+                        FontSize="20" Height="50" Width="140" HorizontalContentAlignment="Left" Loaded="PrimeiraParcela_Loaded"/>
                 </StackPanel>
 
                 <!-- VALOR PARCELAS -->
@@ -174,8 +174,70 @@
 
                 <!-- ********************************* 3 LINHA ********************************************** -->
 
+                <!-- DIA ÚTIL -->
+                <ListBox x:Name="lstUtil" Margin="20 20 20 0" HorizontalAlignment="Center" SelectionChanged="lstUtil_SelectionChanged" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4"
+                         MaxHeight="55">
+                    <ListBox.ToolTip>
+                        <TextBlock Text="Selecione o Dia Útil" />
+                    </ListBox.ToolTip>
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+
+                    <ListBoxItem Margin="0 0 0 0" Padding="0">
+                        <materialDesign:PackIcon Kind="NumericZeroCircle" Width="50" Height="50" />
+                    </ListBoxItem>
+                    <ListBoxItem Margin="5 0 0 0" Padding="0">
+                        <materialDesign:PackIcon Kind="NumericOneCircle" Width="50" Height="50" />
+                    </ListBoxItem>
+                    <ListBoxItem Margin="5 0 0 0" Padding="0">
+                        <materialDesign:PackIcon Kind="NumericTwoCircle" Width="50" Height="50" />
+                    </ListBoxItem>
+                    <ListBoxItem Margin="5 0 0 0" Padding="0">
+                        <materialDesign:PackIcon Kind="NumericThreeCircle" Width="50" Height="50" />
+                    </ListBoxItem>
+                    <ListBoxItem Margin="5 0 0 0" Padding="0">
+                        <materialDesign:PackIcon Kind="NumericFourCircle" Width="50" Height="50" />
+                    </ListBoxItem>
+                    <ListBoxItem Margin="5 0 0 0" Padding="0">
+                        <materialDesign:PackIcon Kind="NumericFiveCircle" Width="50" Height="50" />
+                    </ListBoxItem>
+                    <ListBoxItem Margin="5 0 0 0" Padding="0">
+                        <materialDesign:PackIcon Kind="NumericSixCircle" Width="50" Height="50" />
+                    </ListBoxItem>
+                    <ListBoxItem Margin="5 0 0 0" Padding="0">
+                        <materialDesign:PackIcon Kind="NumericSevenCircle" Width="50" Height="50" />
+                    </ListBoxItem>
+                    <ListBoxItem Margin="5 0 0 0" Padding="0">
+                        <materialDesign:PackIcon Kind="NumericEightCircle" Width="50" Height="50" />
+                    </ListBoxItem>
+                    <ListBoxItem Margin="5 0 0 0" Padding="0">
+                        <materialDesign:PackIcon Kind="NumericNineCircle" Width="50" Height="50" />
+                    </ListBoxItem>
+                    <ListBoxItem Margin="5 0 0 0" Padding="0">
+                        <materialDesign:PackIcon Kind="Numeric10Circle" Width="50" Height="50" />
+                    </ListBoxItem>
+
+                </ListBox>
+
+
+
+                <!-- FORMA DE PAGAMENTO -->
+                <ComboBox x:Name="FPagamento" Grid.Row="2" Grid.Column="4" Grid.ColumnSpan="2" Grid.RowSpan="4" Width="250" Height="50" Margin="20 20 20 0" FontSize="18" IsEditable="True" VerticalAlignment="Top"
+                     materialDesign:HintAssist.Hint="Forma de Pagamento" materialDesign:HintAssist.FloatingScale="0.50"
+                      materialDesign:ComboBoxAssist.ClassicMode="{Binding ElementName=ClassicModeCheckBox, Path=IsChecked}" HorizontalAlignment="Left" />
+
+                <!-- CODIGOS ANTIGOS -->
+                <Label x:Name="CodigosAntigo" Content="Últimos Códigos" Grid.Row="2" Grid.Column="6"
+                   Margin="20 20 20 0" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold" />
+
+
+                <!-- ********************************* 4 LINHA ********************************************** -->
+
                 <!-- DATAGRID PARCELAS -->
-                <syncfusion:SfDataGrid x:Name="parcelaDataGrid" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Margin="30 40 20 0" Height="auto" Width="Auto" FontSize="16" RowHeight="35"
+                <syncfusion:SfDataGrid x:Name="parcelaDataGrid" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Margin="30 40 20 0" Height="auto" Width="Auto" FontSize="16" RowHeight="35"
                     HeaderStyle="{StaticResource headerStyle2}"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
@@ -194,19 +256,7 @@
                     </syncfusion:SfDataGrid.Columns>
 
                 </syncfusion:SfDataGrid>
-
-                <!-- FORMA DE PAGAMENTO -->
-                <ComboBox x:Name="FPagamento" Grid.Row="2" Grid.Column="4" Grid.ColumnSpan="2" Grid.RowSpan="4" Width="250" Height="50" Margin="20 40 20 0" FontSize="18" IsEditable="True" VerticalAlignment="Top"
-                     materialDesign:HintAssist.Hint="Forma de Pagamento" materialDesign:HintAssist.FloatingScale="0.50"
-                      materialDesign:ComboBoxAssist.ClassicMode="{Binding ElementName=ClassicModeCheckBox, Path=IsChecked}" HorizontalAlignment="Left" />
-
-                <!-- CODIGOS ANTIGOS -->
-                <Label x:Name="CodigosAntigo" Content="Últimos Códigos" Grid.Row="2" Grid.Column="6"
-                   Margin="20 40 20 0" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold" />
-
-
-                <!-- ********************************* 4 LINHA ********************************************** -->
-
+                
                 <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="3" Margin="30 40 20 10">
 
                     <Button x:Name="btGerarParcela" Grid.Row="4" Grid.Column="0" Width="230" Height="40" ToolTip="Gerar as parcelas da Aplicação" Cursor="Hand" 
@@ -218,7 +268,6 @@
                             <TextBlock Text="GERAR PARCELAS" Margin="10,0,0,0" FontSize="18" VerticalAlignment="Center" FontWeight="Black"/>
                         </StackPanel>
                     </Button>
-
 
                     <Button x:Name="btInsert" Grid.Row="4" Grid.Column="0" IsEnabled="False" Width="280" Height="40" ToolTip="Inserir a nova Aplicação"
                         Margin="30 0 0 0" Cursor="Hand" Click="btInsert_Clikc" Style="{StaticResource MaterialDesignRaisedLightButton}" >
