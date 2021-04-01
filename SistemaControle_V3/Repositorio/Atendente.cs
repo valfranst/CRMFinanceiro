@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace SistemaControle_V3
 {
     [Table("Atendente")]
-    [Index(nameof(NomeAtendente), Name = "UQ__Atendent__6126F036923E5C85", IsUnique = true)]
+    [Index(nameof(NomeAtendente), Name = "UQ__Atendent__6126F03611DBD54D", IsUnique = true)]
     public partial class Atendente
     {
         [Key]

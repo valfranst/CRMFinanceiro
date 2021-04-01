@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
-using System.Linq;
 
 namespace SistemaControle_V3
 {
@@ -18,21 +17,17 @@ namespace SistemaControle_V3
         private string _conexao;
         private string _local;
         private string _localImagem;
-        private string _localImagemAplicativo;
         private string _localBanco;
         private string _meta;
-        private string _cor;
 
         private MyConfig()
         {
             this.configApp = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            this._conexao = configApp.ConnectionStrings.ConnectionStrings["DefaultConnection"].ConnectionString;
+            this._conexao = configApp.ConnectionStrings.ConnectionStrings["Default"].ConnectionString;
             this._local = configApp.AppSettings.Settings["local"].Value;
             this._localImagem = configApp.AppSettings.Settings["localImagem"].Value;
             this._localBanco = configApp.AppSettings.Settings["localBanco"].Value;
-            this._localImagemAplicativo = configApp.AppSettings.Settings["localImagemAplicativo"].Value;
             this._meta = configApp.AppSettings.Settings["meta"].Value;
-            this._cor = configApp.AppSettings.Settings["cor"].Value;
         }
 
         public static MyConfig _getInstance()
@@ -62,7 +57,7 @@ namespace SistemaControle_V3
             get => _conexao;
             set
             {
-                configApp.ConnectionStrings.ConnectionStrings["DefaultConnection"].ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=" + value + @"\Represa04.mdf;Integrated Security=True;Connect Timeout=30;Trusted_Connection=True";
+                configApp.ConnectionStrings.ConnectionStrings["Default"].ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=" + value + @"\Represa04.mdf;Integrated Security=True;Connect Timeout=30;Trusted_Connection=True";
                 this._conexao = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=" + value + @"\Represa04.mdf;Integrated Security=True;Connect Timeout=30;Trusted_Connection=True";
                 configApp.Save(ConfigurationSaveMode.Modified, true);
                 ConfigurationManager.RefreshSection("appSettings");
@@ -107,18 +102,6 @@ namespace SistemaControle_V3
             }
         }
 
-        public string ImagemTemp
-        {
-            get => _localImagemAplicativo;
-            set
-            {
-                _localImagemAplicativo = value;
-                configApp.AppSettings.Settings["localImagemAplicativo"].Value = value;
-                configApp.Save(ConfigurationSaveMode.Modified, true);
-                ConfigurationManager.RefreshSection("appSettings");
-            }
-        }
-
         public string Meta
         {
             get => _meta;
@@ -131,20 +114,82 @@ namespace SistemaControle_V3
             }
         }
 
-        public string Cor
+        #endregion FIM GET and SET
+
+
+
+
+        //***************************
+
+        public Resultado checkDb()
         {
-            get => _cor;
-            set
+            try
             {
-                _cor = value;
-                configApp.AppSettings.Settings["cor"].Value = value;
-                configApp.Save(ConfigurationSaveMode.Modified, true);
-                ConfigurationManager.RefreshSection("appSettings");
+                if (File.Exists(@"C:\Aplicativo\Banco\Represa04.mdf")) Conexao = @"C:\Aplicativo\Banco";
+                else if (File.Exists(@"D:\Aplicativo\Banco\Represa04.mdf")) { Conexao = @"D:\Aplicativo\Banco"; Local = @"D:\Aplicativo"; Banco = @"D:\Aplicativo\Banco"; Imagem = @"D:\Aplicativo\Imagens";}
+                else if (File.Exists(@"E:\Aplicativo\Banco\Represa04.mdf")) { Conexao = @"E:\Aplicativo\Banco"; Local = @"E:\Aplicativo"; Banco = @"E:\Aplicativo\Banco"; Imagem = @"E:\Aplicativo\Imagens"; }
+                else if (File.Exists(@"F:\Aplicativo\Banco\Represa04.mdf")) { Conexao = @"F:\Aplicativo\Banco"; Local = @"F:\Aplicativo"; Banco = @"F:\Aplicativo\Banco"; Imagem = @"F:\Aplicativo\Imagens"; }
+                else if (File.Exists(@"G:\Aplicativo\Banco\Represa04.mdf")) { Conexao = @"G:\Aplicativo\Banco"; Local = @"G:\Aplicativo"; Banco = @"G:\Aplicativo\Banco"; Imagem = @"G:\Aplicativo\Imagens"; }
+                else if (File.Exists(@"H:\Aplicativo\Banco\Represa04.mdf")) { Conexao = @"H:\Aplicativo\Banco"; Local = @"H:\Aplicativo"; Banco = @"H:\Aplicativo\Banco"; Imagem = @"H:\Aplicativo\Imagens"; }
+                using (RepresaContext con = new RepresaContext())
+                {
+                    if (con.Database.CanConnect()) return Resultado.Ok();
+                    else return IniciarEstrutura();
+                }
+            }
+            catch (SqlException ex)
+            {
+                return Resultado.Erro("Erro ao conectar Banco de Dados! \n\n" + ex);
+            }
+            catch (Exception ex)
+            {
+                return Resultado.Erro("Erro ao conectar Banco de Dados! \n\n" + ex);
             }
         }
 
-        #endregion FIM GET and SET
-                           
+        public Resultado IniciarEstrutura()
+        {
+            try
+            {
+                OpenFileDialog folderBrowser = new OpenFileDialog();
+                // Set validate names and check file exists to false otherwise windows will
+                // not let you select "Folder Selection."
+                folderBrowser.ValidateNames = false;
+                folderBrowser.CheckFileExists = false;
+                folderBrowser.CheckPathExists = true;
+                // Always default to Folder Selection.
+                folderBrowser.FileName = "Selecione a pasta";
+                if (folderBrowser.ShowDialog() == true)
+                {
+                    Local = Path.GetDirectoryName(folderBrowser.FileName);
+
+                    if (Directory.Exists(Local))
+                    {
+                        Banco = Local + @"\Banco";
+                        Imagem = Local + @"\Imagens";
+                    }
+                    else return Resultado.Erro("A pasta RAIZ do Sistema não foi encontrada...");
+
+                    if (!Directory.Exists(Banco)) return Resultado.Erro("A pasta do Banco de Dados não foi encontrada...");
+                    if (!Directory.Exists(Imagem)) return Resultado.Erro("A pasta Imagens dos Clientes não foi encontrada...");
+                    if (File.Exists(Banco + @"\Represa04.mdf")) Conexao = Banco;
+                    else return Resultado.Erro("O ARQUIVO do Banco de Dados não foi encontrado: por favor verifique as pastas do SISTEMA!");
+                }
+                return Resultado.Ok();
+            }
+            catch (Exception ex)
+            {
+                return Resultado.Erro("Erro.Sisitema Interrompido!\n\n" + ex);
+            }
+        }
+
+        //***************************
+
+
+
+
+
+
         public List<string> getTamanhoArquivo()
         {
             try
@@ -167,8 +212,8 @@ namespace SistemaControle_V3
             }
             catch {  return null; }
 
-        }
-                
+        }   
+        
         public static int UltimoDia(DateTime data)
         {
             // 1 3 5 7 8 10 12
@@ -202,7 +247,6 @@ namespace SistemaControle_V3
                 default:
                     break;
             }
-
             return ultimoDia;
         }
 

@@ -12,7 +12,7 @@ namespace SistemaControle_V3
     public partial class ViewRefinanciar
     {
         public int IdCliente { get; set; }
-        public int IdEmprestimo { get; set; }
+        public long IdEmprestimo { get; set; }
         public int IdContato { get; set; }
         [Required]
         [StringLength(15)]

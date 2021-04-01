@@ -4,9 +4,109 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SistemaControle_V3"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+        xmlns:syncfusion="http://schemas.syncfusion.com/wpf"  
+        
+        mc:Ignorable="d" xml:lang="pt-BR" Title="APLICAÇÕES" WindowState="Maximized" Loaded="Window_Loaded" Closing="Window_Closing" 
+        MinHeight="700" MinWidth="1100" Height="{x:Static SystemParameters.PrimaryScreenHeight}" Width="{x:Static SystemParameters.PrimaryScreenWidth}" >
+
+    <Grid >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <materialDesign:ColorZone Grid.Row="0" Grid.Column="0" Mode="PrimaryMid" Padding="2" Height="50" >
+            <DockPanel>
+
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" HorizontalAlignment="Left">
+
+                    <Button x:Name="btCliente" Height="40" Margin="5 0 0 0" Style="{StaticResource MaterialDesignRaisedAccentButton}" Width="120" ToolTip="Cliente" Click="btCliente_Click" >
+                        <StackPanel Orientation="Horizontal" Margin="0 0">
+                            <materialDesign:PackIcon Kind="AccountSearch" Width="30" Height="30" VerticalAlignment="Center" Margin="0"/>
+                            <TextBlock Text="CLIENTE" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="btProducao" Height="40" Margin="15 0 0 0" Style="{StaticResource MaterialDesignRaisedAccentButton}" Width="140" ToolTip="Produção" Click="btProducao_Click">
+                        <StackPanel Orientation="Horizontal" Margin="0 0">
+                            <materialDesign:PackIcon Kind="CashRegister" Width="30" Height="30" VerticalAlignment="Center" Margin="0"/>
+                            <TextBlock Text="PRODUÇÃO" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="btRecebimento" Height="40" Margin="15 0 0 0" Style="{StaticResource MaterialDesignRaisedAccentButton}" Width="160" ToolTip="Recebimento" Click="btRecebimento_Click">
+                        <StackPanel Orientation="Horizontal" Margin="0 0">
+                            <materialDesign:PackIcon Kind="AccountCash" Width="30" Height="30" VerticalAlignment="Center" Margin="0"/>
+                            <TextBlock Text="RECEBIMENTO" VerticalAlignment="Center" Margin="4 0 0 0"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="btRefinanciamento" Height="40" Margin="15 0 0 0" Style="{StaticResource MaterialDesignRaisedAccentButton}" Width="200" ToolTip="Refinanciamento" Click="btRefinanciamento_Click">
+                        <StackPanel Orientation="Horizontal" Margin="0 0">
+                            <materialDesign:PackIcon Kind="CashRefund" Width="30" Height="30" VerticalAlignment="Center" Margin="0 0 2 0"/>
+                            <TextBlock Text="REFINANCIAMENTO" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="btAddCliente" Height="40" Margin="15 0 0 0" Style="{StaticResource MaterialDesignRaisedAccentButton}" Width="150" ToolTip="Refinanciamento" Click="btAddCliente_Click" >
+                        <StackPanel Orientation="Horizontal" Margin="0 0">
+                            <materialDesign:PackIcon Kind="PersonAdd" Width="30" Height="30" VerticalAlignment="Center"  Margin="0 0 2 0"/>
+                            <TextBlock Text="ADD CLIENTE" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="btReset" Margin="10 0 0 0" Background="Red" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" ToolTip="Status Banco de Dados" BorderBrush="Cyan" Click="btReset_Click"/>
+
+
+                </StackPanel>
+
+
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
+
+                    <syncfusion:RibbonTextBox x:Name="txtPesquisa" Width="240" Margin="0 0 5 0"  FontSize="18" Height="35"
+                    Background="White" Foreground="Black" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
+                    TextChanged="txtPesquisa_TextChanged" BorderBrush="White"/>
+
+                    <materialDesign:PopupBox DockPanel.Dock="Right"  PlacementMode="BottomAndAlignRightEdges" StaysOpen="False" Margin="0 0 5 0" >
+                        <StackPanel Height="Auto" Width="175" >
+
+                            <!--LISTA EXTRA button-->
+                            <Button x:Name="btExtra" Click="btExtra_Click" >
+                                <StackPanel Orientation="Horizontal" Margin="0 0">
+                                    <materialDesign:PackIcon Kind="FormatListChecks" Width="30" Height="30" VerticalAlignment="Center" Margin="0"/>
+                                    <TextBlock Text="LISTAS" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+
+                            <!--CONFIGURAÇÃO button-->
+                            <Button x:Name="btConfiguracao" Click="btConfiguracao_Click">
+                                <StackPanel Orientation="Horizontal" Margin="0 0">
+                                    <materialDesign:PackIcon Kind="Settings" Width="30" Height="30" VerticalAlignment="Center" Margin="0"/>
+                                    <TextBlock Text="CONFIGURAÇÕES" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+
+                        </StackPanel>
+                    </materialDesign:PopupBox>
+
+                </StackPanel>
+
+
+            </DockPanel>
+
+        </materialDesign:ColorZone>
+
+        <Grid x:Name="GridMain" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Background="AliceBlue" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+        </Grid>
 
     </Grid>
 </Window>

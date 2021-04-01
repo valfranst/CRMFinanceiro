@@ -38,11 +38,12 @@ namespace SistemaControle_V3
         public virtual DbSet<Feriado> Feriados { get; set; }
         public virtual DbSet<FormaPagamento> FormaPagamentos { get; set; }
         public virtual DbSet<Parcela> Parcelas { get; set; }
-        public virtual DbSet<ViewAplicacaoCliente> ViewAplicacaoClientes { get; set; }
+        public virtual DbSet<ViewCliente> ViewClientes { get; set; }
+        public virtual DbSet<ViewProducao> ViewProducaos { get; set; }
         public virtual DbSet<ViewRecebimento> ViewRecebimentos { get; set; }
         public virtual DbSet<ViewRefinanciar> ViewRefinanciars { get; set; }
 
-       
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
@@ -50,7 +51,7 @@ namespace SistemaControle_V3
             modelBuilder.Entity<Atendente>(entity =>
             {
                 entity.HasKey(e => e.IdAtendente)
-                    .HasName("PK__Atendent__6AEB111E03A6ED14");
+                    .HasName("PK__Atendent__6AEB111EED4C0577");
 
                 entity.Property(e => e.NomeAtendente).IsUnicode(false);
             });
@@ -58,7 +59,7 @@ namespace SistemaControle_V3
             modelBuilder.Entity<Cliente>(entity =>
             {
                 entity.HasKey(e => e.IdCliente)
-                    .HasName("PK__Cliente__D594664262974D08");
+                    .HasName("PK__Cliente__D5946642E971F739");
 
                 entity.Property(e => e.Cargo).IsUnicode(false);
 
@@ -98,7 +99,7 @@ namespace SistemaControle_V3
             modelBuilder.Entity<Contato>(entity =>
             {
                 entity.HasKey(e => e.IdContato)
-                    .HasName("PK__Contato__2AC4F064056A4EEC");
+                    .HasName("PK__Contato__2AC4F064F55F68FE");
 
                 entity.Property(e => e.Email).IsUnicode(false);
 
@@ -123,7 +124,7 @@ namespace SistemaControle_V3
             modelBuilder.Entity<DespesaMensal>(entity =>
             {
                 entity.HasKey(e => e.IdDespesaMensal)
-                    .HasName("PK__DespesaM__47E6CD73D0BC007C");
+                    .HasName("PK__DespesaM__47E6CD730138A154");
 
                 entity.Property(e => e.IdDespesaMensal).IsUnicode(false);
 
@@ -133,7 +134,7 @@ namespace SistemaControle_V3
             modelBuilder.Entity<Emprestimo>(entity =>
             {
                 entity.HasKey(e => e.IdEmprestimo)
-                    .HasName("PK__Empresti__2BEA0208AA6D29BF");
+                    .HasName("PK__Empresti__2BEA0208E9D94321");
 
                 entity.Property(e => e.CodEmprestimo).IsUnicode(false);
 
@@ -156,7 +157,7 @@ namespace SistemaControle_V3
             modelBuilder.Entity<Endereco>(entity =>
             {
                 entity.HasKey(e => e.IdEndereco)
-                    .HasName("PK__Endereco__0B7C7F17114D5683");
+                    .HasName("PK__Endereco__0B7C7F17768B22C3");
 
                 entity.Property(e => e.Bairro).IsUnicode(false);
 
@@ -185,19 +186,19 @@ namespace SistemaControle_V3
             modelBuilder.Entity<Feriado>(entity =>
             {
                 entity.HasKey(e => e.IdFeriado)
-                    .HasName("PK__Feriados__8A3082C41A93AFAA");
+                    .HasName("PK__Feriados__8A3082C48A99683E");
             });
 
             modelBuilder.Entity<FormaPagamento>(entity =>
             {
                 entity.HasKey(e => e.IdFormaPagamento)
-                    .HasName("PK__FormaPag__848425F8EF8546EE");
+                    .HasName("PK__FormaPag__848425F84EA15F38");
             });
 
             modelBuilder.Entity<Parcela>(entity =>
             {
                 entity.HasKey(e => e.IdParcela)
-                    .HasName("PK__Parcela__8E1ACADDF495C30D");
+                    .HasName("PK__Parcela__8E1ACADDC9844588");
 
                 entity.Property(e => e.FormaPagamento).IsUnicode(false);
 
@@ -211,9 +212,24 @@ namespace SistemaControle_V3
                     .HasConstraintName("FK_Emprestimo_Parcela");
             });
 
-            modelBuilder.Entity<ViewAplicacaoCliente>(entity =>
+            modelBuilder.Entity<ViewCliente>(entity =>
             {
-                entity.ToView("View_AplicacaoCliente");
+                entity.ToView("View_Cliente");
+
+                entity.Property(e => e.Celular).IsUnicode(false);
+
+                entity.Property(e => e.Cpf).IsUnicode(false);
+
+                entity.Property(e => e.NomeCliente).IsUnicode(false);
+
+                entity.Property(e => e.Residencial).IsUnicode(false);
+
+                entity.Property(e => e.WhatsApp).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<ViewProducao>(entity =>
+            {
+                entity.ToView("View_Producao");
 
                 entity.Property(e => e.CodEmprestimo).IsUnicode(false);
 

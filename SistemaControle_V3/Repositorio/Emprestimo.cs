@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace SistemaControle_V3
 {
     [Table("Emprestimo")]
-    [Index(nameof(CodEmprestimo), Name = "UQ__Empresti__80EAF4F4C5B65E14", IsUnique = true)]
+    [Index(nameof(CodEmprestimo), Name = "UQ__Empresti__80EAF4F413169377", IsUnique = true)]
     public partial class Emprestimo
     {
         public Emprestimo()
@@ -18,7 +18,7 @@ namespace SistemaControle_V3
         }
 
         [Key]
-        public int IdEmprestimo { get; set; }
+        public long IdEmprestimo { get; set; }
         [Required]
         [StringLength(15)]
         public string CodEmprestimo { get; set; }

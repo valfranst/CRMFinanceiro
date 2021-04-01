@@ -12,8 +12,8 @@ namespace SistemaControle_V3
     public partial class Parcela
     {
         [Key]
-        public int IdParcela { get; set; }
-        public int IdEmprestimo { get; set; }
+        public long IdParcela { get; set; }
+        public long IdEmprestimo { get; set; }
         [Column(TypeName = "date")]
         public DateTime Vencimento { get; set; }
         [Column(TypeName = "decimal(10, 2)")]

@@ -61,7 +61,7 @@ namespace SistemaControle
             }
             
 
-                clientePesquisa = new ClientePesquisa(this);
+            clientePesquisa = new ClientePesquisa(this);
             GridMain.Children.Clear();
             Navegador(clientePesquisa);
 

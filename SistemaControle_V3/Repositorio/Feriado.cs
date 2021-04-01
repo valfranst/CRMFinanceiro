@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SistemaControle_V3
 {
-    [Index(nameof(DataFeriado), Name = "UQ__Feriados__4A1277A8FED6CEA5", IsUnique = true)]
+    [Index(nameof(DataFeriado), Name = "UQ__Feriados__4A1277A85073247E", IsUnique = true)]
     public partial class Feriado
     {
         [Key]

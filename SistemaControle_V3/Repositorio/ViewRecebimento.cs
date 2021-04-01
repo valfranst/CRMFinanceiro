@@ -23,7 +23,7 @@ namespace SistemaControle_V3
         [Column(TypeName = "decimal(10, 2)")]
         public decimal ValorParcela { get; set; }
         public bool Paga { get; set; }
-        public int IdParcela { get; set; }
+        public long IdParcela { get; set; }
         [StringLength(250)]
         public string Observacao { get; set; }
         public bool Marcado { get; set; }

@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore;
 namespace SistemaControle_V3
 {
     [Table("Cliente")]
-    [Index(nameof(NomeCliente), Name = "UQ__Cliente__7507A3852CFC3A8F", IsUnique = true)]
-    [Index(nameof(Cpf), Name = "UQ__Cliente__C1FF930935EBD2A8", IsUnique = true)]
+    [Index(nameof(NomeCliente), Name = "UQ__Cliente__7507A385824CEF24", IsUnique = true)]
+    [Index(nameof(Cpf), Name = "UQ__Cliente__C1FF930986E40394", IsUnique = true)]
     public partial class Cliente
     {
         public Cliente()

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
@@ -19,26 +15,8 @@ namespace SistemaControle_V3
             _context = new RepresaContext();
         }
 
-
-
         public (Resultado, Atendente) Insert(Atendente atendente)
-        {
-            if (atendente is null)
-            {
-                return (Resultado.Erro("O Atendente é nulo!"), null);
-            }
-            else if (atendente.IdAtendente > 0)
-            {
-                return (Resultado.Erro("IdAtendente não deve está preenchido para INSERIR!"), null);
-            }
-            else if (atendente.NomeAtendente.Length > 100)
-            {
-                return (Resultado.Erro("O Nome do Atendente não pode ter mais que 100 caracteres!"), null);
-            }
-            else if (atendente.NomeAtendente is null)
-            {
-                return (Resultado.Erro("O Nome do Atendente deve está preenchido!"), null);
-            }
+        {              
             try
             {
                 _context.Atendentes.Add(atendente);
@@ -52,26 +30,10 @@ namespace SistemaControle_V3
 
         public (Resultado, Atendente) Update(Atendente atendente)
         {
-            if (atendente is null)
-            {
-                return (Resultado.Erro("O Atendente é nulo!"), null);
-            }
-            else if (atendente.IdAtendente <= 0)
-            {
-                return (Resultado.Erro("IdAtendente não está preenchido!"), null);
-            }
-            else if (atendente.NomeAtendente.Length > 100)
-            {
-                return (Resultado.Erro("O Nome do Atendente não pode ter mais que 100 caracteres!"), null);
-            }
-            else if (atendente.NomeAtendente is null)
-            {
-                return (Resultado.Erro("O Nome do Atendente deve está preenchido!"), null);
-            }
             try
             {
                 Atendente update = _context.Atendentes.Where(at =>at.IdAtendente == atendente.IdAtendente).FirstOrDefault();
-                _context.Atendentes.Add(update);
+                update = atendente;
                 Commit();
                 Close();
                 return (Resultado.Ok(), update);
@@ -83,14 +45,6 @@ namespace SistemaControle_V3
 
         public Resultado Delete(Atendente atendente)
         {
-            if (atendente is null)
-            {
-                return Resultado.Erro("O Atendente é nulo!");
-            }
-            else if (atendente.IdAtendente <= 0)
-            {
-                return Resultado.Erro("IdAtendente não está preenchido!");
-            }
             try
             {
                 _context.Atendentes.Remove(atendente);
@@ -103,7 +57,7 @@ namespace SistemaControle_V3
 
         }
 
-        public (Resultado, Atendente) GetAtendenteById(int id)
+        public (Resultado, Atendente) GetById(int id)
         {
             try
             {
@@ -115,7 +69,7 @@ namespace SistemaControle_V3
             finally { Close(); }
         }
 
-        public (Resultado, Atendente) GetAtendenteByNome(string nome)
+        public (Resultado, Atendente) GetByNome(string nome)
         {
             try
             {
