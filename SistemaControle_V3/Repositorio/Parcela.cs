@@ -12,18 +12,23 @@ namespace SistemaControle_V3
     public partial class Parcela
     {
         [Key]
-        public long IdParcela { get; set; }
-        public long IdEmprestimo { get; set; }
-        [Column(TypeName = "date")]
+        [Column("idParcela")]
+        public int IdParcela { get; set; }
+        [Column("idEmprestimo")]
+        public int IdEmprestimo { get; set; }
+        [Column("vencimento", TypeName = "date")]
         public DateTime Vencimento { get; set; }
-        [Column(TypeName = "decimal(10, 2)")]
+        [Column("valorParcela", TypeName = "decimal(10, 3)")]
         public decimal ValorParcela { get; set; }
+        [Column("paga")]
+        public bool Paga { get; set; }
+        [Column("observacao")]
+        public string Observacao { get; set; }
+        [Column("formaPagamento")]
         [StringLength(50)]
         public string FormaPagamento { get; set; }
-        public bool Paga { get; set; }
-        [StringLength(250)]
-        public string Observacao { get; set; }
-        [StringLength(250)]
+        [Column("observacaoEmprestimo")]
+        [StringLength(500)]
         public string ObservacaoEmprestimo { get; set; }
 
         [ForeignKey(nameof(IdEmprestimo))]

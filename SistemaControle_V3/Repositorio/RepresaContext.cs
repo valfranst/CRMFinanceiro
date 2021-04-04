@@ -31,19 +31,18 @@ namespace SistemaControle_V3
 
         public virtual DbSet<Atendente> Atendentes { get; set; }
         public virtual DbSet<Cliente> Clientes { get; set; }
-        public virtual DbSet<Contato> Contatos { get; set; }
+        public virtual DbSet<Despesa> Despesas { get; set; }
+        public virtual DbSet<DespesaFuncionario> DespesaFuncionarios { get; set; }
         public virtual DbSet<DespesaMensal> DespesaMensals { get; set; }
         public virtual DbSet<Emprestimo> Emprestimos { get; set; }
-        public virtual DbSet<Endereco> Enderecos { get; set; }
         public virtual DbSet<Feriado> Feriados { get; set; }
         public virtual DbSet<FormaPagamento> FormaPagamentos { get; set; }
         public virtual DbSet<Parcela> Parcelas { get; set; }
-        public virtual DbSet<ViewCliente> ViewClientes { get; set; }
         public virtual DbSet<ViewProducao> ViewProducaos { get; set; }
         public virtual DbSet<ViewRecebimento> ViewRecebimentos { get; set; }
-        public virtual DbSet<ViewRefinanciar> ViewRefinanciars { get; set; }
+        public virtual DbSet<ViewRefinanciamento> ViewRefinanciamentos { get; set; }
 
-        
+       
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
@@ -51,43 +50,51 @@ namespace SistemaControle_V3
             modelBuilder.Entity<Atendente>(entity =>
             {
                 entity.HasKey(e => e.IdAtendente)
-                    .HasName("PK__Atendent__6AEB111EED4C0577");
-
-                entity.Property(e => e.NomeAtendente).IsUnicode(false);
+                    .HasName("PK__Atendent__B9FB093867D49D57");
             });
 
             modelBuilder.Entity<Cliente>(entity =>
             {
                 entity.HasKey(e => e.IdCliente)
-                    .HasName("PK__Cliente__D5946642E971F739");
-
-                entity.Property(e => e.Cargo).IsUnicode(false);
-
-                entity.Property(e => e.Cpf).IsUnicode(false);
+                    .HasName("PK__Cliente__885457EE08EC217E");
 
                 entity.Property(e => e.DataAlteracao).HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.DataCadastro).HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Empresa).IsUnicode(false);
+                entity.Property(e => e.Ebairro).IsUnicode(false);
 
-                entity.Property(e => e.Indicacao).IsUnicode(false);
+                entity.Property(e => e.Ecep).IsUnicode(false);
 
-                entity.Property(e => e.NomeCliente).IsUnicode(false);
+                entity.Property(e => e.Ecidade).IsUnicode(false);
 
-                entity.Property(e => e.NomeClienteNormalizado).IsUnicode(false);
+                entity.Property(e => e.Ecomplemento).IsUnicode(false);
 
-                entity.Property(e => e.Observacao).IsUnicode(false);
+                entity.Property(e => e.Eestado).IsUnicode(false);
 
-                entity.Property(e => e.Pesquisa).IsUnicode(false);
+                entity.Property(e => e.Elagradouro).IsUnicode(false);
 
-                entity.Property(e => e.Referencia1).IsUnicode(false);
+                entity.Property(e => e.Nreferencia1).IsUnicode(false);
 
-                entity.Property(e => e.Referencia2).IsUnicode(false);
+                entity.Property(e => e.Nreferencia2).IsUnicode(false);
 
-                entity.Property(e => e.Referencia3).IsUnicode(false);
+                entity.Property(e => e.Nreferencia3).IsUnicode(false);
 
-                entity.Property(e => e.Rg).IsUnicode(false);
+                entity.Property(e => e.Pesquisa).HasComputedColumnSql("(((((((([telResidencial]+' ')+[telCelular2])+' ')+[telCelularzap])+' ')+[nomeClienteNormalizado])+' ')+[cpf])", true);
+
+                entity.Property(e => e.Rbairro).IsUnicode(false);
+
+                entity.Property(e => e.Rcep).IsUnicode(false);
+
+                entity.Property(e => e.Rcidade).IsUnicode(false);
+
+                entity.Property(e => e.Rcomplemento).IsUnicode(false);
+
+                entity.Property(e => e.Restado).IsUnicode(false);
+
+                entity.Property(e => e.Rlagradouro).IsUnicode(false);
+
+                entity.Property(e => e.SalarioLiquido).HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.TelefoneR1).IsUnicode(false);
 
@@ -96,35 +103,34 @@ namespace SistemaControle_V3
                 entity.Property(e => e.TelefoneR3).IsUnicode(false);
             });
 
-            modelBuilder.Entity<Contato>(entity =>
+            modelBuilder.Entity<Despesa>(entity =>
             {
-                entity.HasKey(e => e.IdContato)
-                    .HasName("PK__Contato__2AC4F064F55F68FE");
+                entity.HasKey(e => e.IdDespesa)
+                    .HasName("PK__Despesa__6056E36108EC12DD");
+            });
 
-                entity.Property(e => e.Email).IsUnicode(false);
+            modelBuilder.Entity<DespesaFuncionario>(entity =>
+            {
+                entity.HasKey(e => e.IdDespesaFuncionario)
+                    .HasName("PK__DespesaF__0ABB4524DEDABA42");
 
-                entity.Property(e => e.Facebook).IsUnicode(false);
+                entity.Property(e => e.DataCadastro).HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Instagram).IsUnicode(false);
+                entity.HasOne(d => d.IdAtendenteNavigation)
+                    .WithMany(p => p.DespesaFuncionarios)
+                    .HasForeignKey(d => d.IdAtendente)
+                    .HasConstraintName("FK_DespesaFuncionario_Atendente");
 
-                entity.Property(e => e.Telefone1)
-                    .IsUnicode(false)
-                    .HasDefaultValueSql("('0')");
-
-                entity.Property(e => e.Telefone2).IsUnicode(false);
-
-                entity.Property(e => e.Telefone3).IsUnicode(false);
-
-                entity.HasOne(d => d.IdClienteNavigation)
-                    .WithMany(p => p.Contatos)
-                    .HasForeignKey(d => d.IdCliente)
-                    .HasConstraintName("FK_Contato_Cliente");
+                entity.HasOne(d => d.IdDespesaNavigation)
+                    .WithMany(p => p.DespesaFuncionarios)
+                    .HasForeignKey(d => d.IdDespesa)
+                    .HasConstraintName("FK_DespesaFuncionario_Despesa");
             });
 
             modelBuilder.Entity<DespesaMensal>(entity =>
             {
                 entity.HasKey(e => e.IdDespesaMensal)
-                    .HasName("PK__DespesaM__47E6CD730138A154");
+                    .HasName("PK__DespesaM__06C6A709E9D60237");
 
                 entity.Property(e => e.IdDespesaMensal).IsUnicode(false);
 
@@ -134,17 +140,13 @@ namespace SistemaControle_V3
             modelBuilder.Entity<Emprestimo>(entity =>
             {
                 entity.HasKey(e => e.IdEmprestimo)
-                    .HasName("PK__Empresti__2BEA0208E9D94321");
+                    .HasName("PK__Empresti__4B4C886025C510BF");
 
                 entity.Property(e => e.CodEmprestimo).IsUnicode(false);
 
-                entity.Property(e => e.DataAlteracao).HasDefaultValueSql("(getdate())");
-
                 entity.Property(e => e.DataCadastro).HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.FormaPagamento).IsUnicode(false);
-
-                entity.Property(e => e.NomeAtendente).IsUnicode(false);
+                entity.Property(e => e.DataCadastroAlteracao).HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.ReferenciaEmprestimo).IsUnicode(false);
 
@@ -154,57 +156,22 @@ namespace SistemaControle_V3
                     .HasConstraintName("FK_Cliente_Emprestimo");
             });
 
-            modelBuilder.Entity<Endereco>(entity =>
-            {
-                entity.HasKey(e => e.IdEndereco)
-                    .HasName("PK__Endereco__0B7C7F17768B22C3");
-
-                entity.Property(e => e.Bairro).IsUnicode(false);
-
-                entity.Property(e => e.Cep).IsUnicode(false);
-
-                entity.Property(e => e.Cidade).IsUnicode(false);
-
-                entity.Property(e => e.Complemento).IsUnicode(false);
-
-                entity.Property(e => e.Conjunto).IsUnicode(false);
-
-                entity.Property(e => e.Estado).IsUnicode(false);
-
-                entity.Property(e => e.Lagradouro).IsUnicode(false);
-
-                entity.Property(e => e.Pais)
-                    .IsUnicode(false)
-                    .HasDefaultValueSql("('Brasil')");
-
-                entity.HasOne(d => d.IdClienteNavigation)
-                    .WithMany(p => p.Enderecos)
-                    .HasForeignKey(d => d.IdCliente)
-                    .HasConstraintName("FK_Endereco_Cliente");
-            });
-
             modelBuilder.Entity<Feriado>(entity =>
             {
                 entity.HasKey(e => e.IdFeriado)
-                    .HasName("PK__Feriados__8A3082C48A99683E");
+                    .HasName("PK__Feriados__77769448864EA0DF");
             });
 
             modelBuilder.Entity<FormaPagamento>(entity =>
             {
                 entity.HasKey(e => e.IdFormaPagamento)
-                    .HasName("PK__FormaPag__848425F84EA15F38");
+                    .HasName("PK__FormaPag__B30C1EFD2CDBA01D");
             });
 
             modelBuilder.Entity<Parcela>(entity =>
             {
                 entity.HasKey(e => e.IdParcela)
-                    .HasName("PK__Parcela__8E1ACADDC9844588");
-
-                entity.Property(e => e.FormaPagamento).IsUnicode(false);
-
-                entity.Property(e => e.Observacao).IsUnicode(false);
-
-                entity.Property(e => e.ObservacaoEmprestimo).IsUnicode(false);
+                    .HasName("PK__Parcela__D965304ECD7C64DD");
 
                 entity.HasOne(d => d.IdEmprestimoNavigation)
                     .WithMany(p => p.Parcelas)
@@ -212,58 +179,31 @@ namespace SistemaControle_V3
                     .HasConstraintName("FK_Emprestimo_Parcela");
             });
 
-            modelBuilder.Entity<ViewCliente>(entity =>
-            {
-                entity.ToView("View_Cliente");
-
-                entity.Property(e => e.Celular).IsUnicode(false);
-
-                entity.Property(e => e.Cpf).IsUnicode(false);
-
-                entity.Property(e => e.NomeCliente).IsUnicode(false);
-
-                entity.Property(e => e.Residencial).IsUnicode(false);
-
-                entity.Property(e => e.WhatsApp).IsUnicode(false);
-            });
-
             modelBuilder.Entity<ViewProducao>(entity =>
             {
-                entity.ToView("View_Producao");
+                entity.ToView("ViewProducao");
 
                 entity.Property(e => e.CodEmprestimo).IsUnicode(false);
 
                 entity.Property(e => e.CodOrder).IsUnicode(false);
-
-                entity.Property(e => e.NomeAtendente).IsUnicode(false);
-
-                entity.Property(e => e.NomeCliente).IsUnicode(false);
             });
 
             modelBuilder.Entity<ViewRecebimento>(entity =>
             {
-                entity.ToView("View_Recebimento");
+                entity.ToView("ViewRecebimento");
 
                 entity.Property(e => e.CodEmprestimo).IsUnicode(false);
 
                 entity.Property(e => e.CodOrder).IsUnicode(false);
-
-                entity.Property(e => e.NomeCliente).IsUnicode(false);
-
-                entity.Property(e => e.Observacao).IsUnicode(false);
             });
 
-            modelBuilder.Entity<ViewRefinanciar>(entity =>
+            modelBuilder.Entity<ViewRefinanciamento>(entity =>
             {
-                entity.ToView("View_Refinanciar");
+                entity.ToView("ViewRefinanciamento");
 
                 entity.Property(e => e.CodEmprestimo).IsUnicode(false);
 
-                entity.Property(e => e.NomeCliente).IsUnicode(false);
-
                 entity.Property(e => e.ReferenciaEmprestimo).IsUnicode(false);
-
-                entity.Property(e => e.Telefone1).IsUnicode(false);
             });
 
             OnModelCreatingPartial(modelBuilder);

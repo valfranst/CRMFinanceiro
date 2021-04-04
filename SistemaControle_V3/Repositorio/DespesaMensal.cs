@@ -12,11 +12,12 @@ namespace SistemaControle_V3
     public partial class DespesaMensal
     {
         [Key]
+        [Column("idDespesaMensal")]
         [StringLength(6)]
         public string IdDespesaMensal { get; set; }
-        [Column(TypeName = "decimal(10, 3)")]
+        [Column("valor", TypeName = "decimal(10, 3)")]
         public decimal Valor { get; set; }
-        [Column(TypeName = "date")]
+        [Column("dataCadastro", TypeName = "date")]
         public DateTime DataCadastro { get; set; }
     }
 }

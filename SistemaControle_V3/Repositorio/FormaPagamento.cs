@@ -9,13 +9,18 @@ using Microsoft.EntityFrameworkCore;
 namespace SistemaControle_V3
 {
     [Table("FormaPagamento")]
-    [Index(nameof(NomeFormaPagamento), Name = "UQ__FormaPag__DBD5431D0F6F01F6", IsUnique = true)]
+    [Index(nameof(NomeFormaPagamento), Name = "UQ__FormaPag__1424905455D3D908", IsUnique = true)]
     public partial class FormaPagamento
     {
         [Key]
+        [Column("idFormaPagamento")]
         public int IdFormaPagamento { get; set; }
         [Required]
-        [StringLength(50)]
+        [Column("nomeFormaPagamento")]
+        [StringLength(150)]
         public string NomeFormaPagamento { get; set; }
+        [Column("descricao")]
+        [StringLength(500)]
+        public string Descricao { get; set; }
     }
 }

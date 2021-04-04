@@ -1,4 +1,3 @@
-D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Debug\netcoreapp3.1\SistemaControle_V3.csprojAssemblyReference.cache
 D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Debug\netcoreapp3.1\MainWindow.g.cs
 D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Debug\netcoreapp3.1\App.g.cs
 D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Debug\netcoreapp3.1\SistemaControle_V3_MarkupCompile.cache
@@ -85,3 +84,21 @@ D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Debug\netcoreapp3.1\View\
 D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Debug\netcoreapp3.1\View\ClienteFichaView.baml
 D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Debug\netcoreapp3.1\View\RecebimentoView.baml
 D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Debug\netcoreapp3.1\View\RefinanciamentoView.baml
+D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Debug\netcoreapp3.1\View\ClienteAplicacaoView.g.cs
+D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Debug\netcoreapp3.1\View\ClienteCadastroView.g.cs
+D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Debug\netcoreapp3.1\View\ConfiguracaoView.g.cs
+D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Debug\netcoreapp3.1\View\ListasView.g.cs
+D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Debug\netcoreapp3.1\View\ClienteAplicacaoView.baml
+D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Debug\netcoreapp3.1\View\ClienteCadastroView.baml
+D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Debug\netcoreapp3.1\View\ConfiguracaoView.baml
+D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Debug\netcoreapp3.1\View\ListasView.baml
+D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Debug\netcoreapp3.1\GeneratedInternalTypeHelper.g.cs
+D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\bin\Debug\netcoreapp3.1\Syncfusion.SfInput.WPF.dll
+D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Debug\netcoreapp3.1\View\ProgressDialog.g.cs
+D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Debug\netcoreapp3.1\View\ProgressDialog.baml
+D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Debug\netcoreapp3.1\SistemaControle_V3.csprojAssemblyReference.cache
+D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\bin\Debug\netcoreapp3.1\Microsoft.Win32.SystemEvents.dll
+D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\bin\Debug\netcoreapp3.1\System.Drawing.Common.dll
+D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
+D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
+D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll

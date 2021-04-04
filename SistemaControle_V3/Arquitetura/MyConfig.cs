@@ -58,7 +58,7 @@ namespace SistemaControle_V3
             set
             {
                 configApp.ConnectionStrings.ConnectionStrings["Default"].ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=" + value + @"\Represa04.mdf;Integrated Security=True;Connect Timeout=30;Trusted_Connection=True";
-                this._conexao = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=" + value + @"\Represa04.mdf;Integrated Security=True;Connect Timeout=30;Trusted_Connection=True";
+                this._conexao = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=" + value + @"\REPRESA04.mdf;Integrated Security=True;Connect Timeout=30;Trusted_Connection=True";
                 configApp.Save(ConfigurationSaveMode.Modified, true);
                 ConfigurationManager.RefreshSection("appSettings");
                 ConfigurationManager.RefreshSection("DefaultConnection");

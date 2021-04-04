@@ -11,25 +11,30 @@ namespace SistemaControle_V3
     [Keyless]
     public partial class ViewProducao
     {
-        public long IdEmprestimo { get; set; }
-        [Required]
+        [Column("idEmprestimo")]
+        public int IdEmprestimo { get; set; }
+        [Column("codEmprestimo")]
         [StringLength(15)]
         public string CodEmprestimo { get; set; }
-        [Column(TypeName = "date")]
-        public DateTime DataCadastro { get; set; }
+        [Column("dataCadastro", TypeName = "date")]
+        public DateTime? DataCadastro { get; set; }
         [Required]
-        [StringLength(100)]
+        [Column("nomeAtendente")]
+        [StringLength(60)]
         public string NomeAtendente { get; set; }
-        [Column(TypeName = "decimal(10, 2)")]
+        [Column("valorComissao", TypeName = "decimal(10, 3)")]
         public decimal ValorComissao { get; set; }
+        [Column("idCliente")]
         public int IdCliente { get; set; }
         [Required]
-        [StringLength(100)]
+        [Column("nomeCliente")]
+        [StringLength(150)]
         public string NomeCliente { get; set; }
-        [Column(TypeName = "decimal(10, 2)")]
+        [Column("taxa", TypeName = "decimal(10, 3)")]
         public decimal? Taxa { get; set; }
-        [Column(TypeName = "decimal(10, 2)")]
+        [Column("valor", TypeName = "decimal(10, 3)")]
         public decimal Valor { get; set; }
+        [Column("marcado")]
         public bool Marcado { get; set; }
         [Column("vencimento")]
         [StringLength(4000)]

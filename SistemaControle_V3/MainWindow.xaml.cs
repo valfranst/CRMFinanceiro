@@ -22,6 +22,7 @@ namespace SistemaControle_V3
     {
         MyConfig myConfig;
         Resultado result;
+        public ClienteListView clienteList = null;
         public MainWindow()
         {
             InitializeComponent();
@@ -38,8 +39,8 @@ namespace SistemaControle_V3
                 btReset.Background = Brushes.Red;
                 MessageBox.Show(result.mensagem, "ERRO!", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-            ClienteListView clw = new ClienteListView(this);
-            Navegador(clw);
+            clienteList = new ClienteListView(this);
+            Navegador(clienteList);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -51,8 +52,9 @@ namespace SistemaControle_V3
 
         private void btCliente_Click(object sender, RoutedEventArgs e)
         {
-            ClienteListView clw = new ClienteListView(this);
-            Navegador(clw);
+            txtPesquisa.Text = "";
+            clienteList = new ClienteListView(this);
+            Navegador(clienteList);             
         }
 
         private void btProducao_Click(object sender, RoutedEventArgs e)
@@ -75,18 +77,20 @@ namespace SistemaControle_V3
 
         private void btAddCliente_Click(object sender, RoutedEventArgs e)
         {
-            ClienteCadastroView cfw = new ClienteCadastroView(this);
+            ClienteCadastroView cfw = new ClienteCadastroView(this, 0);
             Navegador(cfw);
         }
 
         private void btExtra_Click(object sender, RoutedEventArgs e)
         {
-
+            ListasView lw = new ListasView(this);
+            Navegador(lw);
         }
 
         private void btConfiguracao_Click(object sender, RoutedEventArgs e)
         {
-
+            ConfiguracaoView cow = new ConfiguracaoView(this);
+            Navegador(cow);
         }
 
         #endregion
@@ -102,11 +106,12 @@ namespace SistemaControle_V3
 
             }
         }
-
-        private void txtPesquisa_TextChanged(object sender, TextChangedEventArgs e)
+        
+        private async void txtPesquisa_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //Navegador(clientePesquisa);
-            //clientePesquisa.FiltroPesquisa(txtPesquisa.Text);
+            await Task.Delay(2000);             
+            if (!GridMain.Children.Contains(clienteList)) Navegador(clienteList);
+            clienteList.FiltroPesquisa(txtPesquisa.Text);              
         }
         private void btReset_Click(object sender, RoutedEventArgs e)
         {

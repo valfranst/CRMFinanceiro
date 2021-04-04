@@ -20,6 +20,7 @@
     <PkgNewtonsoft_Json Condition=" '$(PkgNewtonsoft_Json)' == '' ">C:\Users\Valfran\.nuget\packages\newtonsoft.json\10.0.1</PkgNewtonsoft_Json>
     <PkgSyncfusion_Shared_WPF Condition=" '$(PkgSyncfusion_Shared_WPF)' == '' ">C:\Users\Valfran\.nuget\packages\syncfusion.shared.wpf\19.1.0.54</PkgSyncfusion_Shared_WPF>
     <PkgSyncfusion_Tools_WPF Condition=" '$(PkgSyncfusion_Tools_WPF)' == '' ">C:\Users\Valfran\.nuget\packages\syncfusion.tools.wpf\19.1.0.54</PkgSyncfusion_Tools_WPF>
+    <PkgSyncfusion_SfInput_WPF Condition=" '$(PkgSyncfusion_SfInput_WPF)' == '' ">C:\Users\Valfran\.nuget\packages\syncfusion.sfinput.wpf\19.1.0.54</PkgSyncfusion_SfInput_WPF>
     <PkgSyncfusion_SfGrid_WPF Condition=" '$(PkgSyncfusion_SfGrid_WPF)' == '' ">C:\Users\Valfran\.nuget\packages\syncfusion.sfgrid.wpf\19.1.0.54</PkgSyncfusion_SfGrid_WPF>
     <PkgMaterialDesignThemes Condition=" '$(PkgMaterialDesignThemes)' == '' ">C:\Users\Valfran\.nuget\packages\materialdesignthemes\4.0.0</PkgMaterialDesignThemes>
   </PropertyGroup>

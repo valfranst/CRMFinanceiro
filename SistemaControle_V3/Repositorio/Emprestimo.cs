@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace SistemaControle_V3
 {
     [Table("Emprestimo")]
-    [Index(nameof(CodEmprestimo), Name = "UQ__Empresti__80EAF4F413169377", IsUnique = true)]
+    [Index(nameof(CodEmprestimo), Name = "UQ__Empresti__2FD763A2A1C8B48D", IsUnique = true)]
     public partial class Emprestimo
     {
         public Emprestimo()
@@ -18,45 +18,60 @@ namespace SistemaControle_V3
         }
 
         [Key]
-        public long IdEmprestimo { get; set; }
-        [Required]
+        [Column("idEmprestimo")]
+        public int IdEmprestimo { get; set; }
+        [Column("codEmprestimo")]
         [StringLength(15)]
         public string CodEmprestimo { get; set; }
+        [Column("idCliente")]
         public int IdCliente { get; set; }
         [Required]
-        [StringLength(100)]
+        [Column("nomeAtendente")]
+        [StringLength(60)]
         public string NomeAtendente { get; set; }
+        [Column("statusEmprestimo")]
         public bool StatusEmprestimo { get; set; }
-        [Column(TypeName = "datetime")]
-        public DateTime DataAlteracao { get; set; }
-        [Column(TypeName = "date")]
-        public DateTime DataCadastro { get; set; }
-        [Column(TypeName = "decimal(10, 2)")]
+        [Column("dataCadastro", TypeName = "date")]
+        public DateTime? DataCadastro { get; set; }
+        [Column("valor", TypeName = "decimal(10, 3)")]
         public decimal Valor { get; set; }
-        [Column(TypeName = "decimal(10, 2)")]
+        [Column("taxa", TypeName = "decimal(10, 3)")]
         public decimal? Taxa { get; set; }
-        [Column(TypeName = "decimal(10, 2)")]
+        [Column("fator", TypeName = "decimal(10, 7)")]
+        public decimal? Fator { get; set; }
+        [Column("valorTotal", TypeName = "decimal(10, 3)")]
         public decimal ValorTotal { get; set; }
+        [Column("qtdParcela")]
         public int QtdParcela { get; set; }
-        [Column(TypeName = "decimal(10, 2)")]
+        [Column("valorParcela", TypeName = "decimal(10, 3)")]
         public decimal ValorParcela { get; set; }
-        [Column(TypeName = "date")]
+        [Column("primeiraParcela", TypeName = "date")]
         public DateTime? PrimeiraParcela { get; set; }
-        [Column(TypeName = "date")]
+        [Column("ultimaParcela", TypeName = "date")]
         public DateTime? UltimaParcela { get; set; }
-        [Column(TypeName = "decimal(10, 2)")]
+        [Column("percentComissao")]
+        public int? PercentComissao { get; set; }
+        [Column("valorComissao", TypeName = "decimal(10, 3)")]
         public decimal ValorComissao { get; set; }
+        [Column("refinanciado")]
         public bool Refinanciado { get; set; }
-        [Column(TypeName = "decimal(10, 2)")]
+        [Column("complemento", TypeName = "decimal(10, 3)")]
         public decimal Complemento { get; set; }
-        [Column(TypeName = "decimal(10, 2)")]
-        public decimal TotalRefinanciado { get; set; }
+        [Column("banco")]
+        [StringLength(50)]
+        public string Banco { get; set; }
+        [Column("formaPagamento")]
         [StringLength(50)]
         public string FormaPagamento { get; set; }
+        [Column("observacao")]
+        public string Observacao { get; set; }
+        [Column("dataCadastroAlteracao", TypeName = "datetime")]
+        public DateTime DataCadastroAlteracao { get; set; }
+        [Column("totalRefinanciado", TypeName = "decimal(10, 3)")]
+        public decimal TotalRefinanciado { get; set; }
+        [Column("referenciaEmprestimo")]
         [StringLength(15)]
         public string ReferenciaEmprestimo { get; set; }
-        [StringLength(250)]
-        public string Observacao { get; set; }
 
         [ForeignKey(nameof(IdCliente))]
         [InverseProperty(nameof(Cliente.Emprestimos))]

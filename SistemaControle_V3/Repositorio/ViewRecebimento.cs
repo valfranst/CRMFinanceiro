@@ -11,21 +11,26 @@ namespace SistemaControle_V3
     [Keyless]
     public partial class ViewRecebimento
     {
+        [Column("idCliente")]
         public int IdCliente { get; set; }
-        [Required]
+        [Column("codEmprestimo")]
         [StringLength(15)]
         public string CodEmprestimo { get; set; }
-        [Column(TypeName = "date")]
+        [Column("vencimento", TypeName = "date")]
         public DateTime Vencimento { get; set; }
         [Required]
-        [StringLength(100)]
+        [Column("nomeCliente")]
+        [StringLength(150)]
         public string NomeCliente { get; set; }
-        [Column(TypeName = "decimal(10, 2)")]
+        [Column("valorParcela", TypeName = "decimal(10, 3)")]
         public decimal ValorParcela { get; set; }
+        [Column("paga")]
         public bool Paga { get; set; }
-        public long IdParcela { get; set; }
-        [StringLength(250)]
+        [Column("idParcela")]
+        public int IdParcela { get; set; }
+        [Column("observacao")]
         public string Observacao { get; set; }
+        [Column("marcado")]
         public bool Marcado { get; set; }
         [Column("codOrder")]
         [StringLength(5)]

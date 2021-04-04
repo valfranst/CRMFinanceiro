@@ -3,18 +3,369 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             
              xmlns:local="clr-namespace:SistemaControle_V3"
              
-             mc:Ignorable="d" MinHeight="630" MinWidth="1090" Loaded="UserControl_Loaded">
-    <Grid Margin="3" >
+             mc:Ignorable="d" MinHeight="660" MinWidth="1150" Loaded="UserControl_Loaded" >
+
+
+    <UserControl.Resources>
+        <ResourceDictionary >
+            <ResourceDictionary.MergedDictionaries>
+                <!-- note you only need bring in these extra resource dictionaries when using non-default styles, so only bring them into your controls where the default style is not what you want -->
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ComboBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DataGrid.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style x:Key="MyButton" TargetType="Button">
+                <Setter Property="OverridesDefaultStyle" Value="True" />
+                <Setter Property="Cursor" Value="Hand" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border Name="border" BorderThickness="0" BorderBrush="Black" Background="{TemplateBinding Background}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Opacity" Value="0.8" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="Descricao" TargetType="Label">
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="FontFamily" Value="Segoe UI" />
+                <Setter Property="FontWeight" Value="Bold" />
+                <Setter Property="Foreground" Value="DarkBlue" />
+                <Setter Property="Margin" Value="5 0 0 0" />
+                <Setter Property="VerticalAlignment" Value="Bottom" />
+                <Setter Property="HorizontalAlignment" Value="Right" />
+            </Style>
+            
+        </ResourceDictionary >
+    </UserControl.Resources>
+
+    <Grid Margin="0 0 0 25" >
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
+        <Grid.RowDefinitions >
+            <RowDefinition Height="Auto" />
+            <RowDefinition  />
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Cliente List View" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30" />
+        <StackPanel Grid.Row="0" Grid.Column="0" Margin="0 10 0 0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <!--CADASTRAR button-->
+            <Button Name="btCadastrar" Width="180"  Height="30" Margin="0 0 0 0" IsEnabled="True" ToolTip="Cadastro de Clientes" Cursor="Hand" Click="btCadastrar_Click" Style="{StaticResource MaterialDesignRaisedLightButton}" >
+                <StackPanel Orientation="Horizontal" >
+                    <Path Data="M15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4M15,5.9C16.16,5.9 17.1,6.84 17.1,8C17.1,9.16 16.16,10.1 15,10.1A2.1,2.1 0 0,1 12.9,8A2.1,2.1 0 0,1 15,5.9M4,7V10H1V12H4V15H6V12H9V10H6V7H4M15,13C12.33,13 7,14.33 7,17V20H23V17C23,14.33 17.67,13 15,13M15,14.9C17.97,14.9 21.1,16.36 21.1,17V18.1H8.9V17C8.9,16.36 12,14.9 15,14.9Z" 
+                              Fill="{Binding Path=Foreground,RelativeSource={RelativeSource AncestorType={x:Type Button}}}" 
+                              HorizontalAlignment="Center" VerticalAlignment="Center" Height="20" Width="25" Stretch="Fill"/>
+                    <TextBlock Text="CADASTRAR NOVO" Margin="10,0,0,0" FontSize="12" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+            <!--SALVAR button-->
+            <Button Name="btSalvar" Width="110"  Height="30" Margin="10 0 0 0" IsEnabled="True" ToolTip="Cadastro de Clientes" Cursor="Hand" Click="btSalvar_Click" Style="{StaticResource MaterialDesignRaisedLightButton}" >
+                <StackPanel Orientation="Horizontal" >
+                    <Path Data="M2 17V20H10V18.11H3.9V17C3.9 16.36 7.03 14.9 10 14.9C10.96 14.91 11.91 15.04 12.83 15.28L14.35 13.76C12.95 13.29 11.5 13.03 10 13C7.33 13 2 14.33 2 17M10 4C7.79 4 6 5.79 6 8S7.79 12 10 12 14 10.21 14 8 12.21 4 10 4M10 10C8.9 10 8 9.11 8 8S8.9 6 10 6 12 6.9 12 8 11.11 10 10 10M21.7 13.35L20.7 14.35L18.65 12.35L19.65 11.35C19.86 11.14 20.21 11.14 20.42 11.35L21.7 12.63C21.91 12.84 21.91 13.19 21.7 13.4M12 18.94L18.06 12.88L20.11 14.88L14.11 20.95H12V18.94" 
+                              Fill="{Binding Path=Foreground,RelativeSource={RelativeSource AncestorType={x:Type Button}}}" 
+                              HorizontalAlignment="Center" VerticalAlignment="Center" Height="20" Width="25" Stretch="Fill"/>
+                    <TextBlock Text="SALVAR" Margin="10,0,0,0" FontSize="12" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+            <!--EXCLUIR button-->
+            <Button Name="btExcluir" Width="120"  Height="30" Margin="10 0 0 0" IsEnabled="True" ToolTip="Cadastro de Clientes" Cursor="Hand" Click="btExcluir_Click" Style="{StaticResource MaterialDesignRaisedLightButton}" >
+                <StackPanel Orientation="Horizontal" >
+                    <Path Data="M1.46,8.88L2.88,7.46L5,9.59L7.12,7.46L8.54,8.88L6.41,11L8.54,13.12L7.12,14.54L5,12.41L2.88,14.54L1.46,13.12L3.59,11L1.46,8.88M15,4A4,4 0 0,1 19,8A4,4 0 0,1 15,12A4,4 0 0,1 11,8A4,4 0 0,1 15,4M15,5.9A2.1,2.1 0 0,0 12.9,8A2.1,2.1 0 0,0 15,10.1C16.16,10.1 17.1,9.16 17.1,8C17.1,6.84 16.16,5.9 15,5.9M15,13C17.67,13 23,14.33 23,17V20H7V17C7,14.33 12.33,13 15,13M15,14.9C12,14.9 8.9,16.36 8.9,17V18.1H21.1V17C21.1,16.36 17.97,14.9 15,14.9Z" 
+                              Fill="{Binding Path=Foreground,RelativeSource={RelativeSource AncestorType={x:Type Button}}}" 
+                              HorizontalAlignment="Center" VerticalAlignment="Center" Height="20" Width="25" Stretch="Fill"/>
+                    <TextBlock Text="EXCLUIR" Margin="10,0,0,0" FontSize="12" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+
+            <TextBlock Margin="60 0 20 0" FontSize="28" FontWeight="Bold" Foreground="#0d5fa3" Text="CADASTRO DE CLIENTE" TextAlignment="Center" />
+
+            <!--NOVA APLICAÇÃO button-->
+            <Button Name="btNovaAplicacao" Width="170"  Height="30" Margin="40 0 0 0" IsEnabled="True" ToolTip="Cadastro de Clientes" Cursor="Hand" Click="btNovaAplicacao_Click" Style="{StaticResource MaterialDesignRaisedLightButton}"  >
+                <StackPanel Orientation="Horizontal" >
+                    <Path Data="M12.3 8.93L9.88 6.5H15.5V10H17V5H9.88L12.3 2.57L11.24 1.5L7 5.75L11.24 10L12.3 8.93M12 14A3 3 0 1 0 15 17A3 3 0 0 0 12 14M3 11V23H21V11M19 19A2 2 0 0 0 17 21H7A2 2 0 0 0 5 19V15A2 2 0 0 0 7 13H17A2 2 0 0 0 19 15Z" 
+                              Fill="{Binding Path=Foreground,RelativeSource={RelativeSource AncestorType={x:Type Button}}}" 
+                              HorizontalAlignment="Center" VerticalAlignment="Center" Height="20" Width="25" Stretch="Fill"/>
+                    <TextBlock Text="NOVA APLICAÇÃO" Margin="10,0,0,0" FontSize="12" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+            <!--APLICAÇÕES button-->
+            <Button Name="btAplicacoes" Width="140"  Height="30" Margin="30 0 0 0" IsEnabled="True" ToolTip="Cadastro de Clientes" Cursor="Hand" Click="btAplicacoes_Click" Style="{StaticResource MaterialDesignRaisedLightButton}" >
+                <StackPanel Orientation="Horizontal" >
+                    <Path Data="M5,6H23V18H5V6M14,9A3,3 0 0,1 17,12A3,3 0 0,1 14,15A3,3 0 0,1 11,12A3,3 0 0,1 14,9M9,8A2,2 0 0,1 7,10V14A2,2 0 0,1 9,16H19A2,2 0 0,1 21,14V10A2,2 0 0,1 19,8H9M1,10H3V20H19V22H1V10Z"
+                              Fill="{Binding Path=Foreground,RelativeSource={RelativeSource AncestorType={x:Type Button}}}" 
+                              HorizontalAlignment="Center" VerticalAlignment="Center" Height="20" Width="25" Stretch="Fill"/>
+                    <TextBlock Text="APLICAÇÕES" Margin="10,0,0,0" FontSize="12" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="1" Grid.Column="0" Margin="0 10 0 35" Padding="0 0 10 0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                HorizontalAlignment="Center">
+
+
+            <Grid  x:Name="grid1" HorizontalAlignment="Left" Width="Auto" Margin="0 0 0 0" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1150"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="38" />
+                    <RowDefinition Height="38" />
+                    <RowDefinition Height="38" />
+                    <RowDefinition Height="38" />
+                    <RowDefinition Height="38" />
+                    <RowDefinition Height="38" />
+                    <RowDefinition Height="38" />
+                    <RowDefinition Height="38" />
+                    <RowDefinition Height="38" />
+                    <RowDefinition Height="38" />
+                    <RowDefinition Height="38" />
+                    <RowDefinition Height="38" />
+                    <RowDefinition Height="38" />
+                    <RowDefinition Height="38" />
+                    <RowDefinition Height="38" />
+                    <RowDefinition Height="110" />
+                </Grid.RowDefinitions>
+
+                <!--L1 NOME / NASCIMENTO / FOTO-->
+                <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" >
+                    <Label Content="Nome" Style="{StaticResource Descricao}" />
+                    <TextBox x:Name="nomeClienteTextBox" Width="590" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" MaxLength="100" />
+                    <Label Content="Idade"  Style="{StaticResource Descricao}" />
+                    <TextBox x:Name="idadeTextBox" Width="180" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" TabIndex="203" MaxLength="25" IsReadOnly="True" />
+                </StackPanel>
+                <Button x:Name="button" Padding="0"  Grid.Row="0" Grid.Column="0" Grid.RowSpan="7" TabIndex="200" Width="250" Height="250" VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource MyButton}"  >
+                    <StackPanel Orientation="Horizontal"  Width="250" Height="60" Margin="0 180 0 0" >
+                        <Button x:Name="btWebCan" Margin="5 0 0 0" Style="{StaticResource MaterialDesignFloatingActionAccentButton}" ToolTip="WebCan" Click="btWebCan_Click" TabIndex="300" >
+                            <materialDesign:PackIcon Kind="PhotoCamera" Height="30" Width="30" TabIndex="300" />
+                        </Button>
+                        <Button x:Name="btArquivo" Margin="125 0 0 0" Style="{StaticResource MaterialDesignFloatingActionAccentButton}" ToolTip="Arquivos" Click="btArquivo_Click" TabIndex="300" >
+                            <materialDesign:PackIcon Kind="FolderImage" Height="30" Width="40" TabIndex="250" />
+                        </Button>
+                    </StackPanel>
+                    <Button.Background>
+                        <ImageBrush x:Name="btImagem" ImageSource="/Resources/usuario.png" Stretch="None"/>
+                    </Button.Background>
+                </Button>
+
+
+                <!--L2  CPF/RG/NASCIMENTO / residencial -->
+                <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" >
+                    <Label Content="CPF" Style="{StaticResource Descricao}" />
+                    <TextBox x:Name="cpfTextBox" Width="180" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16"
+                        PreviewKeyDown="cpfTextBox_PreviewKeyDown" PreviewTextInput="cpfTextBox_PreviewTextInput" TextChanged="cpfTextBox_TextChanged"/>
+
+                    <Label Content="RG" Style="{StaticResource Descricao}" />
+                    <TextBox x:Name="rgTextBox" Width="170" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" MaxLength="40" />
+
+                    <Label Content="Nasc." Style="{StaticResource Descricao}" />
+                    <syncfusion:DateTimeEdit x:Name="nascimentoDT" InputScope="Number" CustomPattern="d/M/yyyy"
+                        FontSize="16" Height="30" Width="140" HorizontalContentAlignment="Left" LostFocus="nascimentoDT_LostFocus"  />
+
+                    <Label Content="Tel.Residêncial" Style="{StaticResource Descricao}" />
+                    <TextBox x:Name="telResidencialTextBox" Width="160" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                </StackPanel>
+
+                
+                <!--L3 WhatsApp / Celular02 / emailTextBox-->
+                <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0">
+
+                    <Label Content="WhatsApp" Style="{StaticResource Descricao}" />
+                    <TextBox x:Name="telCelularzapTextBox" Width="150" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" />
+
+                    <Label Content="Celular02" Style="{StaticResource Descricao}" />
+                    <TextBox x:Name="telCelular2TextBox" Width="150" Height="30" Margin="1 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" />
+
+                    <Label Content="Email" Style="{StaticResource Descricao}"/>
+                    <TextBox x:Name="emailTextBox" Width="380" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" MaxLength="50"  />
+                       
+                </StackPanel>
+
+
+                <!--L4 FaceBook / Instagran / CEP -->
+                <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="0">
+
+                    <Label Content="FaceBook" Style="{StaticResource Descricao}" />
+                    <TextBox x:Name="facebookTextBox" Width="240" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" MaxLength="50" />
+
+                    <Label Content="Instagran" Style="{StaticResource Descricao}" />
+                    <TextBox x:Name="instagranTextBox" Width="240" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" MaxLength="50" />
+
+                    <Label Content="CEP" Style="{StaticResource Descricao}"/>
+                    <syncfusion:SfMaskedEdit x:Name="cepTextBox" Width="80" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="15"
+                            MaskType="RegEx" Mask="[0-9]\d{4}-[0-9]\d{2}" ErrorBorderBrush="Red" Watermark="XXXXX-XXX" />
+
+                    <Button x:Name="btPesquisarCep1" Style="{StaticResource MaterialDesignIconButton}" Height="30" Width="130" ToolTip="Consultar CEP e Preencher dados" Click="btPesquisarCep1_Click" >
+                        <Image Source="/Resources/logo.png"  />
+                    </Button>
+
+                </StackPanel>
+
+
+                <!--L5 Endereço Residêncial / Bairro -->
+                <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="0" >
+                    <Label Content="Endereço Resid." Style="{StaticResource Descricao}" />
+                    <TextBox x:Name="ruaTextBox" Width="470" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" MaxLength="150" />
+
+                    <Label Content="Bairro" Margin="0 0 0 0" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontSize="10" FontWeight="Bold" Foreground="DarkBlue" />
+                    <TextBox x:Name="BairroTextBox" Width="250" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" FontSize="16" VerticalAlignment="Center" MaxLength="50" />
+                                        
+
+                </StackPanel>
+
+
+                <!--L6 Cidade / Estado / Ponto de Referência -->
+                <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="0" >
+                    <Label Content="Cidade" Style="{StaticResource Descricao}" />
+                    <TextBox x:Name="cidadeTextBox" Width="280" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="16" MaxLength="50" />
+
+                    <Label Content="Estado" Style="{StaticResource Descricao}" />
+                    <TextBox x:Name="estadoTextBox" Width="65" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="16" MaxLength="30" />
+
+                    <Label Content="Ponto de Ref." Style="{StaticResource Descricao}" />
+                    <TextBox x:Name="pontoReferenciaTextBox" Width="310" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="16" MaxLength="100" />
+
+                </StackPanel>
+
+                <!--L7-->
+                <TextBlock Margin="0 12 0 0" Grid.Row="6" Grid.Column="0" FontSize="18" FontWeight="Bold" Foreground="#0d5fa3" Text="PRINCIPAL FONTE DE RENDA" TextAlignment="Center" />
+
+                <!--L8 empresa / Cargo / S. Liquido / D. Entrada -->
+                <StackPanel Orientation="Horizontal" Grid.Row="7" Grid.Column="0" >
+                    <Label Content="Empresa" Style="{StaticResource Descricao}" />
+                    <TextBox x:Name="empresaTextBox" Width="330" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" MaxLength="100" />
+
+                    <Label Content="Cargo" Style="{StaticResource Descricao}"/>
+                    <TextBox x:Name="cargoTextBox" Width="250" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" MaxLength="100" />
+
+                    <Label Content="S. Liquido" Style="{StaticResource Descricao}" />
+                    <syncfusion:CurrencyTextBox x:Name="salarioLiquidoTextBox" Width="150" Height="30" FontSize="16"   HorizontalContentAlignment="Center" Cursor="IBeam" />
+
+                    <Label Content="D. Entrada" Style="{StaticResource Descricao}" />
+                    <syncfusion:DateTimeEdit x:Name="DataEmpresaDT" InputScope="Number" CustomPattern="d/M/yyyy" NullValue="{x:Null}" IsEmptyDateEnabled="True"
+                        FontSize="16" Height="30" Width="130" HorizontalContentAlignment="Left" NoneDateText="Selecione a DATA" LostFocus="DataEmpresaDT_LostFocus"  />
+
+                </StackPanel>
+
+                <!--L9 Tempo Serviço / Tel. Comercial 01 / Tel. Comercial 02 / Tel. Comercial 03 -->
+                <StackPanel Orientation="Horizontal" Grid.Row="8" Grid.Column="0">
+                    <Label Content="Tempo Serviço" Style="{StaticResource Descricao}"/>
+                    <TextBox x:Name="tempoServicoTextBox" Width="210" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" TabIndex="205" MaxLength="50" />
+
+                    <Label Content="Tel. Comercial 01" Style="{StaticResource Descricao}" />
+                    <TextBox x:Name="telComercial1TextBox" Width="155" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" />
+
+                    <Label Content="Tel. Comercial 02" Style="{StaticResource Descricao}" />
+                    <TextBox x:Name="telComercial2TextBox" Width="150" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" />
+
+                    <Label Content="Tel. Comercial 03" Style="{StaticResource Descricao}" />
+                    <TextBox x:Name="telComercial3TextBox" Width="150" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                    
+                </StackPanel>
+
+
+                <!--L10 CEP / Endereço Empresarial / Bairro -->
+                <StackPanel Orientation="Horizontal" Grid.Row="9" Grid.Column="0" >
+                    <Label Content="CEP" Style="{StaticResource Descricao}" />
+                    <syncfusion:SfMaskedEdit x:Name="cepEmpTextBox" Width="80" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="15"
+                            MaskType="RegEx" Mask="[0-9]\d{4}-[0-9]\d{2}" ErrorBorderBrush="Red" Watermark="XXXXX-XXX" />
+
+                    <Button x:Name="btPesquisarCep2" Style="{StaticResource MaterialDesignIconButton}" Height="30" Width="130" ToolTip="Consultar CEP e Preencher dados" Click="btPesquisarCep2_Click" Cursor="Hand" >
+                        <Image Source="/Resources/logo.png"  />
+                    </Button>
+
+                    <Label Content="Endereço Emp." Style="{StaticResource Descricao}" />
+                    <TextBox x:Name="ruaEmpTextBox" Width="490" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" MaxLength="150" />
+
+                    <Label Content="Bairro" Margin="0 0 0 0" Style="{StaticResource Descricao}" />
+                    <TextBox x:Name="BairroEmpTextBox" Width="230" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" MaxLength="50" />
+
+                </StackPanel>
+
+
+                <!--L12 Cidade / Estado / Ponto de Referência -->
+                <StackPanel Orientation="Horizontal" Grid.Row="10" Grid.Column="0" >
+                    <Label Content="Cidade" Style="{StaticResource Descricao}" />
+                    <TextBox x:Name="cidadeEmpTextBox" Width="325" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" MaxLength="50" />
+
+                    <Label Content="Estado" Style="{StaticResource Descricao}" />
+                    <TextBox x:Name="estadoEmpTextBox" Width="80" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" MaxLength="30" />
+
+                    <Label Content="Ponto de Referência" Style="{StaticResource Descricao}"/>
+                    <TextBox x:Name="pontoReferenciaEmpTextBox" Width="470" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" MaxLength="100" />
+
+                </StackPanel>
+
+
+                <!--L13 Referência 01 -->
+                <StackPanel Orientation="Horizontal" Grid.Row="11" Grid.Column="0">
+                    <Label Content="Referência 01" Style="{StaticResource Descricao}" />
+                    <TextBox x:Name="referencia01TextBox" Width="800" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" MaxLength="100" />
+
+                    <Label Content="Telefone" Style="{StaticResource Descricao}" />
+                    <TextBox x:Name="telReferencia01TextBox" Width="150" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" />
+
+                </StackPanel>
+
+                <!--L14 Referência 02 -->
+                <StackPanel Orientation="Horizontal" Grid.Row="12" Grid.Column="0">
+                    <Label Content="Referência 02" Style="{StaticResource Descricao}" />
+                    <TextBox x:Name="referencia02TextBox" Width="800" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" MaxLength="100" />
+
+                    <Label Content="Telefone" Style="{StaticResource Descricao}" />
+                    <TextBox x:Name="telReferencia02TextBox" Width="150" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+                </StackPanel>
+
+                <!--L15 Referência 03 -->
+                <StackPanel Orientation="Horizontal" Grid.Row="13" Grid.Column="0">
+                    <Label Content="Referência 03" Style="{StaticResource Descricao}" />
+                    <TextBox x:Name="referencia03TextBox" Width="800" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" MaxLength="100" />
+
+                    <Label Content="Telefone" Style="{StaticResource Descricao}" />
+                    <TextBox x:Name="telReferencia03TextBox" Width="150" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" />
+
+                </StackPanel>
+
+                <!--L16 Indicação -->
+                <StackPanel Orientation="Horizontal" Grid.Row="14" Grid.Column="0" >
+                    <Label Content="Indicação" Style="{StaticResource Descricao}" />
+                    <TextBox x:Name="indicacaoTextBox" Width="1050" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" MaxLength="150" />
+
+                </StackPanel>
+
+                <!--L17 Observação -->
+                <TextBox x:Name="observacaoTextBox" HorizontalAlignment="Left" Width="1120" Margin="10 15 10 0" Grid.Row="15" Grid.Column="0"
+                        VerticalAlignment="Top" Height="90" FontSize="14" 
+                        AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" materialDesign:HintAssist.Hint="Observação"
+                        BorderThickness="3" BorderBrush="Black" MaxLength="500" />
+
+
+
+
+
+
+            </Grid>
+
+
+
+
+        </ScrollViewer>         
 
     </Grid>
+
 </UserControl>

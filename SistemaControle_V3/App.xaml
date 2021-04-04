@@ -47,7 +47,7 @@
                 <Setter Property="Background" Value="Gray" />
             </Style>
 
-            <sys:Double x:Key="{x:Static SystemParameters.VerticalScrollBarWidthKey}">20</sys:Double>
+            <sys:Double x:Key="{x:Static SystemParameters.VerticalScrollBarWidthKey}">15</sys:Double>
             <sys:Double x:Key="{x:Static SystemParameters.HorizontalScrollBarHeightKey}">15</sys:Double>
 
         </ResourceDictionary>
