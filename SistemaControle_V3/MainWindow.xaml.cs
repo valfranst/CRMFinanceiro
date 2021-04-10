@@ -1,17 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SistemaControle_V3
 {
@@ -54,7 +45,7 @@ namespace SistemaControle_V3
         {
             txtPesquisa.Text = "";
             clienteList = new ClienteListView(this);
-            Navegador(clienteList);             
+            Navegador(clienteList);
         }
 
         private void btProducao_Click(object sender, RoutedEventArgs e)
@@ -83,14 +74,14 @@ namespace SistemaControle_V3
 
         private void btExtra_Click(object sender, RoutedEventArgs e)
         {
-            ListasView lw = new ListasView(this);
-            Navegador(lw);
+            //ListasView lw = new ListasView(this);
+            //Navegador(lw);
         }
 
         private void btConfiguracao_Click(object sender, RoutedEventArgs e)
         {
-            ConfiguracaoView cow = new ConfiguracaoView(this);
-            Navegador(cow);
+            //ConfiguracaoView cow = new ConfiguracaoView(this);
+            //Navegador(cow);
         }
 
         #endregion
@@ -106,12 +97,12 @@ namespace SistemaControle_V3
 
             }
         }
-        
+
         private async void txtPesquisa_TextChanged(object sender, TextChangedEventArgs e)
         {
-            await Task.Delay(2000);             
+            await Task.Delay(2000);
             if (!GridMain.Children.Contains(clienteList)) Navegador(clienteList);
-            clienteList.FiltroPesquisa(txtPesquisa.Text);              
+            clienteList.FiltroPesquisa(txtPesquisa.Text);
         }
         private void btReset_Click(object sender, RoutedEventArgs e)
         {
@@ -124,6 +115,11 @@ namespace SistemaControle_V3
             else btReset.Background = Brushes.Green;
         }
 
-
+        private void btUpload_Click(object sender, RoutedEventArgs e)
+        {
+            result = myConfig.BackupDados();
+            if (result.estado) MessageBox.Show("Backup concluido com sucesso!", "CONCLUIDO", MessageBoxButton.OK, MessageBoxImage.Information);
+            else MessageBox.Show(result.mensagem, "ERRO!", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }//*****************************
 }

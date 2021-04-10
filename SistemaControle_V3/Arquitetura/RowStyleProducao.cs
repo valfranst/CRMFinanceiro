@@ -1,6 +1,4 @@
-﻿using SistemaControle_V3;
-using Syncfusion.UI.Xaml.Grid;
-using System;
+﻿using Syncfusion.UI.Xaml.Grid;
 using System.Windows;
 using System.Windows.Controls;
 

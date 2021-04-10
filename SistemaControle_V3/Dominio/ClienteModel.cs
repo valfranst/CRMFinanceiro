@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace SistemaControle_V3
 {
@@ -101,7 +98,7 @@ namespace SistemaControle_V3
         {
             try
             {
-                int? countClientes  = _context.Clientes.Count();
+                int? countClientes = _context.Clientes.Count();
                 Close();
                 return (Resultado.Ok(), countClientes);
             }

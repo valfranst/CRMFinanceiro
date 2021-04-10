@@ -20,52 +20,57 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <materialDesign:ColorZone Grid.Row="0" Grid.Column="0" Mode="PrimaryMid" Padding="2" Height="50" >
+        <materialDesign:ColorZone Grid.Row="0" Grid.Column="0" Mode="PrimaryMid" Padding="2" Height="35" >
+            
             <DockPanel>
 
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" HorizontalAlignment="Left">
 
-                    <Button x:Name="btCliente" Height="40" Margin="5 0 0 0" Style="{StaticResource MaterialDesignRaisedAccentButton}" Width="120" ToolTip="Cliente" Click="btCliente_Click" >
+                    <Button x:Name="btCliente" Height="30" Margin="5 0 0 0" Style="{StaticResource MaterialDesignRaisedAccentButton}" Width="120" ToolTip="Cliente" Click="btCliente_Click" >
                         <StackPanel Orientation="Horizontal" Margin="0 0">
                             <materialDesign:PackIcon Kind="AccountSearch" Width="30" Height="30" VerticalAlignment="Center" Margin="0"/>
-                            <TextBlock Text="CLIENTE" VerticalAlignment="Center"/>
+                            <TextBlock Text="CLIENTE" VerticalAlignment="Center" FontWeight="Bold"/>
                         </StackPanel>
                     </Button>
-                    <Button x:Name="btProducao" Height="40" Margin="15 0 0 0" Style="{StaticResource MaterialDesignRaisedAccentButton}" Width="140" ToolTip="Produção" Click="btProducao_Click">
+                    <Button x:Name="btProducao" Height="30" Margin="15 0 0 0" Style="{StaticResource MaterialDesignRaisedAccentButton}" Width="140" ToolTip="Produção" Click="btProducao_Click">
                         <StackPanel Orientation="Horizontal" Margin="0 0">
                             <materialDesign:PackIcon Kind="CashRegister" Width="30" Height="30" VerticalAlignment="Center" Margin="0"/>
-                            <TextBlock Text="PRODUÇÃO" VerticalAlignment="Center"/>
+                            <TextBlock Text="PRODUÇÃO" VerticalAlignment="Center" FontWeight="Bold"/>
                         </StackPanel>
                     </Button>
-                    <Button x:Name="btRecebimento" Height="40" Margin="15 0 0 0" Style="{StaticResource MaterialDesignRaisedAccentButton}" Width="160" ToolTip="Recebimento" Click="btRecebimento_Click">
+                    <Button x:Name="btRecebimento" Height="30" Margin="15 0 0 0" Style="{StaticResource MaterialDesignRaisedAccentButton}" Width="165" ToolTip="Recebimento" Click="btRecebimento_Click">
                         <StackPanel Orientation="Horizontal" Margin="0 0">
                             <materialDesign:PackIcon Kind="AccountCash" Width="30" Height="30" VerticalAlignment="Center" Margin="0"/>
-                            <TextBlock Text="RECEBIMENTO" VerticalAlignment="Center" Margin="4 0 0 0"/>
+                            <TextBlock Text="RECEBIMENTO" VerticalAlignment="Center" Margin="4 0 0 0" FontWeight="Bold"/>
                         </StackPanel>
                     </Button>
-                    <Button x:Name="btRefinanciamento" Height="40" Margin="15 0 0 0" Style="{StaticResource MaterialDesignRaisedAccentButton}" Width="200" ToolTip="Refinanciamento" Click="btRefinanciamento_Click">
+                    <Button x:Name="btRefinanciamento" Height="30" Margin="15 0 0 0" Style="{StaticResource MaterialDesignRaisedAccentButton}" Width="200" ToolTip="Refinanciamento" Click="btRefinanciamento_Click">
                         <StackPanel Orientation="Horizontal" Margin="0 0">
-                            <materialDesign:PackIcon Kind="CashRefund" Width="30" Height="30" VerticalAlignment="Center" Margin="0 0 2 0"/>
-                            <TextBlock Text="REFINANCIAMENTO" VerticalAlignment="Center"/>
+                            <materialDesign:PackIcon Kind="CashRefund" Width="27" Height="27" VerticalAlignment="Center" Margin="0 0 2 0"/>
+                            <TextBlock Text="REFINANCIAMENTO" VerticalAlignment="Center" FontWeight="Bold"/>
                         </StackPanel>
                     </Button>
 
-                    <Button x:Name="btAddCliente" Height="40" Margin="15 0 0 0" Style="{StaticResource MaterialDesignRaisedAccentButton}" Width="150" ToolTip="Refinanciamento" Click="btAddCliente_Click" >
+                    <Button x:Name="btAddCliente" Height="30" Margin="15 0 0 0" Style="{StaticResource MaterialDesignRaisedAccentButton}" Width="160" ToolTip="Refinanciamento" Click="btAddCliente_Click" >
                         <StackPanel Orientation="Horizontal" Margin="0 0">
                             <materialDesign:PackIcon Kind="PersonAdd" Width="30" Height="30" VerticalAlignment="Center"  Margin="0 0 2 0"/>
-                            <TextBlock Text="ADD CLIENTE" VerticalAlignment="Center"/>
+                            <TextBlock Text="ADD CLIENTE" VerticalAlignment="Center" FontWeight="Bold" />
                         </StackPanel>
                     </Button>
 
-                    <Button x:Name="btReset" Margin="10 0 0 0" Background="Red" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" ToolTip="Status Banco de Dados" BorderBrush="Cyan" Click="btReset_Click"/>
+                    <Button x:Name="btReset" Height="30" Width="30" Margin="10 0 0 0" Background="Red" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" ToolTip="Status Banco de Dados" BorderBrush="Cyan" Click="btReset_Click"/>
 
+                    <Button x:Name="btBackup" Margin="15 0 0 0" Style="{StaticResource MaterialDesignFloatingActionAccentButton}" ToolTip="Backup de Dados" Click="btUpload_Click" Background="Green" 
+                        Height="30" Width="30" VerticalAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center">
+                        <materialDesign:PackIcon Kind="ContentSaveCog" Height="18" Width="18"  />
+                    </Button>
 
                 </StackPanel>
 
 
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
 
-                    <syncfusion:RibbonTextBox x:Name="txtPesquisa" Width="240" Margin="0 0 5 0"  FontSize="18" Height="35"
+                    <syncfusion:RibbonTextBox x:Name="txtPesquisa" Width="240" Margin="0 0 5 0"  FontSize="18" Height="30"
                     Background="White" Foreground="Black" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
                     TextChanged="txtPesquisa_TextChanged" BorderBrush="White"/>
 

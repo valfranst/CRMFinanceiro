@@ -1,13 +1,8 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using Syncfusion.Data.Extensions;
+﻿using Syncfusion.Data.Extensions;
 using Syncfusion.UI.Xaml.Grid;
 using Syncfusion.UI.Xaml.Grid.Helpers;
-using Syncfusion.UI.Xaml.ScrollAxis;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Windows;
@@ -22,7 +17,7 @@ namespace SistemaControle_V3
     public partial class ClienteFichaView : UserControl
     {
         MainWindow mw;
-        RepresaContext dc = new RepresaContext();
+        //RepresaContext dc = new RepresaContext();
         int idCliente = 0;
         int idEmprestimo = 0;
         Cliente cliente;
@@ -50,37 +45,44 @@ namespace SistemaControle_V3
             this.Width = mw.Width - 2;
             SV_EmprestimoView.Height = mw.Height - 100;
             SV_EmprestimoView.Width = mw.Width - 28;
-            DG_EmprestimoView.ItemsSource = dc.Emprestimos.Where(emp => emp.IdCliente == idCliente).ToObservableCollection();               
+            using (RepresaContext dc = new RepresaContext())
+            {
+                DG_EmprestimoView.ItemsSource = dc.Emprestimos.Where(emp => emp.IdCliente == idCliente).ToObservableCollection();
+            }
             Cabecalho();
             buscarDados();
         }
 
-       
+
         public void Cabecalho()
         {
             try
             {
-                cliente = dc.Clientes.Single(c => c.IdCliente == idCliente);
-                List<Emprestimo> emps = dc.Emprestimos.Where(emp => (emp.IdCliente == idCliente)).Take(3).ToList();                 
-
-                if (cliente.IdCliente > 0)
+                using (RepresaContext dc = new RepresaContext())
                 {
-                    btImagem.ImageSource = Foto.GetImagemByNome(cliente.NomeCliente);
+                    cliente = dc.Clientes.Single(c => c.IdCliente == idCliente);
+                    List<Emprestimo> emps = dc.Emprestimos.Where(emp => (emp.IdCliente == idCliente)).Take(3).ToList();
 
-                    nomeClienteTxt.Content = cliente.NomeCliente;
-                    cpfTxt.Content = "Cpf: " + cliente.Cpf;
-                    telefoneTxt.Content = "Telefone: " + cliente.TelCelularzap;
-                    List<int> idsEmp = (from emp in dc.Emprestimos where (emp.IdCliente == idCliente && emp.StatusEmprestimo == false) select emp.IdEmprestimo).ToList();
-                    decimal divida = 0;
-                    foreach (int i in idsEmp)
+                    if (cliente.IdCliente > 0)
                     {
-                        divida += (from par in dc.Parcelas where (par.IdEmprestimo == i && par.Paga == false) select par.ValorParcela).Sum();
+                        btImagem.ImageSource = Foto.GetImagemByNome(cliente.NomeCliente).Item2;
+
+                        nomeClienteTxt.Content = cliente.NomeCliente;
+                        cpfTxt.Content = "Cpf: " + cliente.Cpf;
+                        telefoneTxt.Content = "Telefone: " + cliente.TelCelularzap;
+                        List<int> idsEmp = (from emp in dc.Emprestimos where (emp.IdCliente == idCliente && emp.StatusEmprestimo == false) select emp.IdEmprestimo).ToList();
+                        decimal divida = 0;
+                        foreach (int i in idsEmp)
+                        {
+                            divida += (from par in dc.Parcelas where (par.IdEmprestimo == i && par.Paga == false) select par.ValorParcela).Sum();
+                        }
+                        totalDividaTxt.Content = "Dívida: " + string.Format("{0:C}", divida);
                     }
-                    totalDividaTxt.Content = "Dívida: " + string.Format("{0:C}", divida);
                 }
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
-                MessageBox.Show("Erro ao carregar os dados pessoas do cliente!\n\n"+ex, "ERRO!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Erro ao carregar os dados pessoas do cliente!\n\n" + ex, "ERRO!", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
 
         }
@@ -89,15 +91,17 @@ namespace SistemaControle_V3
             try
             {
                 DG_EmprestimoView.ItemsSource = null;
-                //DG_EmprestimoView.ItemsSource = mw.dc.Emprestimos.Where(emp => emp.IdCliente == idCliente).OrderBy(emp => emp.DataCadastro).ToList();
-                DG_EmprestimoView.ItemsSource = dc.Emprestimos.Where(emp => emp.IdCliente == idCliente).ToList();
+                using (RepresaContext dc = new RepresaContext())
+                {
+                    DG_EmprestimoView.ItemsSource = dc.Emprestimos.Where(emp => emp.IdCliente == idCliente).ToList();
+                }
                 DG_EmprestimoView.Items.Refresh();
                 Cabecalho();
 
                 if (linhaEmprestimo > 0 && linhaEmprestimo < 10000 && DG_EmprestimoView.Items.Count > 0)
                 {
                     DG_EmprestimoView.SelectedIndex = linhaEmprestimo;
-                }                   
+                }
             }
             catch (Exception ex)
             {
@@ -112,7 +116,7 @@ namespace SistemaControle_V3
                 if (cliente.IdCliente > 0)
                 {
                     if (mw.Equals(null) || cliente.Equals(null)) MessageBox.Show("ou");
-                    ClienteAplicacaoView empInsert = new ClienteAplicacaoView(this.mw, cliente); 
+                    ClienteAplicacaoView empInsert = new ClienteAplicacaoView(this.mw, cliente);
                     this.mw.Navegador(empInsert);
                 }
                 else if (idCliente == 0 || idCliente < 0)
@@ -145,7 +149,10 @@ namespace SistemaControle_V3
             DataGridRow linha = e.Row as DataGridRow;
             Emprestimo emprestimo = (Emprestimo)linha.DataContext;
             SfDataGrid detais = e.DetailsElement as SfDataGrid;
-            detais.ItemsSource = dc.Parcelas.Where(par => par.IdEmprestimo == emprestimo.IdEmprestimo).ToList().OrderBy(a => a.Vencimento);
+            using (RepresaContext dc = new RepresaContext())
+            {
+                detais.ItemsSource = dc.Parcelas.Where(par => par.IdEmprestimo == emprestimo.IdEmprestimo).ToList().OrderBy(a => a.Vencimento);
+            }
             linhasParcelas = detais.GetRecordsCount();
         }
 
@@ -196,32 +203,36 @@ namespace SistemaControle_V3
                 if (idEmprestimo2 > 0)
                 {
                     Emprestimo empGrid = (Emprestimo)DG_EmprestimoView.SelectedItem;
-                    emp = dc.Emprestimos.Where(em => (em.IdEmprestimo == idEmprestimo2)).FirstOrDefault();
-
-                    if (empGrid.Complemento > 0 && empGrid.TotalRefinanciado.Equals(null))
+                    using (RepresaContext dc = new RepresaContext())
                     {
-                        MessageBox.Show("Atenção, campo COMPLEMENTO preenchido. Por favor também prencha o campo REFINANCIADO.\n\n DADOS NÃO SALVOS!!!", "ATENÇÃO!", MessageBoxButton.OK, MessageBoxImage.Information);
-                    }
-                    else
-                    {
+                        emp = dc.Emprestimos.Where(em => (em.IdEmprestimo == idEmprestimo2)).FirstOrDefault();
 
-                        emp.Banco = empGrid.Banco;
-                        emp.Valor = empGrid.Valor;
-                        emp.ValorTotal = empGrid.ValorTotal;
-                        emp.Taxa = empGrid.Taxa;
-                        emp.FormaPagamento = empGrid.FormaPagamento;
-                        emp.Observacao = empGrid.Observacao;
-                        emp.Refinanciado = empGrid.Refinanciado;
-                        emp.TotalRefinanciado = empGrid.TotalRefinanciado;
-                        emp.Complemento = empGrid.Complemento;
-                        emp.DataCadastroAlteracao = DateTime.Now;
-                        if (empGrid.TotalRefinanciado > 0) { emp.Refinanciado = true; }
-                        else { emp.Refinanciado = false; }
 
-                        dc.SaveChanges();
+                        if (empGrid.Complemento > 0 && empGrid.TotalRefinanciado.Equals(null))
+                        {
+                            MessageBox.Show("Atenção, campo COMPLEMENTO preenchido. Por favor também prencha o campo REFINANCIADO.\n\n DADOS NÃO SALVOS!!!", "ATENÇÃO!", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                        else
+                        {
+
+                            emp.Banco = empGrid.Banco;
+                            emp.Valor = empGrid.Valor;
+                            emp.ValorTotal = empGrid.ValorTotal;
+                            emp.Taxa = empGrid.Taxa;
+                            emp.FormaPagamento = empGrid.FormaPagamento;
+                            emp.Observacao = empGrid.Observacao;
+                            emp.Refinanciado = empGrid.Refinanciado;
+                            emp.TotalRefinanciado = empGrid.TotalRefinanciado;
+                            emp.Complemento = empGrid.Complemento;
+                            emp.DataCadastroAlteracao = DateTime.Now;
+                            if (empGrid.TotalRefinanciado > 0) { emp.Refinanciado = true; }
+                            else { emp.Refinanciado = false; }
+
+                            dc.SaveChanges();
+                        }
 
                         MessageBox.Show("Alterações Salvas.", "CONCLUIDO!", MessageBoxButton.OK, MessageBoxImage.Information);
-                        buscarDados();
+                        //buscarDados();
                     }
                 }
             }
@@ -244,13 +255,17 @@ namespace SistemaControle_V3
                 idEmprestimo2 = Convert.ToInt32(id);
                 if (idEmprestimo2 > 0)
                 {
-                    emp = dc.Emprestimos.Where(em => (em.IdEmprestimo == idEmprestimo2)).FirstOrDefault();
-                    string codigo1 = emp.CodEmprestimo;
-                    dc.Emprestimos.Remove(emp);
-                    dc.SaveChanges();
+                    using (RepresaContext dc = new RepresaContext())
+                    {
+                        emp = dc.Emprestimos.Where(em => (em.IdEmprestimo == idEmprestimo2)).FirstOrDefault();
+                        string codigo1 = emp.CodEmprestimo;
+                        dc.Emprestimos.Remove(emp);
+                        dc.SaveChanges();
 
-                    MessageBox.Show("Aplicação " + codigo1 + " Excluido!", "CONCLUIDO!", MessageBoxButton.OK, MessageBoxImage.Information);
-                    buscarDados();
+
+                        MessageBox.Show("Aplicação " + codigo1 + " Excluido!", "CONCLUIDO!", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    //buscarDados();
                 }
             }
             catch (Exception ex) { MessageBox.Show("Error ao Excluir o Emprestimo!\n\n" + ex, "ERRO!", MessageBoxButton.OK, MessageBoxImage.Warning); }
@@ -265,9 +280,9 @@ namespace SistemaControle_V3
 
         //----------------------------------------- PARCELA ----------------------------------------------------------
         private void parcelaDG_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {               
-            //ParcelaAdd PAD = new ParcelaAdd(this.mw, idCliente, idEmprestimo);
-            //PAD.ShowDialog();             
+        {
+            ParcelaAddView PAD = new ParcelaAddView(this.mw, idCliente, idEmprestimo);
+            PAD.ShowDialog();
         }
 
         private void parcelaDG_QueryCoveredRange(object sender, Syncfusion.UI.Xaml.Grid.GridQueryCoveredRangeEventArgs e)
@@ -288,27 +303,30 @@ namespace SistemaControle_V3
         {
             try
             {
-                Parcela obj = ((FrameworkElement)sender).DataContext as Parcela; 
+                Parcela obj = ((FrameworkElement)sender).DataContext as Parcela;
 
                 if (obj.IdParcela > 0)
                 {
-                    Parcela par = dc.Parcelas.Where(pa => (pa.IdParcela == obj.IdParcela)).FirstOrDefault();
-                    par.Paga = obj.Paga;
-                    par.ValorParcela = obj.ValorParcela;
-                    par.Vencimento = obj.Vencimento;
-                    par.FormaPagamento = obj.FormaPagamento;
-                    par.Observacao = obj.Observacao;
-                    par.ObservacaoEmprestimo = obj.ObservacaoEmprestimo;
+                    using (RepresaContext dc = new RepresaContext())
+                    {
+                        Parcela par = dc.Parcelas.Where(pa => (pa.IdParcela == obj.IdParcela)).FirstOrDefault();
+                        par.Paga = obj.Paga;
+                        par.ValorParcela = obj.ValorParcela;
+                        par.Vencimento = obj.Vencimento;
+                        par.FormaPagamento = obj.FormaPagamento;
+                        par.Observacao = obj.Observacao;
+                        par.ObservacaoEmprestimo = obj.ObservacaoEmprestimo;
 
-                    //MessageBox.Show(obj.ObservacaoEmprestimo);
+                        //MessageBox.Show(obj.ObservacaoEmprestimo);
 
-                    Emprestimo emprestimo = dc.Emprestimos.Where(emp => emp.IdEmprestimo == obj.IdEmprestimo).FirstOrDefault();
-                    emprestimo.Observacao = obj.ObservacaoEmprestimo;
+                        Emprestimo emprestimo = dc.Emprestimos.Where(emp => emp.IdEmprestimo == obj.IdEmprestimo).FirstOrDefault();
+                        emprestimo.Observacao = obj.ObservacaoEmprestimo;
 
-                    dc.SaveChanges();
+                        dc.SaveChanges();
+                    }
 
                     MessageBox.Show("Alterações salvas com SUCESSO!", "CONCLUIDO!", MessageBoxButton.OK, MessageBoxImage.Information);
-                    buscarDados();
+                    //buscarDados();
                 }
                 else MessageBox.Show("sem parcela selecionada.", "ERROR!", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
@@ -326,13 +344,16 @@ namespace SistemaControle_V3
 
                 if (obj != null)
                 {
-                    Parcela par = dc.Parcelas.Where(pa => (pa.IdParcela == obj.IdParcela)).FirstOrDefault();
-                    int idEmprestimoAtulizar = par.IdEmprestimo;
-                    dc.Parcelas.Remove(par);
-                    dc.SaveChanges();
+                    using (RepresaContext dc = new RepresaContext())
+                    {
+                        Parcela par = dc.Parcelas.Where(pa => (pa.IdParcela == obj.IdParcela)).FirstOrDefault();
+                        int idEmprestimoAtulizar = par.IdEmprestimo;
+                        dc.Parcelas.Remove(par);
+                        dc.SaveChanges();
+                    }
 
                     MessageBox.Show("Parcela Excluida com SUCESSO! ", "CONCLUIDO!", MessageBoxButton.OK, MessageBoxImage.Information);
-                    buscarDados();
+                    //buscarDados();
                 }
             }
             catch (Exception ex)
@@ -349,20 +370,24 @@ namespace SistemaControle_V3
 
                 if (obj != null)
                 {
-                    Emprestimo emp = dc.Emprestimos.Where(emp => (emp.IdEmprestimo == obj.IdEmprestimo)).FirstOrDefault();
-                    emp.ReferenciaEmprestimo = "0";
-                    dc.SaveChanges();
+                    using (RepresaContext dc = new RepresaContext())
+                    {
+                        Emprestimo emp = dc.Emprestimos.Where(emp => (emp.IdEmprestimo == obj.IdEmprestimo)).FirstOrDefault();
+                        emp.ReferenciaEmprestimo = "0";
+                        dc.SaveChanges();
 
-                    MessageBox.Show("Refinanciamento Excluido! " + emp.CodEmprestimo, "CONCLUIDO!", MessageBoxButton.OK, MessageBoxImage.Information);
-                    buscarDados();
+
+                        MessageBox.Show("Refinanciamento Excluido! " + emp.CodEmprestimo, "CONCLUIDO!", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    //buscarDados();
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error ao Excluir Refinanciamento!\n\n" + ex, "ERRO!", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-        }           
-       
+        }
+
 
         private void parcelaDG_CurrentCellEndEdit(object sender, CurrentCellEndEditEventArgs e)
         {

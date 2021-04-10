@@ -126,7 +126,7 @@ namespace SistemaControle_V3
             try
             {
                 if (File.Exists(@"C:\Aplicativo\Banco\Represa04.mdf")) Conexao = @"C:\Aplicativo\Banco";
-                else if (File.Exists(@"D:\Aplicativo\Banco\Represa04.mdf")) { Conexao = @"D:\Aplicativo\Banco"; Local = @"D:\Aplicativo"; Banco = @"D:\Aplicativo\Banco"; Imagem = @"D:\Aplicativo\Imagens";}
+                else if (File.Exists(@"D:\Aplicativo\Banco\Represa04.mdf")) { Conexao = @"D:\Aplicativo\Banco"; Local = @"D:\Aplicativo"; Banco = @"D:\Aplicativo\Banco"; Imagem = @"D:\Aplicativo\Imagens"; }
                 else if (File.Exists(@"E:\Aplicativo\Banco\Represa04.mdf")) { Conexao = @"E:\Aplicativo\Banco"; Local = @"E:\Aplicativo"; Banco = @"E:\Aplicativo\Banco"; Imagem = @"E:\Aplicativo\Imagens"; }
                 else if (File.Exists(@"F:\Aplicativo\Banco\Represa04.mdf")) { Conexao = @"F:\Aplicativo\Banco"; Local = @"F:\Aplicativo"; Banco = @"F:\Aplicativo\Banco"; Imagem = @"F:\Aplicativo\Imagens"; }
                 else if (File.Exists(@"G:\Aplicativo\Banco\Represa04.mdf")) { Conexao = @"G:\Aplicativo\Banco"; Local = @"G:\Aplicativo"; Banco = @"G:\Aplicativo\Banco"; Imagem = @"G:\Aplicativo\Imagens"; }
@@ -185,7 +185,43 @@ namespace SistemaControle_V3
 
         //***************************
 
+        public Resultado BackupDados()
+        {
+            try
+            {
 
+                OpenFileDialog folderBrowser = new OpenFileDialog();
+                // Set validate names and check file exists to false otherwise windows will
+                // not let you select "Folder Selection."
+                folderBrowser.ValidateNames = false;
+                folderBrowser.CheckFileExists = false;
+                folderBrowser.CheckPathExists = true;
+                // Always default to Folder Selection.
+                folderBrowser.FileName = "Selecione a pasta";
+                if (folderBrowser.ShowDialog() == true)
+                {
+                    string salvar = Path.GetDirectoryName(folderBrowser.FileName);
+
+                    if (Directory.Exists(salvar))
+                    {
+                        string saida = salvar + @"/Backup" + DateTime.Now.ToString("dd - MM - yyyy_HH - mm - ss" + ".zip");
+                        //Process.Start(Local+@"\ConsoleApp.exe");
+
+                        //Process backup = new Process();
+                        //backup.StartInfo.FileName = @"D:\App\Ap_DeskTop\CRMFinanceiro\Backup\bin\Debug\net5.0\Backup.exe";
+                        //backup.StartInfo.Arguments = "/k " + Local + " " + saida;
+                        //backup.Start();
+
+                        // ZipFile.CreateFromDirectory(Local, salvar + @"/Backup_Dados_Imagens_" + DateTime.Now.ToString("dd - MM - yyyy_HH - mm - ss"));
+                        // "/Backup_Dados_Imagens_" + DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss")
+                    }
+                    else return Resultado.Erro("Erro com a pasta escolhida para salvar o Backup!\n\nPasta = " + salvar);
+                    return Resultado.Ok();
+                }
+                else return Resultado.Erro("Você cancelou a escolha da pasta para salvaro Backup!");
+            }
+            catch (Exception ex) { return Resultado.Erro("Backup não realizado!\n\n" + ex); }
+        }
 
 
 
@@ -210,10 +246,10 @@ namespace SistemaControle_V3
 
                 return tamanhos;
             }
-            catch {  return null; }
+            catch { return null; }
 
-        }   
-        
+        }
+
         public static int UltimoDia(DateTime data)
         {
             // 1 3 5 7 8 10 12
@@ -286,6 +322,10 @@ namespace SistemaControle_V3
             }
             return size;
         }
-        
+
+
+
+
+
     } //Fim Class
 }

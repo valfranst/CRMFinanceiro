@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SistemaControle_V3
+﻿namespace SistemaControle_V3
 {
     public class Resultado
     {
@@ -19,7 +17,7 @@ namespace SistemaControle_V3
             this.mensagem = null;
         }
 
-        public static  Resultado Ok()
+        public static Resultado Ok()
         {
             return new Resultado();
         }

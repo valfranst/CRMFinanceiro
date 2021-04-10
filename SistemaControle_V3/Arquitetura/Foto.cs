@@ -1,30 +1,30 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.IO;
 using System.Linq;
-using System.Windows;
 using System.Windows.Media.Imaging;
 
 namespace SistemaControle_V3
 {
     public class Foto
-    {           
+    {
         static MyConfig myConfig = MyConfig._getInstance();
         static DirectoryInfo dir = new DirectoryInfo(myConfig.Imagem);
         static FileInfo[] files;
 
 
-        public Foto(){ }
+        public Foto() { }
 
         public static Resultado ExcluirImagem(string nomeCliente)
         {
             try
-            {                   
+            {
                 files = dir.GetFiles(nomeCliente + ".*");
                 foreach (FileInfo file in files)
                 {
                     file.Delete();
-                } 
-                return Resultado.Ok(); 
+                }
+                return Resultado.Ok();
             }
             catch (Exception ex)
             {
@@ -32,26 +32,30 @@ namespace SistemaControle_V3
             }
         }
 
-        public static BitmapImage GetImagemByNome(string nomeCliente)
+        public static (Resultado, BitmapImage) GetImagemByNome(string nomeCliente)
         {
             try
             {
                 FileInfo[] files = dir.GetFiles(nomeCliente + ".*");
-                BitmapImage bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.UriSource = new Uri(files[0].FullName);
-                bitmap.DecodePixelWidth = 250;
-                bitmap.DecodePixelHeight = 250;
-                bitmap.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
-                bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                bitmap.EndInit();
-                return bitmap;
+                if (files.Count() > 0)
+                {
+                    BitmapImage bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.UriSource = new Uri(files[0].FullName);
+                    bitmap.DecodePixelWidth = 250;
+                    bitmap.DecodePixelHeight = 250;
+                    bitmap.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmap.EndInit();
+                    return (Resultado.Ok(), bitmap);
+                }
+                else return (Resultado.Ok(), null);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro ao Carregar Imagem do Cliente\n\n!" + ex, "ATENCAÇÃO!", MessageBoxButton.OK, MessageBoxImage.Error);
-                return null;
-            }      
+                //MessageBox.Show("Erro ao Carregar Imagem do Cliente\n\n!" + ex, "ATENCAÇÃO!", MessageBoxButton.OK, MessageBoxImage.Error);
+                return (Resultado.Ok(), null);
+            }
         }
 
         public static Resultado SalvarImagemByNome(BitmapImage foto, string nomeCliente)
@@ -71,7 +75,7 @@ namespace SistemaControle_V3
         {
             try
             {
-                files = dir.GetFiles(nomeAntigo + ".*");                  
+                files = dir.GetFiles(nomeAntigo + ".*");
                 if (files.Count() > 1)
                 {
                     var maxData = DateTime.MinValue;
@@ -92,6 +96,33 @@ namespace SistemaControle_V3
                 return Resultado.Ok();
             }
             catch (Exception ex) { return Resultado.Erro("Erro, ao Renomear a imagem do Cliente. Por favor, verifique sua existência." + "\n\n" + ex); }
+        }
+
+        public static (Resultado, BitmapImage) CopiarArquivo(string nomeCliente)
+        {
+            try
+            {
+                string arquivoSelecionado = "";
+                OpenFileDialog folderBrowser = new OpenFileDialog();
+                // Set validate names and check file exists to false otherwise windows will
+                // not let you select "Folder Selection."
+                folderBrowser.ValidateNames = false;
+                folderBrowser.CheckFileExists = false;
+                folderBrowser.CheckPathExists = true;
+                folderBrowser.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
+                // Always default to Folder Selection.
+                folderBrowser.FileName = "Selecione a pasta";
+                if (folderBrowser.ShowDialog() == true)
+                {
+                    arquivoSelecionado = folderBrowser.FileName;
+                    FileInfo fi = new FileInfo(arquivoSelecionado);
+                    ExcluirImagem(nomeCliente);
+                    File.Copy(fi.FullName, myConfig.Imagem + @"\" + nomeCliente + fi.Extension, true);
+                    return (Resultado.Ok(), GetImagemByNome(nomeCliente).Item2);
+                }
+                return (Resultado.Erro("Não foram feitas alterações na Imagem do Cliente"), null);
+            }
+            catch (Exception ex) { return (Resultado.Erro("Error\n\n" + ex), null); }
         }
 
 

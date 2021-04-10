@@ -1,18 +1,9 @@
 ﻿using Syncfusion.Data;
+using Syncfusion.UI.Xaml.Grid.Helpers;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SistemaControle_V3
 {
@@ -70,50 +61,42 @@ namespace SistemaControle_V3
 
         private void bt_ClienteCadastro_Click(object sender, RoutedEventArgs e)
         {
-            ClienteCadastroView ccw = new ClienteCadastroView(mw, 0);
-            mw.Navegador(ccw);
-
-            //var row = DG_ClienteView.SelectedItem;
-            //if (row is null) MessageBox.Show("Usuário não identificado, não é possível prosseguir!", "IMPOSSIBILITADO!", MessageBoxButton.OK, MessageBoxImage.Information);
-            //else
-            //{
-            //    Cliente cli = (Cliente)row;
-            //    ClienteView cliView = new ClienteView(mw, cli.IdCliente);
-            //    mw.Navegador(cliView);
-            //}
-
+            var row = DG_ClienteList.SelectedItem;
+            if (row is null) MessageBox.Show("Usuário não identificado, não é possível prosseguir!", "IMPOSSIBILITADO!", MessageBoxButton.OK, MessageBoxImage.Information);
+            else
+            {
+                Cliente cli = (Cliente)row;
+                ClienteCadastroView cliView = new ClienteCadastroView(mw, cli.IdCliente);
+                mw.Navegador(cliView);
+            }
         }
 
         private void bt_ClienteFicha_Click(object sender, RoutedEventArgs e)
         {
-            ClienteFichaView cfw = new ClienteFichaView(mw, 0);
-            mw.Navegador(cfw);
-
-            //var row = DG_ClienteView.SelectedItem;
-            //if (row is null) MessageBox.Show("Usuário não identificado, não é possível prosseguir!", "IMPOSSIBILITADO!", MessageBoxButton.OK, MessageBoxImage.Information);
-            //else
-            //{
-            //    Cliente cli = (Cliente)row;
-            //    EmpView empView = new EmpView(mw, cli.IdCliente);
-            //    mw.Navegador(empView);
-            //}
-
+            var row = DG_ClienteList.SelectedItem;
+            if (row is null) MessageBox.Show("Usuário não identificado, não é possível prosseguir!", "IMPOSSIBILITADO!", MessageBoxButton.OK, MessageBoxImage.Information);
+            else
+            {
+                Cliente cli = (Cliente)row;
+                ClienteFichaView empView = new ClienteFichaView(mw, cli.IdCliente);
+                mw.Navegador(empView);
+            }
         }
 
         private void DG_ClienteList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            //var visualcontainer = this.DG_ClienteView.GetVisualContainer(); 
-            //var rowColumnIndex = visualcontainer.PointToCellRowColumnIndex(e.GetPosition(visualcontainer));
-            //if (rowColumnIndex.IsEmpty) return;
+            var visualcontainer = this.DG_ClienteList.GetVisualContainer();
+            var rowColumnIndex = visualcontainer.PointToCellRowColumnIndex(e.GetPosition(visualcontainer));
+            if (rowColumnIndex.IsEmpty) return;
 
-            //var row = DG_ClienteView.SelectedItem;
-            //if (row is null) MessageBox.Show("Usuário não identificado, não é possível prosseguir!", "IMPOSSIBILITADO!", MessageBoxButton.OK, MessageBoxImage.Information);
-            //else
-            //{
-            //    Cliente cli = (Cliente)row;
-            //    EmpView empView = new EmpView(mw, cli.IdCliente);
-            //    mw.Navegador(empView);
-            //}
+            var row = DG_ClienteList.SelectedItem;
+            if (row is null) MessageBox.Show("Usuário não identificado, não é possível prosseguir!", "IMPOSSIBILITADO!", MessageBoxButton.OK, MessageBoxImage.Information);
+            else
+            {
+                Cliente cli = (Cliente)row;
+                ClienteFichaView empView = new ClienteFichaView(mw, cli.IdCliente);
+                mw.Navegador(empView);
+            }
         }
     } //************************
 }

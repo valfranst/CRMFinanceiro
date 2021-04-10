@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET5_0;NETCOREAPP
 D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\App.xaml
-112076464693
+12-1295224378
 
-42-311522528
+43-1091667954
 22550976034
-MainWindow.xaml;View\ClienteAplicacaoView.xaml;View\ClienteCadastroView.xaml;View\ClienteFichaView.xaml;View\ClienteListView.xaml;View\ConfiguracaoView.xaml;View\ListasView.xaml;View\ProducaoView.xaml;View\ProgressDialog.xaml;View\RecebimentoView.xaml;View\RefinanciamentoView.xaml;
+MainWindow.xaml;View\ClienteAplicacaoView.xaml;View\ClienteCadastroView.xaml;View\ClienteFichaView.xaml;View\ClienteListView.xaml;View\ConfiguracaoView.xaml;View\ListasView.xaml;View\ParcelaAddView.xaml;View\ProducaoView.xaml;View\ProgressDialog.xaml;View\RecebimentoView.xaml;View\RefinanciamentoView.xaml;
 
 False
 

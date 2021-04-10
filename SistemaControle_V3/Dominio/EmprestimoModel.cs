@@ -67,8 +67,8 @@ namespace SistemaControle_V3
             catch (Exception e) { return (Resultado.Erro("Erro \n\n" + e), null); }
             finally { Close(); }
         }
-        
-        
+
+
         private void Commit() => _context.SaveChanges();
         private void Close() => _context.Dispose();
 

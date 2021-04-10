@@ -14,12 +14,6 @@
 
     <UserControl.Resources>
         <ResourceDictionary >
-            <ResourceDictionary.MergedDictionaries>
-                <!-- note you only need bring in these extra resource dictionaries when using non-default styles, so only bring them into your controls where the default style is not what you want -->
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ComboBox.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DataGrid.xaml" />
-            </ResourceDictionary.MergedDictionaries>
 
             <Style x:Key="MyButton" TargetType="Button">
                 <Setter Property="OverridesDefaultStyle" Value="True" />
@@ -64,7 +58,7 @@
 
         <StackPanel Grid.Row="0" Grid.Column="0" Margin="0 10 0 0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
             <!--CADASTRAR button-->
-            <Button Name="btCadastrar" Width="180"  Height="30" Margin="0 0 0 0" IsEnabled="True" ToolTip="Cadastro de Clientes" Cursor="Hand" Click="btCadastrar_Click" Style="{StaticResource MaterialDesignRaisedLightButton}" >
+            <Button Name="btInsert" Width="180"  Height="30" Margin="0 0 0 0" IsEnabled="True" ToolTip="Cadastro de Clientes" Cursor="Hand" Click="btInsert_Click" Style="{StaticResource MaterialDesignRaisedLightButton}" >
                 <StackPanel Orientation="Horizontal" >
                     <Path Data="M15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4M15,5.9C16.16,5.9 17.1,6.84 17.1,8C17.1,9.16 16.16,10.1 15,10.1A2.1,2.1 0 0,1 12.9,8A2.1,2.1 0 0,1 15,5.9M4,7V10H1V12H4V15H6V12H9V10H6V7H4M15,13C12.33,13 7,14.33 7,17V20H23V17C23,14.33 17.67,13 15,13M15,14.9C17.97,14.9 21.1,16.36 21.1,17V18.1H8.9V17C8.9,16.36 12,14.9 15,14.9Z" 
                               Fill="{Binding Path=Foreground,RelativeSource={RelativeSource AncestorType={x:Type Button}}}" 
@@ -114,7 +108,7 @@
 
         </StackPanel>
 
-        <ScrollViewer Grid.Row="1" Grid.Column="0" Margin="0 10 0 35" Padding="0 0 10 0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+        <ScrollViewer Grid.Row="1" Grid.Column="0" Margin="0 10 0 40" Padding="0 0 10 0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
                 HorizontalAlignment="Center">
 
 
@@ -148,7 +142,7 @@
                     <Label Content="Idade"  Style="{StaticResource Descricao}" />
                     <TextBox x:Name="idadeTextBox" Width="180" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" TabIndex="203" MaxLength="25" IsReadOnly="True" />
                 </StackPanel>
-                <Button x:Name="button" Padding="0"  Grid.Row="0" Grid.Column="0" Grid.RowSpan="7" TabIndex="200" Width="250" Height="250" VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource MyButton}"  >
+                <Button x:Name="button" Padding="0"  Grid.Row="0" Grid.Column="0" Grid.RowSpan="7" TabIndex="200" Width="250" Height="250" VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource MyButton}" Cursor="Hand"  >
                     <StackPanel Orientation="Horizontal"  Width="250" Height="60" Margin="0 180 0 0" >
                         <Button x:Name="btWebCan" Margin="5 0 0 0" Style="{StaticResource MaterialDesignFloatingActionAccentButton}" ToolTip="WebCan" Click="btWebCan_Click" TabIndex="300" >
                             <materialDesign:PackIcon Kind="PhotoCamera" Height="30" Width="30" TabIndex="300" />
@@ -158,7 +152,7 @@
                         </Button>
                     </StackPanel>
                     <Button.Background>
-                        <ImageBrush x:Name="btImagem" ImageSource="/Resources/usuario.png" Stretch="None"/>
+                        <ImageBrush x:Name="btImagem" ImageSource="/Resources/usuario.png" Stretch="None" />
                     </Button.Background>
                 </Button>
 
@@ -166,7 +160,7 @@
                 <!--L2  CPF/RG/NASCIMENTO / residencial -->
                 <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" >
                     <Label Content="CPF" Style="{StaticResource Descricao}" />
-                    <TextBox x:Name="cpfTextBox" Width="180" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16"
+                    <TextBox x:Name="cpfTextBox" Width="180" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16"  MaxLength="15"
                         PreviewKeyDown="cpfTextBox_PreviewKeyDown" PreviewTextInput="cpfTextBox_PreviewTextInput" TextChanged="cpfTextBox_TextChanged"/>
 
                     <Label Content="RG" Style="{StaticResource Descricao}" />
@@ -174,10 +168,10 @@
 
                     <Label Content="Nasc." Style="{StaticResource Descricao}" />
                     <syncfusion:DateTimeEdit x:Name="nascimentoDT" InputScope="Number" CustomPattern="d/M/yyyy"
-                        FontSize="16" Height="30" Width="140" HorizontalContentAlignment="Left" LostFocus="nascimentoDT_LostFocus"  />
+                        FontSize="16" Height="25" Width="140" HorizontalContentAlignment="Left" VerticalAlignment="Bottom" LostFocus="nascimentoDT_LostFocus"  />
 
                     <Label Content="Tel.Residêncial" Style="{StaticResource Descricao}" />
-                    <TextBox x:Name="telResidencialTextBox" Width="160" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                    <TextBox x:Name="telResidencialTextBox" Width="160" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20" />
                 </StackPanel>
 
                 
@@ -185,10 +179,10 @@
                 <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0">
 
                     <Label Content="WhatsApp" Style="{StaticResource Descricao}" />
-                    <TextBox x:Name="telCelularzapTextBox" Width="150" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                    <TextBox x:Name="telCelularzapTextBox" Width="150" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20" />
 
                     <Label Content="Celular02" Style="{StaticResource Descricao}" />
-                    <TextBox x:Name="telCelular2TextBox" Width="150" Height="30" Margin="1 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                    <TextBox x:Name="telCelular2TextBox" Width="150" Height="30" Margin="1 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20" />
 
                     <Label Content="Email" Style="{StaticResource Descricao}"/>
                     <TextBox x:Name="emailTextBox" Width="380" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" MaxLength="50"  />
@@ -222,7 +216,7 @@
                     <TextBox x:Name="ruaTextBox" Width="470" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" MaxLength="150" />
 
                     <Label Content="Bairro" Margin="0 0 0 0" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontSize="10" FontWeight="Bold" Foreground="DarkBlue" />
-                    <TextBox x:Name="BairroTextBox" Width="250" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" FontSize="16" VerticalAlignment="Center" MaxLength="50" />
+                    <TextBox x:Name="bairroTextBox" Width="250" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" FontSize="16" VerticalAlignment="Center" MaxLength="50" />
                                         
 
                 </StackPanel>
@@ -242,7 +236,7 @@
                 </StackPanel>
 
                 <!--L7-->
-                <TextBlock Margin="0 12 0 0" Grid.Row="6" Grid.Column="0" FontSize="18" FontWeight="Bold" Foreground="#0d5fa3" Text="PRINCIPAL FONTE DE RENDA" TextAlignment="Center" />
+                <TextBlock Margin="0 17 0 0" Grid.Row="6" Grid.Column="0" FontSize="18" FontWeight="Bold" Foreground="#0d5fa3" Text="PRINCIPAL FONTE DE RENDA" TextAlignment="Center" />
 
                 <!--L8 empresa / Cargo / S. Liquido / D. Entrada -->
                 <StackPanel Orientation="Horizontal" Grid.Row="7" Grid.Column="0" >
@@ -267,13 +261,13 @@
                     <TextBox x:Name="tempoServicoTextBox" Width="210" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" TabIndex="205" MaxLength="50" />
 
                     <Label Content="Tel. Comercial 01" Style="{StaticResource Descricao}" />
-                    <TextBox x:Name="telComercial1TextBox" Width="155" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                    <TextBox x:Name="telComercial1TextBox" Width="155" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20"/>
 
                     <Label Content="Tel. Comercial 02" Style="{StaticResource Descricao}" />
-                    <TextBox x:Name="telComercial2TextBox" Width="150" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                        <TextBox x:Name="telComercial2TextBox" Width="150" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20" />
 
                     <Label Content="Tel. Comercial 03" Style="{StaticResource Descricao}" />
-                    <TextBox x:Name="telComercial3TextBox" Width="150" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                            <TextBox x:Name="telComercial3TextBox" Width="150" Height="30" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20" />
                     
                 </StackPanel>
 
@@ -292,7 +286,7 @@
                     <TextBox x:Name="ruaEmpTextBox" Width="490" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" MaxLength="150" />
 
                     <Label Content="Bairro" Margin="0 0 0 0" Style="{StaticResource Descricao}" />
-                    <TextBox x:Name="BairroEmpTextBox" Width="230" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" MaxLength="50" />
+                    <TextBox x:Name="bairroEmpTextBox" Width="230" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" MaxLength="50" />
 
                 </StackPanel>
 
@@ -317,7 +311,7 @@
                     <TextBox x:Name="referencia01TextBox" Width="800" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" MaxLength="100" />
 
                     <Label Content="Telefone" Style="{StaticResource Descricao}" />
-                    <TextBox x:Name="telReferencia01TextBox" Width="150" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                    <TextBox x:Name="telReferencia01TextBox" Width="150" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20" />
 
                 </StackPanel>
 
@@ -327,7 +321,7 @@
                     <TextBox x:Name="referencia02TextBox" Width="800" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" MaxLength="100" />
 
                     <Label Content="Telefone" Style="{StaticResource Descricao}" />
-                    <TextBox x:Name="telReferencia02TextBox" Width="150" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    <TextBox x:Name="telReferencia02TextBox" Width="150" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20"/>
 
                 </StackPanel>
 
@@ -337,7 +331,7 @@
                     <TextBox x:Name="referencia03TextBox" Width="800" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" MaxLength="100" />
 
                     <Label Content="Telefone" Style="{StaticResource Descricao}" />
-                    <TextBox x:Name="telReferencia03TextBox" Width="150" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                    <TextBox x:Name="telReferencia03TextBox" Width="150" Margin="10 0 0 0" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="20" />
 
                 </StackPanel>
 

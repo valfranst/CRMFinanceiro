@@ -30,7 +30,7 @@
 
     </UserControl.Resources>
 
-    <Grid x:Name="MainRefinanciamento" MinWidth="1090" MinHeight="620" Margin="0 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Top">
+    <Grid x:Name="MainRefinanciamento" MinWidth="1090" MinHeight="620" Margin="0 0 10 20" HorizontalAlignment="Center" VerticalAlignment="Top">
 
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10 10 0 0">
 
@@ -61,7 +61,7 @@
 
         </StackPanel>
 
-        <StackPanel Orientation="Vertical" Margin="0 60 0 90" >
+        <StackPanel Orientation="Vertical" Margin="0 60 0 50" >
 
             <syncfusion:SfDataGrid x:Name="view_RefinanciarDataGrid" 
                                 FontSize="16" Margin="10 0 0 10" HorizontalAlignment="Center" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Visible" RowHeight="35" ColumnSizer="SizeToCells"
@@ -128,7 +128,7 @@
 
             </syncfusion:SfDataGrid>
 
-            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="2" Margin="200 0 0 0" VerticalAlignment="Bottom" HorizontalAlignment="Left" >
+            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="2" Margin="0 0 150 0" VerticalAlignment="Bottom" HorizontalAlignment="Right" >
                 <Label Content="A REFINANCIAR" Style="{StaticResource descricao}" />
                 <syncfusion:CurrencyTextBox x:Name="aRefinanciarTextBox" Width="200" Height="30" FontSize="20" CornerRadius="5" HorizontalContentAlignment="Center" IsReadOnly="True" />
                 <Label Content="COMPLEMENTO" Style="{StaticResource descricao}" Margin="20 0 0 0"/>
@@ -140,7 +140,7 @@
         </StackPanel>
 
 
-        <ListBox x:Name="lstAnos" Margin="0 10 0 50" VerticalAlignment="Bottom" HorizontalAlignment="Center" SelectionChanged="lstAnos_SelectionChanged"  >
+        <ListBox x:Name="lstAnos" Margin="0 10 0 10" VerticalAlignment="Bottom" HorizontalAlignment="Center" SelectionChanged="lstAnos_SelectionChanged"  >
             <ListBox.ToolTip>
                 <TextBlock Text="Selecione o Mês" />
             </ListBox.ToolTip>

@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-using Syncfusion.UI.Xaml.Grid;
-using Syncfusion.UI.Xaml.Grid.Helpers;
+﻿using Syncfusion.UI.Xaml.Grid.Helpers;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -20,7 +18,7 @@ namespace SistemaControle_V3
         MyConfig myConfig = MyConfig._getInstance();
 
         DateTime dataAtual;
-        RepresaContext dc = new RepresaContext();
+        //RepresaContext dc = new RepresaContext();
         string meta = "";
 
         public ProducaoView(MainWindow mainWindow)
@@ -34,17 +32,17 @@ namespace SistemaControle_V3
         {
             this.Height = mw.Height - 73;
             this.Width = mw.Width - 10;
-            
+
             meta = myConfig.Meta;
             view_ClienteEmprestimoDataGrid.MaxHeight = mw.Height - 300;
             //view_ClienteEmprestimoDataGrid.MaxWidth = mw.Width - 50;
-                          
+
             buscaDados();
         }
 
         public void relatorios()
         {
-            
+
             // 1 3 5 7 8 10 12
             int diaFevereiro = MyConfig.UltimoDia(dataAtual);
 
@@ -55,173 +53,176 @@ namespace SistemaControle_V3
             decimal valor = 0, meta = 0;
             int aplicacoesTotal = 0, aplicacoesNaoRefinanciadas = 0;
 
-            //******  VALOR
-            try
+            using (RepresaContext dc = new RepresaContext())
             {
-                valor = (from rf in dc.Emprestimos where rf.DataCadastro >= inicio && rf.DataCadastro <= fim select rf.Valor).Sum();
-            }
-            catch { valor = 0; }
-            //***** META 
-            try
-            {
-                if (decimal.TryParse(myConfig.Meta, out meta)) MetaTxt.Value = meta;
-            }
-            catch { MetaTxt.Value = 0m; }
-            //***** APLICAÇÕES TOTAIS
-            try
-            {
-                aplicacoesTotal = (from rf in dc.Emprestimos where rf.DataCadastro >= inicio && rf.DataCadastro <= fim select rf.IdEmprestimo).Count();
-            }
-            catch { aplicacoesTotal = 0; }
-            //***** APLICAÇÕES TOTAIS
-            try
-            {
-                aplicacoesNaoRefinanciadas = (from rf in dc.Emprestimos where rf.UltimaParcela >= inicio && rf.UltimaParcela <= fim && rf.Refinanciado == false select rf.IdEmprestimo).Count();
-            }
-            catch { aplicacoesNaoRefinanciadas = 0; }
 
-
-
-            //*********************************** COMISSÃO *********************************************************************************
-            try
-            {
-                var sells = dc.Emprestimos
-                    .Where(a => a.DataCadastro >= inicio && a.DataCadastro <= fim)
-                .GroupBy(a => a.NomeAtendente)
-                .Select(a => new { Atendente = a.Key, Comissao = a.Sum(b => b.ValorComissao) })
-                .OrderByDescending(a => a.Atendente)
-                .ToList();
-                ComissoesTXT.Content = "";
-                foreach (var item in sells)
+                //******  VALOR
+                try
                 {
-                    string item2 = item.Atendente + "  " + toMoeda(item.Comissao);
-                    ComissoesTXT.Content += item2 + "\n";
+                    valor = (from rf in dc.Emprestimos where rf.DataCadastro >= inicio && rf.DataCadastro <= fim select rf.Valor).Sum();
                 }
-            }
-            catch (InvalidOperationException ex)
-            {
-                ComissoesTXT.Content = "COMISSÕES\n\n" + toMoeda(0m);
-            }
-
-
-            //************************************ SOMA TAXA ********************************************************************************  
-            try
-            { somaTaxaTextBox.Value = (from rf in dc.Emprestimos where rf.DataCadastro >= inicio && rf.DataCadastro <= fim select rf.ValorComissao).Sum(); }
-            catch { somaTaxaTextBox.Value = 0m; }
-
-
-            //************************************ SOMA PRODUÇÃO *****************************************************************************
-            try
-            {somaProducaoTextBox.Value = (from rf in dc.Emprestimos where rf.DataCadastro >= inicio && rf.DataCadastro <= fim select rf.Valor).Sum(); }
-            catch { somaProducaoTextBox.Value = 0m; }
-                                       
-
-
-            //************************************ META TEXT / FALTA PARA META ****************************************************************
-            try
-            {
-                if (valor > 0 && meta > 0)
+                catch { valor = 0; }
+                //***** META 
+                try
                 {
-                    metaPercentTextBox.PercentValue = (double?)((valor / meta) * 100); //((valor / meta) * 100);
-
-                    Decimal resultado = (valor - meta);
-                    if (resultado > 0)
-                    {
-                        faltaTextBox.Foreground = Brushes.Blue;
-                        faltaTextBox.Text = "Meta concluida +: " + toMoeda(resultado);
-                    }
-                    else if (resultado < 0)
-                    {
-                        faltaTextBox.Foreground = Brushes.Red;
-                        faltaTextBox.Text = "Falta: " + toMoeda(resultado);
-                    }
-
-
+                    if (decimal.TryParse(myConfig.Meta, out meta)) MetaTxt.Value = meta;
                 }
+                catch { MetaTxt.Value = 0m; }
+                //***** APLICAÇÕES TOTAIS
+                try
+                {
+                    aplicacoesTotal = (from rf in dc.Emprestimos where rf.DataCadastro >= inicio && rf.DataCadastro <= fim select rf.IdEmprestimo).Count();
+                }
+                catch { aplicacoesTotal = 0; }
+                //***** APLICAÇÕES TOTAIS
+                try
+                {
+                    aplicacoesNaoRefinanciadas = (from rf in dc.Emprestimos where rf.UltimaParcela >= inicio && rf.UltimaParcela <= fim && rf.Refinanciado == false select rf.IdEmprestimo).Count();
+                }
+                catch { aplicacoesNaoRefinanciadas = 0; }
+
+
+
+                //*********************************** COMISSÃO *********************************************************************************
+                try
+                {
+                    var sells = dc.Emprestimos
+                        .Where(a => a.DataCadastro >= inicio && a.DataCadastro <= fim)
+                    .GroupBy(a => a.NomeAtendente)
+                    .Select(a => new { Atendente = a.Key, Comissao = a.Sum(b => b.ValorComissao) })
+                    .OrderByDescending(a => a.Atendente)
+                    .ToList();
+                    ComissoesTXT.Content = "";
+                    foreach (var item in sells)
+                    {
+                        string item2 = item.Atendente + "  " + toMoeda(item.Comissao);
+                        ComissoesTXT.Content += item2 + "\n";
+                    }
+                }
+                catch (InvalidOperationException ex)
+                {
+                    ComissoesTXT.Content = "COMISSÕES\n\n" + toMoeda(0m);
+                }
+
+
+                //************************************ SOMA TAXA ********************************************************************************  
+                try
+                { somaTaxaTextBox.Value = (from rf in dc.Emprestimos where rf.DataCadastro >= inicio && rf.DataCadastro <= fim select rf.ValorComissao).Sum(); }
+                catch { somaTaxaTextBox.Value = 0m; }
+
+
+                //************************************ SOMA PRODUÇÃO *****************************************************************************
+                try
+                { somaProducaoTextBox.Value = (from rf in dc.Emprestimos where rf.DataCadastro >= inicio && rf.DataCadastro <= fim select rf.Valor).Sum(); }
+                catch { somaProducaoTextBox.Value = 0m; }
+
+
+
+                //************************************ META TEXT / FALTA PARA META ****************************************************************
+                try
+                {
+                    if (valor > 0 && meta > 0)
+                    {
+                        metaPercentTextBox.PercentValue = (double?)((valor / meta) * 100); //((valor / meta) * 100);
+
+                        Decimal resultado = (valor - meta);
+                        if (resultado > 0)
+                        {
+                            faltaTextBox.Foreground = Brushes.Blue;
+                            faltaTextBox.Text = "Meta concluida +: " + toMoeda(resultado);
+                        }
+                        else if (resultado < 0)
+                        {
+                            faltaTextBox.Foreground = Brushes.Red;
+                            faltaTextBox.Text = "Falta: " + toMoeda(resultado);
+                        }
+
+
+                    }
+                }
+                catch
+                {
+                    metaPercentTextBox.PercentValue = (double?)0m;
+                    faltaTextBox.Text = "Inconclusivo: " + toMoeda(0m);
+                }
+
+
+
+                //************************************ NA RUA *************************************************************************************
+                try { naRuaTextBox.Value = valor; }
+                catch { naRuaTextBox.Value = 0m; }
+
+
+                //************************************ A REFINANCIAR ********************************************************************************
+                try { aRefiTextBox.Value = (from rf in dc.Emprestimos where rf.UltimaParcela >= inicio && rf.UltimaParcela <= fim && rf.ReferenciaEmprestimo == null select rf.ValorParcela).Sum(); }
+                catch { aRefiTextBox.Value = 0m; }
+
+
+                //************************************ REFINANCIADO ********************************************************************************
+                try { refinanciadoTextBox.Value = (from rf in dc.Emprestimos where rf.UltimaParcela >= inicio && rf.UltimaParcela <= fim && rf.Refinanciado == true && rf.ReferenciaEmprestimo == null select rf.ValorParcela).Sum(); }
+                catch { refinanciadoTextBox.Value = 0m; }
+
+
+                //************************************ COMPLEMENTO ********************************************************************************
+                try { complementoTextBox.Value = (from rf in dc.Emprestimos where rf.UltimaParcela >= inicio && rf.UltimaParcela <= fim && rf.ReferenciaEmprestimo == null select rf.Complemento).Sum(); }
+                catch { complementoTextBox.Value = 0m; }
+
+
+                //************************************ CLIENTES REFI ********************************************************************************
+                if (refinanciadoTextBox.Value > 0 && aRefiTextBox.Value > 0)
+                {
+                    //Decimal percenteRefi = (refinanciamento / refinanciado);
+                    Decimal percenteRefi = ((decimal)(refinanciadoTextBox.Value / aRefiTextBox.Value));
+                    clientesRefiTextBox.Text = "Refinanciado " + percenteRefi.ToString("P1", CultureInfo.InvariantCulture) + " com " + aplicacoesTotal + " Aplicações";
+                }
+                else
+                {
+                    clientesRefiTextBox.Text = "Refinanciado " + "0.0%" + " com " + 0 + " Aplicações";
+                }
+
+
+
+
+
+                //*************************** line 03 *******************
+
+                try { entradaAplicacaoTextBox.Value = (from rf in dc.Parcelas where rf.Vencimento >= inicio && rf.Vencimento <= fim select rf.ValorParcela).Sum(); }
+                catch { entradaAplicacaoTextBox.Value = 0m; }
+
+                try { saidaAplicacaoTextBox.Value = (from emp in dc.Emprestimos where emp.DataCadastro >= inicio && emp.DataCadastro <= fim select emp.Valor).Sum(); }
+                catch { saidaAplicacaoTextBox.Value = 0m; }
+
+
+                DateTime hoje = DateTime.Now;
+                if (hoje > inicio)
+                {
+                    try { AVencerTextBox.Value = (from rf in dc.Parcelas where rf.Vencimento >= DateTime.Now && rf.Vencimento <= fim && rf.Paga == false select rf.ValorParcela).Sum(); }
+                    catch { AVencerTextBox.Value = 0m; }
+                }
+                else AVencerTextBox.Value = 0m;
+
+                if (hoje < fim)
+                {
+                    try { atrazadoTextBox.Value = (from rf in dc.Parcelas where rf.Vencimento >= inicio && rf.Vencimento <= DateTime.Now && rf.Paga == false select rf.ValorParcela).Sum(); }
+                    catch { atrazadoTextBox.Value = 0m; }
+                }
+                else
+                {
+                    try { atrazadoTextBox.Value = (from rf in dc.Parcelas where rf.Vencimento >= inicio && rf.Vencimento <= fim && rf.Paga == false select rf.ValorParcela).Sum(); }
+                    catch { atrazadoTextBox.Value = 0m; }
+                }
+
+                //**********************************************************************
+                try { despesaTextBox.Value = (from desp in dc.DespesaMensals where desp.DataCadastro >= inicio && desp.DataCadastro <= fim select desp.Valor).Sum(); }
+                catch { despesaTextBox.Value = 0m; }
+                //**********************************************************************
+                try { reEsperadoTextBox.Value = entradaAplicacaoTextBox.Value - saidaAplicacaoTextBox.Value - despesaTextBox.Value; }
+                catch { reEsperadoTextBox.Value = 0m; }
+
+                try { reAtualTextBox.Value = entradaAplicacaoTextBox.Value - saidaAplicacaoTextBox.Value - despesaTextBox.Value - AVencerTextBox.Value - atrazadoTextBox.Value; }
+                catch { reAtualTextBox.Value = 0m; }
+
             }
-            catch
-            {
-                metaPercentTextBox.PercentValue = (double?)0m;
-                faltaTextBox.Text = "Inconclusivo: " + toMoeda(0m);
-            }
-
-
-
-            //************************************ NA RUA *************************************************************************************
-            try { naRuaTextBox.Value = valor; }
-            catch { naRuaTextBox.Value = 0m; }
-
-
-            //************************************ A REFINANCIAR ********************************************************************************
-            try { aRefiTextBox.Value = (from rf in dc.Emprestimos where rf.UltimaParcela >= inicio && rf.UltimaParcela <= fim && rf.ReferenciaEmprestimo == null select rf.ValorParcela).Sum(); }
-            catch { aRefiTextBox.Value = 0m; }
-
-
-            //************************************ REFINANCIADO ********************************************************************************
-            try { refinanciadoTextBox.Value = (from rf in dc.Emprestimos where rf.UltimaParcela >= inicio && rf.UltimaParcela <= fim && rf.Refinanciado == true && rf.ReferenciaEmprestimo == null select rf.ValorParcela).Sum(); }
-            catch { refinanciadoTextBox.Value = 0m; }
-
-
-            //************************************ COMPLEMENTO ********************************************************************************
-            try { complementoTextBox.Value = (from rf in dc.Emprestimos where rf.UltimaParcela >= inicio && rf.UltimaParcela <= fim && rf.ReferenciaEmprestimo == null select rf.Complemento).Sum(); }
-            catch { complementoTextBox.Value = 0m; }
-
-
-            //************************************ CLIENTES REFI ********************************************************************************
-            if (refinanciadoTextBox.Value > 0 && aRefiTextBox.Value > 0)
-            {
-                //Decimal percenteRefi = (refinanciamento / refinanciado);
-                Decimal percenteRefi = ((decimal)(refinanciadoTextBox.Value / aRefiTextBox.Value));
-                clientesRefiTextBox.Text = "Refinanciado " + percenteRefi.ToString("P1", CultureInfo.InvariantCulture) + " com " + aplicacoesTotal + " Aplicações";
-            }
-            else
-            {
-                clientesRefiTextBox.Text = "Refinanciado " + "0.0%" + " com " + 0 + " Aplicações";
-            }
-
-
-
-
-
-            //*************************** line 03 *******************
-
-            try{ entradaAplicacaoTextBox.Value = (from rf in dc.Parcelas where rf.Vencimento >= inicio && rf.Vencimento <= fim select rf.ValorParcela).Sum(); }
-            catch { entradaAplicacaoTextBox.Value = 0m; }
-
-            try { saidaAplicacaoTextBox.Value = (from emp in dc.Emprestimos where emp.DataCadastro >= inicio && emp.DataCadastro <= fim select emp.Valor).Sum(); }
-            catch { saidaAplicacaoTextBox.Value = 0m; }
-
-
-            DateTime hoje = DateTime.Now;
-            if (hoje > inicio)
-            {
-                try { AVencerTextBox.Value = (from rf in dc.Parcelas where rf.Vencimento >= DateTime.Now && rf.Vencimento <= fim && rf.Paga == false select rf.ValorParcela).Sum(); }
-                catch { AVencerTextBox.Value = 0m; }
-            }
-            else AVencerTextBox.Value = 0m;
-
-            if (hoje < fim)
-            {
-                try { atrazadoTextBox.Value = (from rf in dc.Parcelas where rf.Vencimento >= inicio && rf.Vencimento <= DateTime.Now && rf.Paga == false select rf.ValorParcela).Sum(); }
-                catch { atrazadoTextBox.Value = 0m; }
-            }
-            else
-            {
-                try { atrazadoTextBox.Value = (from rf in dc.Parcelas where rf.Vencimento >= inicio && rf.Vencimento <= fim && rf.Paga == false select rf.ValorParcela).Sum(); }
-                catch { atrazadoTextBox.Value = 0m; }
-            }
-
-            //**********************************************************************
-            try { despesaTextBox.Value = (from desp in dc.DespesaMensals where desp.DataCadastro >= inicio && desp.DataCadastro <= fim select desp.Valor).Sum(); }
-            catch { despesaTextBox.Value = 0m; }
-            //**********************************************************************
-            try { reEsperadoTextBox.Value = entradaAplicacaoTextBox.Value - saidaAplicacaoTextBox.Value - despesaTextBox.Value; }
-            catch { reEsperadoTextBox.Value = 0m; }
-
-            try { reAtualTextBox.Value = entradaAplicacaoTextBox.Value - saidaAplicacaoTextBox.Value - despesaTextBox.Value - AVencerTextBox.Value - atrazadoTextBox.Value; }
-            catch { reAtualTextBox.Value = 0m; }
-
-
         }
 
 
@@ -234,8 +235,10 @@ namespace SistemaControle_V3
             DateTime inicio = new DateTime(dataAtual.Year, dataAtual.Month, 1);
             DateTime fim = new DateTime(dataAtual.Year, dataAtual.Month, diaFevereiro);
 
-            view_ClienteEmprestimoDataGrid.ItemsSource = dc.ViewProducaos.Where(ce => (ce.DataCadastro >= inicio && ce.DataCadastro <= fim)).OrderBy(ce => ce.CodOrder).ToList();
-
+            using (RepresaContext dc = new RepresaContext())
+            {
+                view_ClienteEmprestimoDataGrid.ItemsSource = dc.ViewProducaos.Where(ce => (ce.DataCadastro >= inicio && ce.DataCadastro <= fim)).OrderBy(ce => ce.CodOrder).ToList();
+            }
 
             switch (dataAtual.Month)
             {
@@ -287,7 +290,7 @@ namespace SistemaControle_V3
 
 
         private void view_ClienteEmprestimoDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {                
+        {
             try
             {
 
@@ -301,10 +304,13 @@ namespace SistemaControle_V3
                 else
                 {
                     ViewProducao vac = (ViewProducao)row;
-                    int idCliente = (from rf in dc.Emprestimos where rf.IdEmprestimo == vac.IdEmprestimo select rf.IdCliente).First();
-                    ClienteFichaView empView = new ClienteFichaView(mw, idCliente);
-                    mw.Navegador(empView);
-                }                  
+                    using (RepresaContext dc = new RepresaContext())
+                    {
+                        int idCliente = (from rf in dc.Emprestimos where rf.IdEmprestimo == vac.IdEmprestimo select rf.IdCliente).First();
+                        ClienteFichaView empView = new ClienteFichaView(mw, idCliente);
+                        mw.Navegador(empView);
+                    }
+                }
 
 
             }
@@ -351,7 +357,7 @@ namespace SistemaControle_V3
                 dataAtual = new DateTime(dataAtual.Year, mes, MyConfig.UltimoDia(dt));
                 buscaDados();
             }
-        }             
+        }
         private void btMais_Click(object sender, RoutedEventArgs e)
         {
             AnoTxt.Value += 1;
@@ -362,7 +368,7 @@ namespace SistemaControle_V3
         }
 
 
-       
+
 
         private void btCalcularRelatorio_Click(object sender, RoutedEventArgs e)
         {
@@ -371,7 +377,7 @@ namespace SistemaControle_V3
         }
 
         private void despesaTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {              
+        {
             relatorios();
         }
 
@@ -396,13 +402,19 @@ namespace SistemaControle_V3
                     return;
                 }
 
-                Cliente cli = dc.Clientes.Where(cli => (cli.IdCliente == vProducaoNow.IdCliente)).FirstOrDefault();
-                if(cli.Marcado == true) cli.Marcado = false;
-                else if(cli.Marcado == false) cli.Marcado = true;
-                dc.SaveChanges();
+                using (RepresaContext dc = new RepresaContext())
+                {
+                    Cliente cli = dc.Clientes.Where(cli => (cli.IdCliente == vProducaoNow.IdCliente)).FirstOrDefault();
+                    if (cli.Marcado == true) cli.Marcado = false;
+                    else if (cli.Marcado == false) cli.Marcado = true;
+                    dc.SaveChanges();
+                }
                 buscaDados();
             }
             catch (Exception ex) { MessageBox.Show("Error ao salvar alterações!\n\n" + ex, "ERRO!", MessageBoxButton.OK, MessageBoxImage.Warning); }
         }
+
+
+
     } //Fim Class
 }

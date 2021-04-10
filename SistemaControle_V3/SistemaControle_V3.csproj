@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="Resources\logo.png" />
-    <None Include="Resources\refresh.ico" />
+    <Resource Include="Resources\logo.png" />
+    <Resource Include="Resources\refresh.ico" />
     <Resource Include="Resources\usuario.png" />
   </ItemGroup>
 
@@ -29,6 +29,9 @@
     <Compile Update="View\ClienteAplicacaoView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="View\ParcelaAddView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="View\ProgressDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -44,6 +47,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\ClienteCadastroView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\ParcelaAddView.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

@@ -1,19 +1,10 @@
 ﻿
 using Syncfusion.UI.Xaml.Grid.Helpers;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SistemaControle_V3
 {
@@ -26,7 +17,7 @@ namespace SistemaControle_V3
         MyConfig myConfig = MyConfig._getInstance();
 
         DateTime dataAtual;
-        RepresaContext dc = new RepresaContext();
+        //RepresaContext dc = new RepresaContext();
         public RecebimentoView(MainWindow mainWindow)
         {
             InitializeComponent();
@@ -87,15 +78,19 @@ namespace SistemaControle_V3
         {
             // 1 3 5 7 8 10 12
             int diaFevereiro = MyConfig.UltimoDia(dataAtual);
-            
+
 
             DateTime inicio = new DateTime(dataAtual.Year, dataAtual.Month, 1);
             DateTime fim = new DateTime(dataAtual.Year, dataAtual.Month, diaFevereiro);
-            view_RecebimentoDataGrid.ItemsSource = dc.ViewRecebimentos.Where(vr => (vr.Vencimento >= inicio && vr.Vencimento <= fim)).OrderBy(vr => vr.CodOrder).ToList();
 
-            
-            try { totalRecebimentoTextBox.Value = (from rf in dc.Parcelas where rf.Vencimento >= inicio && rf.Vencimento <= fim select rf.ValorParcela).Sum(); }
-            catch { totalRecebimentoTextBox.Value = 0m; }
+            using (RepresaContext dc = new RepresaContext())
+            {
+                view_RecebimentoDataGrid.ItemsSource = dc.ViewRecebimentos.Where(vr => (vr.Vencimento >= inicio && vr.Vencimento <= fim)).OrderBy(vr => vr.CodOrder).ToList();
+
+
+                try { totalRecebimentoTextBox.Value = (from rf in dc.Parcelas where rf.Vencimento >= inicio && rf.Vencimento <= fim select rf.ValorParcela).Sum(); }
+                catch { totalRecebimentoTextBox.Value = 0m; }
+            }
 
             switch (dataAtual.Month)
             {
@@ -139,7 +134,7 @@ namespace SistemaControle_V3
                     break;
             }
 
-            
+
             AnoTxt.TextChanged -= AnoTxt_TextChanged;
             AnoTxt.Value = dataAtual.Year;
             AnoTxt.TextChanged += AnoTxt_TextChanged;
@@ -173,12 +168,15 @@ namespace SistemaControle_V3
 
                 if (vRecebimentoNow.IdParcela > 0)
                 {
-                    par = dc.Parcelas.Where(em => (em.IdParcela == vRecebimentoNow.IdParcela)).FirstOrDefault();
-                    par.Paga = vRecebimentoNow.Paga;
-                    par.Observacao = vRecebimentoNow.Observacao;
-                    dc.SaveChanges();
+                    using (RepresaContext dc = new RepresaContext())
+                    {
+                        par = dc.Parcelas.Where(em => (em.IdParcela == vRecebimentoNow.IdParcela)).FirstOrDefault();
+                        par.Paga = vRecebimentoNow.Paga;
+                        par.Observacao = vRecebimentoNow.Observacao;
+                        dc.SaveChanges();
+                    }
                     MessageBox.Show("Alterações Salvas", "CONCLUIDO!", MessageBoxButton.OK, MessageBoxImage.Information);
-                    buscaDados();
+                    //buscaDados();
                 }
             }
             catch (Exception ex) { MessageBox.Show("Error ao salvar alterações!\n\n" + ex, "ERRO!", MessageBoxButton.OK, MessageBoxImage.Warning); }
@@ -196,12 +194,14 @@ namespace SistemaControle_V3
                     MessageBox.Show("Por favor, primeiro selecione a linha e depois CLICK com o BOTÃO DIREITO do MOUSE", "INFORMAÇÕES!", MessageBoxButton.OK, MessageBoxImage.Information);
                     return;
                 }
-
-                Cliente cli = dc.Clientes.Where(cli => (cli.IdCliente == vRecebimentoNow.IdCliente)).FirstOrDefault();
-                if (cli.Marcado == true) cli.Marcado = false;
-                else if (cli.Marcado == false) cli.Marcado = true;
-                dc.SaveChanges();
-                buscaDados();
+                using (RepresaContext dc = new RepresaContext())
+                {
+                    Cliente cli = dc.Clientes.Where(cli => (cli.IdCliente == vRecebimentoNow.IdCliente)).FirstOrDefault();
+                    if (cli.Marcado == true) cli.Marcado = false;
+                    else if (cli.Marcado == false) cli.Marcado = true;
+                    dc.SaveChanges();
+                }
+                //buscaDados();
             }
             catch (Exception ex) { MessageBox.Show("Error ao salvar alterações!\n\n" + ex, "ERRO!", MessageBoxButton.OK, MessageBoxImage.Warning); }
         }

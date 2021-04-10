@@ -1,19 +1,10 @@
 ﻿using Syncfusion.UI.Xaml.Grid;
 using Syncfusion.UI.Xaml.Grid.Helpers;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SistemaControle_V3
 {
@@ -26,7 +17,7 @@ namespace SistemaControle_V3
         MyConfig myConfig = MyConfig._getInstance();
 
         DateTime dataAtual;
-        RepresaContext dc = new RepresaContext();
+        //RepresaContext dc = new RepresaContext();
         public RefinanciamentoView(MainWindow mainWindow)
         {
             InitializeComponent();
@@ -50,36 +41,38 @@ namespace SistemaControle_V3
 
             DateTime inicio = new DateTime(dataAtual.Year, dataAtual.Month, 1);
             DateTime fim = new DateTime(dataAtual.Year, dataAtual.Month, diaFevereiro);
-            if (btAlternarDados.IsChecked == true)
+            using (RepresaContext dc = new RepresaContext())
             {
-                view_RefinanciarDataGrid.ItemsSource = dc.ViewRefinanciamentos.Where(vr => (vr.UltimaParcela >= inicio && vr.UltimaParcela <= fim && vr.ReferenciaEmprestimo == "0")).OrderBy(vr => vr.UltimaParcela).ToList();
-                GridColumn columnExcluir = view_RefinanciarDataGrid.Columns[9];
-                columnExcluir.Width = 80;
+                if (btAlternarDados.IsChecked == true)
+                {
+                    view_RefinanciarDataGrid.ItemsSource = dc.ViewRefinanciamentos.Where(vr => (vr.UltimaParcela >= inicio && vr.UltimaParcela <= fim && vr.ReferenciaEmprestimo == "0")).OrderBy(vr => vr.UltimaParcela).ToList();
+                    GridColumn columnExcluir = view_RefinanciarDataGrid.Columns[9];
+                    columnExcluir.Width = 80;
 
-                GridColumn columnIncluir = view_RefinanciarDataGrid.Columns[8];
-                columnIncluir.Width = 0;
+                    GridColumn columnIncluir = view_RefinanciarDataGrid.Columns[8];
+                    columnIncluir.Width = 0;
+                }
+                else
+                {
+                    view_RefinanciarDataGrid.ItemsSource = dc.ViewRefinanciamentos.Where(vr => (vr.UltimaParcela >= inicio && vr.UltimaParcela <= fim && vr.ReferenciaEmprestimo == null)).OrderBy(vr => vr.UltimaParcela).ToList();
+                    GridColumn columnExcluir = view_RefinanciarDataGrid.Columns[9];
+                    columnExcluir.Width = 0;
+
+                    GridColumn columnIncluir = view_RefinanciarDataGrid.Columns[8];
+                    columnIncluir.Width = 80;
+                }
+
+                //********************************************************************************************************************
+                try { aRefinanciarTextBox.Value = (from rf in dc.Emprestimos where rf.UltimaParcela >= inicio && rf.UltimaParcela <= fim && rf.ReferenciaEmprestimo == null select rf.ValorParcela).Sum(); }
+                catch { aRefinanciarTextBox.Value = 0m; }
+                //********************************************************************************************************************
+                try { complementoTextBox.Value = (from rf in dc.Emprestimos where rf.UltimaParcela >= inicio && rf.UltimaParcela <= fim && rf.ReferenciaEmprestimo == null select rf.Complemento).Sum(); }
+                catch { complementoTextBox.Value = 0m; }
+                //********************************************************************************************************************
+                try { refinanciadoTextBox.Value = (from rf in dc.Emprestimos where rf.UltimaParcela >= inicio && rf.UltimaParcela <= fim && rf.Refinanciado == true && rf.ReferenciaEmprestimo == null select rf.ValorParcela).Sum(); }
+                catch { refinanciadoTextBox.Value = 0; }
+                //********************************************************************************************************************
             }
-            else
-            {
-                view_RefinanciarDataGrid.ItemsSource = dc.ViewRefinanciamentos.Where(vr => (vr.UltimaParcela >= inicio && vr.UltimaParcela <= fim && vr.ReferenciaEmprestimo == null)).OrderBy(vr => vr.UltimaParcela).ToList();
-                GridColumn columnExcluir = view_RefinanciarDataGrid.Columns[9];
-                columnExcluir.Width = 0;
-
-                GridColumn columnIncluir = view_RefinanciarDataGrid.Columns[8];
-                columnIncluir.Width = 80;
-            }
-
-            //********************************************************************************************************************
-            try { aRefinanciarTextBox.Value = (from rf in dc.Emprestimos where rf.UltimaParcela >= inicio && rf.UltimaParcela <= fim && rf.ReferenciaEmprestimo == null select rf.ValorParcela).Sum(); }
-            catch { aRefinanciarTextBox.Value = 0m; }
-            //********************************************************************************************************************
-            try { complementoTextBox.Value = (from rf in dc.Emprestimos where rf.UltimaParcela >= inicio && rf.UltimaParcela <= fim && rf.ReferenciaEmprestimo == null select rf.Complemento).Sum(); }
-            catch { complementoTextBox.Value = 0m; }            
-            //********************************************************************************************************************
-            try{ refinanciadoTextBox.Value = (from rf in dc.Emprestimos where rf.UltimaParcela >= inicio && rf.UltimaParcela <= fim && rf.Refinanciado == true && rf.ReferenciaEmprestimo == null select rf.ValorParcela).Sum(); }
-            catch { refinanciadoTextBox.Value = 0; }
-            //********************************************************************************************************************
-                         
 
             switch (dataAtual.Month)
             {
@@ -197,24 +190,27 @@ namespace SistemaControle_V3
 
                 if (vRefinanciarNow.IdEmprestimo > 0)
                 {
-                    Emprestimo emp = dc.Emprestimos.Where(emp => (emp.IdEmprestimo == vRefinanciarNow.IdEmprestimo)).FirstOrDefault();
-                    if (vRefinanciarNow.Complemento > 0 && vRefinanciarNow.TotalRefinanciado == 0)
+                    using (RepresaContext dc = new RepresaContext())
                     {
-                        MessageBox.Show("Campo COMPLEMENTO preenchido. Por favor também prencha o campo REFINANCIADO.\n\n DADOS NÃO SALVOS!!!", "ATENÇÃO!", MessageBoxButton.OK, MessageBoxImage.Information);
-                    }
-                    else
-                    {
-                        if (vRefinanciarNow.TotalRefinanciado > 0) { emp.Refinanciado = true; }
-                        else { emp.Refinanciado = false; }
+                        Emprestimo emp = dc.Emprestimos.Where(emp => (emp.IdEmprestimo == vRefinanciarNow.IdEmprestimo)).FirstOrDefault();
+                        if (vRefinanciarNow.Complemento > 0 && vRefinanciarNow.TotalRefinanciado == 0)
+                        {
+                            MessageBox.Show("Campo COMPLEMENTO preenchido. Por favor também prencha o campo REFINANCIADO.\n\n DADOS NÃO SALVOS!!!", "ATENÇÃO!", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                        else
+                        {
+                            if (vRefinanciarNow.TotalRefinanciado > 0) { emp.Refinanciado = true; }
+                            else { emp.Refinanciado = false; }
 
-                        emp.Complemento = vRefinanciarNow.Complemento;
-                        emp.TotalRefinanciado = vRefinanciarNow.TotalRefinanciado;
-                        emp.Observacao = vRefinanciarNow.Observacao;
+                            emp.Complemento = vRefinanciarNow.Complemento;
+                            emp.TotalRefinanciado = vRefinanciarNow.TotalRefinanciado;
+                            emp.Observacao = vRefinanciarNow.Observacao;
 
 
-                        dc.SaveChanges();
-                        MessageBox.Show("Alterações Salvas em! " + emp.CodEmprestimo, "CONCLUIDO!", MessageBoxButton.OK, MessageBoxImage.Information);
-                        buscaDados();
+                            dc.SaveChanges();
+                            MessageBox.Show("Alterações Salvas em! " + emp.CodEmprestimo, "CONCLUIDO!", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                        //buscaDados();
                     }
                 }
             }
@@ -229,19 +225,22 @@ namespace SistemaControle_V3
 
                 if (vRefinanciarNow.IdEmprestimo > 0)
                 {
-                    Emprestimo emp = dc.Emprestimos.Where(emp => (emp.IdEmprestimo == vRefinanciarNow.IdEmprestimo)).FirstOrDefault();
-                    emp.ReferenciaEmprestimo = "0";
+                    using (RepresaContext dc = new RepresaContext())
+                    {
+                        Emprestimo emp = dc.Emprestimos.Where(emp => (emp.IdEmprestimo == vRefinanciarNow.IdEmprestimo)).FirstOrDefault();
+                        emp.ReferenciaEmprestimo = "0";
 
-                    dc.SaveChanges();
-                    MessageBox.Show("Refinanciamento Excluido! " + emp.CodEmprestimo, "CONCLUIDO!", MessageBoxButton.OK, MessageBoxImage.Information);
-                    buscaDados();
-                    
+                        dc.SaveChanges();
+                        MessageBox.Show("Refinanciamento Excluido! " + emp.CodEmprestimo, "CONCLUIDO!", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    //buscaDados();
+
                 }
             }
             catch (Exception ex) { MessageBox.Show("Error ao salvar alterações!\n\n" + ex, "ERRO!", MessageBoxButton.OK, MessageBoxImage.Warning); }
 
 
-        }     
+        }
         private void IncluirRefinanciamento_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -250,12 +249,15 @@ namespace SistemaControle_V3
 
                 if (vRefinanciarNow.IdEmprestimo > 0)
                 {
-                    Emprestimo emp = dc.Emprestimos.Where(emp => (emp.IdEmprestimo == vRefinanciarNow.IdEmprestimo)).FirstOrDefault();
-                    emp.ReferenciaEmprestimo = null;
+                    using (RepresaContext dc = new RepresaContext())
+                    {
+                        Emprestimo emp = dc.Emprestimos.Where(emp => (emp.IdEmprestimo == vRefinanciarNow.IdEmprestimo)).FirstOrDefault();
+                        emp.ReferenciaEmprestimo = null;
 
-                    dc.SaveChanges();
-                    MessageBox.Show("Refinanciamento Incluido! " + emp.CodEmprestimo, "CONCLUIDO!", MessageBoxButton.OK, MessageBoxImage.Information);
-                    buscaDados();
+                        dc.SaveChanges();
+                        MessageBox.Show("Refinanciamento Incluido! " + emp.CodEmprestimo, "CONCLUIDO!", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    //buscaDados();
 
                 }
             }
@@ -274,12 +276,14 @@ namespace SistemaControle_V3
                     MessageBox.Show("Por favor, primeiro selecione a linha e depois CLICK com o BOTÃO DIREITO do MOUSE", "INFORMAÇÕES!", MessageBoxButton.OK, MessageBoxImage.Information);
                     return;
                 }
-                
-                Cliente cli = dc.Clientes.Where(cli => (cli.IdCliente == vRefinanciarNow.IdCliente)).FirstOrDefault();
-                if(cli.Marcado == true) cli.Marcado = false;
-                else if (cli.Marcado == false) cli.Marcado = true;
-                dc.SaveChanges();
-                buscaDados();   
+                using (RepresaContext dc = new RepresaContext())
+                {
+                    Cliente cli = dc.Clientes.Where(cli => (cli.IdCliente == vRefinanciarNow.IdCliente)).FirstOrDefault();
+                    if (cli.Marcado == true) cli.Marcado = false;
+                    else if (cli.Marcado == false) cli.Marcado = true;
+                    dc.SaveChanges();
+                }
+                //buscaDados();   
             }
             catch (Exception ex) { MessageBox.Show("Error ao salvar alterações!\n\n" + ex, "ERRO!", MessageBoxButton.OK, MessageBoxImage.Warning); }
 

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace SistemaControle_V3
 {
-    
+
     public class AtendenteModel
     {
         private readonly RepresaContext _context;
@@ -16,7 +16,7 @@ namespace SistemaControle_V3
         }
 
         public (Resultado, Atendente) Insert(Atendente atendente)
-        {              
+        {
             try
             {
                 _context.Atendentes.Add(atendente);
@@ -32,7 +32,7 @@ namespace SistemaControle_V3
         {
             try
             {
-                Atendente update = _context.Atendentes.Where(at =>at.IdAtendente == atendente.IdAtendente).FirstOrDefault();
+                Atendente update = _context.Atendentes.Where(at => at.IdAtendente == atendente.IdAtendente).FirstOrDefault();
                 update = atendente;
                 Commit();
                 Close();

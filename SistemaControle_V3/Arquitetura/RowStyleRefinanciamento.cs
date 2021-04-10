@@ -1,5 +1,4 @@
-﻿using SistemaControle_V3;
-using Syncfusion.UI.Xaml.Grid;
+﻿using Syncfusion.UI.Xaml.Grid;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,13 +10,13 @@ namespace SistemaControle_V3
         public override Style SelectStyle(object item, DependencyObject container)
         {
             var row = (item as DataRowBase).RowData;
-            var data = row as ViewRefinanciamento;             
-           
+            var data = row as ViewRefinanciamento;
+
             if (data.Refinanciado == true && data.Marcado == false)
                 return App.Current.Resources["rowStyleGreem"] as Style;
             if (data.Refinanciado == true && data.Marcado == true)
                 return App.Current.Resources["rowStyleGreem2"] as Style;
-            
+
 
             if (data.Refinanciado == false && data.UltimaParcela < DateTime.Now && data.Marcado == false)
                 return App.Current.Resources["rowStyleRed"] as Style;

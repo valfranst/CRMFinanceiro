@@ -41,6 +41,6 @@ namespace SistemaControle_V3
         private void Commit() => _context.SaveChanges();
         private void Close() => _context.Dispose();
 
-         
+
     } //
 }

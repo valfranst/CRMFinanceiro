@@ -1,12 +1,8 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using Syncfusion.Windows.Shared;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -17,7 +13,7 @@ namespace SistemaControle_V3
     {
 
         MainWindow mw;
-        RepresaContext dc = new RepresaContext();
+        //RepresaContext dc = new RepresaContext();
         Cliente cliente;
         int idEmprestimo = 0;
         int diaUtil = 0;
@@ -32,7 +28,7 @@ namespace SistemaControle_V3
         {
             InitializeComponent();
             this.mw = mainWindow;
-            this.cliente = cliente2;              
+            this.cliente = cliente2;
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -44,7 +40,7 @@ namespace SistemaControle_V3
             {
                 if (cliente.IdCliente > 0)
                 {
-                    btImagem.ImageSource = Foto.GetImagemByNome(cliente.NomeCliente);
+                    btImagem.ImageSource = Foto.GetImagemByNome(cliente.NomeCliente).Item2;
                     nomeClienteTxt.Content = cliente.NomeCliente;
                     cpfTxt.Content = "Cpf: " + cliente.Cpf;
                     telefoneTxt.Content = "Telefone: " + cliente.TelCelularzap;
@@ -61,7 +57,7 @@ namespace SistemaControle_V3
                 FPagamento.ItemsSource = dc.FormaPagamentos.Select(fp => fp.NomeFormaPagamento).ToList();
                 feriados = dc.Feriados.ToList();
             }
-            
+
         }
 
 
@@ -184,22 +180,22 @@ namespace SistemaControle_V3
                     parcela = new Parcela();
                     DateTime dataParcela = datainicio.AddMonths(i);
 
-                    
+
                     if (diaUtil > 0)
                     {
                         dataParcela = new DateTime(dataParcela.Year, dataParcela.Month, 1);
                         int contDiaUtil = 0, cont = 0;
-                        
-                        while(contDiaUtil < diaUtil)
+
+                        while (contDiaUtil < diaUtil)
                         {
                             dataParcela = dataParcela.AddDays(cont);
                             dataParcela = getDiaUltil(dataParcela);
                             contDiaUtil++;
                             cont = 1;
                         }
-                        
+
                     }
-                    else dataParcela = getDiaUltil(dataParcela);                      
+                    else dataParcela = getDiaUltil(dataParcela);
 
                     parcela.Vencimento = dataParcela;
                     parcela.ValorParcela = ValorParcela.Value ?? 0;
@@ -262,11 +258,11 @@ namespace SistemaControle_V3
                     emprestimo.Complemento = 0;
                     emprestimo.StatusEmprestimo = false;
 
-                    
+
                     dc.Emprestimos.Add(emprestimo);
                     dc.SaveChanges();
 
-                    
+
 
                     idEmprestimo = emprestimo.IdEmprestimo;
 
@@ -281,14 +277,14 @@ namespace SistemaControle_V3
                             }
                             dc.Parcelas.AddRange(parcelas);
                             dc.SaveChanges();
-                            emprestimo.IdEmprestimo = 0; 
+                            emprestimo.IdEmprestimo = 0;
 
                             foreach (var parcela1 in parcelas)
                             {
                                 parcela1.IdParcela = 0;
                             }
 
-                                var parameterIdEmprestimo = new SqlParameter
+                            var parameterIdEmprestimo = new SqlParameter
                             {
                                 ParameterName = "@idEmprestimo",
                                 SqlDbType = System.Data.SqlDbType.Int,
@@ -320,19 +316,20 @@ namespace SistemaControle_V3
             }
             catch (Exception ex)
             {
-                
-                Emprestimo empDelete = dc.Emprestimos.Where(em => (em.IdEmprestimo == idEmprestimo)).FirstOrDefault();
-                if (empDelete.IdEmprestimo > 0)
+                using (RepresaContext dc = new RepresaContext())
                 {
-                    dc.Emprestimos.Remove(empDelete);
-                    dc.SaveChanges();
+                    Emprestimo empDelete = dc.Emprestimos.Where(em => (em.IdEmprestimo == idEmprestimo)).FirstOrDefault();
+                    if (empDelete.IdEmprestimo > 0)
+                    {
+                        dc.Emprestimos.Remove(empDelete);
+                        dc.SaveChanges();
 
+                    }
                 }
                 Clipboard.SetText(ex + "");
                 MessageBox.Show("Erro ao salvar a APLICAÇÃO!\n\n" + ex, "ERRO!", MessageBoxButton.OK, MessageBoxImage.Warning);
-                
+
             }
-            finally { dc.Dispose(); }
 
         }
 
@@ -379,7 +376,12 @@ namespace SistemaControle_V3
             {
                 string codAntigo2 = null;
                 if (CodEmprestimo.Value == null) return;
-                codAntigo2 = dc.Emprestimos.Where(n => n.CodEmprestimo.Contains(CodEmprestimo.Value.ToString())).Select(n => n.CodEmprestimo).FirstOrDefault();
+
+                using (RepresaContext dc = new RepresaContext())
+                {
+                    codAntigo2 = dc.Emprestimos.Where(n => n.CodEmprestimo.Contains(CodEmprestimo.Value.ToString())).Select(n => n.CodEmprestimo).FirstOrDefault();
+                }
+
                 if (codAntigo2 == null)
                 {
                     CodEmprestimo.Foreground = Brushes.DarkBlue;
@@ -392,7 +394,7 @@ namespace SistemaControle_V3
             catch (Exception ex) { MessageBox.Show("ERROR: \n\n" + ex, "ERRO!", MessageBoxButton.OK, MessageBoxImage.Warning); }
 
         }
-       
+
         private void Taxa_PercentValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             CalculoPorcentagem();
@@ -463,7 +465,7 @@ namespace SistemaControle_V3
 
         private DateTime getDiaUltil(DateTime data)
         {
-            while(true)
+            while (true)
             {
                 if (data.DayOfWeek == DayOfWeek.Saturday)
                 {
@@ -488,10 +490,10 @@ namespace SistemaControle_V3
         {
             foreach (Feriado feriado in this.feriados)
             {
-                if(data.Date == feriado.DataFeriado) return true;                                 
+                if (data.Date == feriado.DataFeriado) return true;
             }
             return false;
         }
-        
+
     }  //fim class
 }

@@ -1,83 +1,75 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using Microsoft.Win32;
+﻿using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
-using System.Windows.Media;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace SistemaControle_V3
-{          
+{
     public partial class ClienteCadastroView : UserControl
     {
         MainWindow mw;
         int idCliente = 0;
         MyConfig myConfig = MyConfig._getInstance();
-        //RepresaContext dc = new RepresaContext();
         Cliente cliente;
+        Resultado resultado;
 
         public ClienteCadastroView(MainWindow mainWindow, int idCliente)
-        {              
+        {
             InitializeComponent();
             this.mw = mainWindow;
             this.idCliente = idCliente;
         }
-        public ClienteCadastroView(MainWindow mainWindow)
-        {
-            InitializeComponent();
-            this.mw = mainWindow;
-        }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {              
+        {
             this.Height = mw.Height - 53;
             this.Width = mw.Width - 10;
             buscaDados();
         }
-        
+
         public void buscaDados()
         {
             try
             {
-                
                 if (idCliente > 0)
                 {
-
                     using (RepresaContext dc = new RepresaContext())
                     {
                         this.cliente = dc.Clientes.Where(cli => cli.IdCliente == idCliente).FirstOrDefault();
                     }
 
-                    
-
                     nomeClienteTextBox.Text = cliente.NomeCliente;
 
-                    if (cliente.DataNascimento != null)
+                    nascimentoDT.DateTime = cliente.DataNascimento;
+                    if (cliente.DataNascimento is not null)
                     {
-                        nascimentoDT.DateTime = cliente.DataNascimento;
                         DateTime dataConvertida = (DateTime)cliente.DataNascimento;
                         int dias = (DateTime.Now - dataConvertida).Days;
                         int anos = dias / 360;
                         int meses = (dias % 360) / 30;
                         idadeTextBox.Text = anos + " anos e " + meses + " meses";
                     }
-
                     cpfTextBox.Text = cliente.Cpf;
-                    //MessageBox.Show("cliente "+cliente.Cpf+"\nteste box "+cpfTextBox.Value);
-
                     rgTextBox.Text = cliente.Rg;
 
                     telResidencialTextBox.Text = cliente.TelResidencial;
                     telCelularzapTextBox.Text = cliente.TelCelularzap;
                     telCelular2TextBox.Text = cliente.TelCelular2;
-
                     emailTextBox.Text = cliente.Email;
                     facebookTextBox.Text = cliente.Facebook;
-                    instagranTextBox.Text = cliente.Instagran;                     
+                    instagranTextBox.Text = cliente.Instagran;
+
+                    cepTextBox.Value = cliente.Rcep;
+                    ruaTextBox.Text = cliente.Rlagradouro;
+                    bairroTextBox.Text = cliente.Rbairro;
+                    cidadeTextBox.Text = cliente.Rcidade;
+                    estadoTextBox.Text = cliente.Restado;
+                    pontoReferenciaTextBox.Text = cliente.Rcomplemento;
 
                     empresaTextBox.Text = cliente.Empresa;
                     cargoTextBox.Text = cliente.Cargo;
@@ -85,25 +77,41 @@ namespace SistemaControle_V3
 
                     DataEmpresaDT.DateTime = cliente.DataEmpresa;
                     if (DataEmpresaDT.DateTime != null)
-                    {                         
+                    {
                         DateTime dataConvertida2 = (DateTime)cliente.DataEmpresa;
                         int dias2 = (DateTime.Now - dataConvertida2).Days;
                         int anos2 = dias2 / 360;
                         int meses2 = (dias2 % 360) / 30;
                         tempoServicoTextBox.Text = anos2 + " anos e " + meses2 + " meses";
                     }
+                    telComercial1TextBox.Text = cliente.TelComercial1;
+                    telComercial2TextBox.Text = cliente.TelComercial2;
+                    telComercial3TextBox.Text = cliente.TelComercial3;
 
-                   telComercial1TextBox.Text = cliente.TelComercial1;                     
-                   telComercial2TextBox.Text = cliente.TelComercial2;
-                   telComercial3TextBox.Text = cliente.TelComercial3;
+                    cepEmpTextBox.Value = cliente.Ecep;
+                    ruaEmpTextBox.Text = cliente.Elagradouro;
+                    bairroEmpTextBox.Text = cliente.Ebairro;
+                    cidadeEmpTextBox.Text = cliente.Ecidade;
+                    estadoEmpTextBox.Text = cliente.Eestado;
+                    pontoReferenciaEmpTextBox.Text = cliente.Ecomplemento;
 
-                    observacaoTextBox.Text = cliente.Observacao;
+                    referencia01TextBox.Text = cliente.Nreferencia1;
+                    referencia02TextBox.Text = cliente.Nreferencia2;
+                    referencia03TextBox.Text = cliente.Nreferencia3;
+                    telReferencia01TextBox.Text = cliente.TelefoneR1;
+                    telReferencia02TextBox.Text = cliente.TelefoneR2;
+                    telReferencia03TextBox.Text = cliente.TelefoneR3;
+
                     indicacaoTextBox.Text = cliente.Indicacao;
+                    observacaoTextBox.Text = cliente.Observacao;
 
-                    btImagem.ImageSource = Foto.GetImagemByNome(cliente.NomeCliente);
+                    var retorno = Foto.GetImagemByNome(cliente.NomeCliente);
+                    resultado = retorno.Item1;
+                    if (resultado.estado) btImagem.ImageSource = retorno.Item2;
+                    else MessageBox.Show(resultado.mensagem);
 
-                    btCadastrar.IsEnabled = false;
-                    btCadastrar.Visibility = Visibility.Collapsed;
+                    btInsert.IsEnabled = false;
+                    btInsert.Visibility = Visibility.Collapsed;
 
                     btSalvar.IsEnabled = true;
                     btExcluir.IsEnabled = true;
@@ -112,8 +120,8 @@ namespace SistemaControle_V3
                 }
                 else
                 {
-                    btCadastrar.IsEnabled = true;
-                    btCadastrar.Visibility = Visibility.Visible;
+                    btInsert.IsEnabled = true;
+                    btInsert.Visibility = Visibility.Visible;
 
                     btSalvar.IsEnabled = false;
                     btExcluir.IsEnabled = false;
@@ -121,7 +129,7 @@ namespace SistemaControle_V3
                     btExcluir.Visibility = Visibility.Collapsed;
                 };
             }
-            catch(Exception ex) { MessageBox.Show("Dados do Cliente não estão carregados! \n\n"+ex, "ERRO!", MessageBoxButton.OK, MessageBoxImage.Warning); }
+            catch (Exception ex) { MessageBox.Show("Dados do Cliente não estão carregados! \n\n" + ex, "ERRO!", MessageBoxButton.OK, MessageBoxImage.Warning); }
         }
 
 
@@ -133,7 +141,7 @@ namespace SistemaControle_V3
                 {
                     ClienteAplicacaoView empInsert = new ClienteAplicacaoView(this.mw, cliente);
                     this.mw.Navegador(empInsert);
-                }                
+                }
                 else
                 {
                     MessageBox.Show("Dados do Cliente não estão carregados! \n\n Verifique se esse Cliente já está salvo no Sistema.", "ERRO!", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -168,7 +176,7 @@ namespace SistemaControle_V3
 
         #region COMANDOS CRUD
 
-        private void btCadastrar_Click(object sender, RoutedEventArgs e)
+        private void btInsert_Click(object sender, RoutedEventArgs e)
         {
             if (nomeClienteTextBox.Text.Length < 5)
             {
@@ -176,18 +184,17 @@ namespace SistemaControle_V3
                 nomeClienteTextBox.Focus();
             }
             else if (cpfTextBox.Text.Length < 11) { cpfTextBox.Focus(); return; }
-            else if (rgTextBox.Text.Length < 6) { rgTextBox.Focus();  return; }
+            else if (rgTextBox.Text.Length < 6) { rgTextBox.Focus(); return; }
             else if (nascimentoDT.DateTime is null) { nascimentoDT.Focus(); return; }
             else if (idCliente == 0)
             {
                 try
-                {                       
+                {
                     Cliente inserindo = new Cliente();
                     using (RepresaContext dc = new RepresaContext())
-                    { 
+                    {
                         inserindo.NomeCliente = nomeClienteTextBox.Text;
-                        string nomeNormalizado = Stringnormalizada(nomeClienteTextBox.Text.ToLower());
-                        inserindo.NomeClienteNormalizado = nomeNormalizado;
+                        inserindo.NomeClienteNormalizado = Stringnormalizada(nomeClienteTextBox.Text.ToLower());
 
                         inserindo.DataNascimento = nascimentoDT.DateTime;
                         inserindo.Cpf = cpfTextBox.Text;
@@ -197,7 +204,14 @@ namespace SistemaControle_V3
                         inserindo.TelCelular2 = telCelular2TextBox.Text;
                         inserindo.Email = emailTextBox.Text;
                         inserindo.Facebook = facebookTextBox.Text;
-                        inserindo.Instagran = instagranTextBox.Text;                         
+                        inserindo.Instagran = instagranTextBox.Text;
+
+                        inserindo.Rcep = cepTextBox.Text;
+                        inserindo.Rlagradouro = ruaTextBox.Text;
+                        inserindo.Rbairro = bairroTextBox.Text;
+                        inserindo.Rcidade = cidadeTextBox.Text;
+                        inserindo.Restado = estadoTextBox.Text;
+                        inserindo.Rcomplemento = pontoReferenciaTextBox.Text;
 
                         inserindo.Empresa = empresaTextBox.Text;
                         inserindo.Cargo = cargoTextBox.Text;
@@ -207,7 +221,20 @@ namespace SistemaControle_V3
                         inserindo.TelComercial2 = telComercial2TextBox.Text;
                         inserindo.TelComercial3 = telComercial3TextBox.Text;
 
-                        
+                        inserindo.Ecep = cepEmpTextBox.Text;
+                        inserindo.Elagradouro = ruaEmpTextBox.Text;
+                        inserindo.Ebairro = bairroEmpTextBox.Text;
+                        inserindo.Ecidade = cidadeEmpTextBox.Text;
+                        inserindo.Eestado = estadoEmpTextBox.Text;
+                        inserindo.Ecomplemento = pontoReferenciaEmpTextBox.Text;
+
+                        inserindo.Nreferencia1 = referencia01TextBox.Text;
+                        inserindo.Nreferencia2 = referencia02TextBox.Text;
+                        inserindo.Nreferencia3 = referencia03TextBox.Text;
+                        inserindo.TelefoneR1 = telReferencia01TextBox.Text;
+                        inserindo.TelefoneR2 = telReferencia02TextBox.Text;
+                        inserindo.TelefoneR3 = telReferencia03TextBox.Text;
+
                         inserindo.Indicacao = indicacaoTextBox.Text;
                         inserindo.Observacao = observacaoTextBox.Text;
 
@@ -221,7 +248,7 @@ namespace SistemaControle_V3
                     buscaDados();
                     mw.clienteList.AtualizarDados();
                     MessageBox.Show("Novo Cliente Cadastrado com Sucesso!\n\n", "CONCLUIDO!", MessageBoxButton.OK, MessageBoxImage.Information);
-                    
+
 
                 }
                 catch (Exception ex) { MessageBox.Show("Erro ao CADASTRAR o novo Cliente!\n\n" + ex, "ERRO!", MessageBoxButton.OK, MessageBoxImage.Warning); }
@@ -239,53 +266,66 @@ namespace SistemaControle_V3
             else if (cpfTextBox.Text.Length < 11) { cpfTextBox.Focus(); return; }
             else if (rgTextBox.Text.Length < 6) { rgTextBox.Focus(); return; }
             else if (nascimentoDT.DateTime is null) { nascimentoDT.Focus(); return; }
-            else if(!cliente.Equals(null))
+            else if (cliente is not null)
             {
                 try
                 {
                     Cliente editando = new Cliente();
-                    string nomeAntigo;
+                    string nomeAntigo = cliente.NomeCliente;
 
                     using (RepresaContext dc = new RepresaContext())
                     {
                         editando = dc.Clientes.Where(cli => cli.IdCliente == cliente.IdCliente).FirstOrDefault();
-                                           
 
-                    nomeAntigo = cliente.NomeCliente;                      
+                        editando.NomeCliente = nomeClienteTextBox.Text;
+                        editando.NomeClienteNormalizado = Stringnormalizada(nomeClienteTextBox.Text.ToLower());
 
-                    editando.NomeCliente = nomeClienteTextBox.Text;
-                    string nomeNormalizado = Stringnormalizada(nomeClienteTextBox.Text.ToLower());
-                    editando.NomeClienteNormalizado = nomeNormalizado;
+                        editando.DataNascimento = nascimentoDT.DateTime;
+                        editando.Cpf = cpfTextBox.Text;
+                        editando.Rg = rgTextBox.Text;
+                        editando.TelResidencial = telResidencialTextBox.Text;
+                        editando.TelCelularzap = telCelularzapTextBox.Text;
+                        editando.TelCelular2 = telCelular2TextBox.Text;
+                        editando.Email = emailTextBox.Text;
+                        editando.Facebook = facebookTextBox.Text;
+                        editando.Instagran = instagranTextBox.Text;
 
-                    editando.DataNascimento = nascimentoDT.DateTime;
-                    editando.Cpf = cpfTextBox.Text;
-                    editando.Rg = rgTextBox.Text;
-                    editando.TelResidencial = telResidencialTextBox.Text;
-                    editando.TelCelularzap = telCelularzapTextBox.Text;
-                    editando.TelCelular2 = telCelular2TextBox.Text;
-                    editando.Email = emailTextBox.Text;
-                    editando.Facebook = facebookTextBox.Text;
-                    editando.Instagran = instagranTextBox.Text;
+                        editando.Rcep = cepTextBox.Text;
+                        editando.Rlagradouro = ruaTextBox.Text;
+                        editando.Rbairro = bairroTextBox.Text;
+                        editando.Rcidade = cidadeTextBox.Text;
+                        editando.Restado = estadoTextBox.Text;
+                        editando.Rcomplemento = pontoReferenciaTextBox.Text;
 
-                   
-                    editando.Empresa = empresaTextBox.Text;
-                    editando.Cargo = cargoTextBox.Text;
-                    editando.SalarioLiquido = salarioLiquidoTextBox.Value;
-                    editando.DataEmpresa = DataEmpresaDT.DateTime;
-                    editando.TelComercial1 = telComercial1TextBox.Text;
-                    editando.TelComercial2 = telComercial2TextBox.Text;
-                    editando.TelComercial3 = telComercial3TextBox.Text;
+                        editando.Empresa = empresaTextBox.Text;
+                        editando.Cargo = cargoTextBox.Text;
+                        editando.SalarioLiquido = salarioLiquidoTextBox.Value;
+                        editando.DataEmpresa = DataEmpresaDT.DateTime;
+                        editando.TelComercial1 = telComercial1TextBox.Text;
+                        editando.TelComercial2 = telComercial2TextBox.Text;
+                        editando.TelComercial3 = telComercial3TextBox.Text;
 
-                    
+                        editando.Ecep = cepEmpTextBox.Text;
+                        editando.Elagradouro = ruaEmpTextBox.Text;
+                        editando.Ebairro = bairroEmpTextBox.Text;
+                        editando.Ecidade = cidadeEmpTextBox.Text;
+                        editando.Eestado = estadoEmpTextBox.Text;
+                        editando.Ecomplemento = pontoReferenciaEmpTextBox.Text;
 
-                    editando.Indicacao = indicacaoTextBox.Text;
-                    editando.Observacao = observacaoTextBox.Text;
+                        editando.Nreferencia1 = referencia01TextBox.Text;
+                        editando.Nreferencia2 = referencia02TextBox.Text;
+                        editando.Nreferencia3 = referencia03TextBox.Text;
+                        editando.TelefoneR1 = telReferencia01TextBox.Text;
+                        editando.TelefoneR2 = telReferencia02TextBox.Text;
+                        editando.TelefoneR3 = telReferencia03TextBox.Text;
 
-                    
+                        editando.Indicacao = indicacaoTextBox.Text;
+                        editando.Observacao = observacaoTextBox.Text;
+
                         dc.SaveChanges();
                     }
-                    
-                    string nomeNovo = editando.NomeCliente;                    
+
+                    string nomeNovo = editando.NomeCliente;
 
                     Foto.RenomearImagem(nomeNovo, nomeAntigo);
 
@@ -294,9 +334,9 @@ namespace SistemaControle_V3
                     mw.clienteList.AtualizarDados();
 
                     MessageBox.Show("Cliente MODIFICADO com Sucesso!\n\n", "CONCLUIDO!", MessageBoxButton.OK, MessageBoxImage.Information);
-                    
+
                 }
-                catch (Exception ex) { MessageBox.Show("Erro ao MODIFICAR o Cliente!\n\n"+ ex, "ERRO!", MessageBoxButton.OK, MessageBoxImage.Warning); }
+                catch (Exception ex) { MessageBox.Show("Erro ao MODIFICAR o Cliente!\n\n" + ex, "ERRO!", MessageBoxButton.OK, MessageBoxImage.Warning); }
 
             }
         }
@@ -304,7 +344,7 @@ namespace SistemaControle_V3
         private void btExcluir_Click(object sender, RoutedEventArgs e)
         {
 
-            if (!cliente.Equals(null))
+            if (cliente is not null)
             {
                 MessageBoxResult result = MessageBox.Show("Tem certeza que dejesa excluir o cliente " + cliente.NomeCliente +
                                     " e todos os seus dados?", "Excluir Cliente?", MessageBoxButton.YesNo, MessageBoxImage.Question);
@@ -312,22 +352,18 @@ namespace SistemaControle_V3
                 {
                     try
                     {
-                        Cliente excluindo = new Cliente();
+
                         using (RepresaContext dc = new RepresaContext())
                         {
-                            excluindo = dc.Clientes.Where(cli => cli.IdCliente == cliente.IdCliente).FirstOrDefault();
+                            Cliente excluindo = dc.Clientes.Where(cli => cli.IdCliente == cliente.IdCliente).FirstOrDefault();
                             dc.Clientes.Remove(excluindo);
                             dc.SaveChanges();
                         }
-                                                
+
                         Foto.ExcluirImagem(cliente.NomeCliente);
-
-
                         MessageBox.Show("Cliente: " + cliente.NomeCliente + ", EXCLUIDO com sucesso!", "Concluido!", MessageBoxButton.OK, MessageBoxImage.Information);
-                        
-                        
                         mw.Navegador(mw.clienteList);
-
+                        mw.txtPesquisa = null;
                     }
                     catch (Exception ex) { MessageBox.Show("Erro ao Excluir! \n\n" + ex, "ERRO!", MessageBoxButton.OK, MessageBoxImage.Warning); }
                 }
@@ -359,7 +395,6 @@ namespace SistemaControle_V3
 
         private void btArquivo_Click(object sender, RoutedEventArgs e)
         {
-
             if (nomeClienteTextBox.Text.Length < 5)
             {
                 MessageBox.Show("ERRO: O campo Nome Cliente deve está preenchido com no minímo 5 dígitos!", "ERRO!", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -367,73 +402,11 @@ namespace SistemaControle_V3
             }
             else
             {
-
-                try
-                {
-                    string arquivoSelecionado = "";
-                    OpenFileDialog folderBrowser = new OpenFileDialog();
-                    // Set validate names and check file exists to false otherwise windows will
-                    // not let you select "Folder Selection."
-                    folderBrowser.ValidateNames = false;
-                    folderBrowser.CheckFileExists = false;
-                    folderBrowser.CheckPathExists = true;
-                    folderBrowser.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
-                    // Always default to Folder Selection.
-                    folderBrowser.FileName = "Selecione a pasta";
-                    if (folderBrowser.ShowDialog() == true)
-                    {
-                        arquivoSelecionado = folderBrowser.FileName;
-                        FileInfo fi = new FileInfo(arquivoSelecionado);
-
-                        DirectoryInfo dir = new DirectoryInfo(myConfig.Imagem);
-                        FileInfo[] files = dir.GetFiles(nomeClienteTextBox.Text + ".*");
-
-                        if (files.Length == 0)
-                        {
-                            try
-                            {
-                                File.Copy(fi.FullName, myConfig.Imagem + @"\" + nomeClienteTextBox.Text + fi.Extension, true);
-                                btImagem.ImageSource = Foto.GetImagemByNome(cliente.NomeCliente);
-                            }
-                            catch (Exception ex)
-                            {
-                                MessageBox.Show("ERRO ao SALVAR Imagem do CLIENTE: " + nomeClienteTextBox.Text + "\n na pasta: " + myConfig.Imagem + "\n\n" + ex, "ERRO!", MessageBoxButton.OK, MessageBoxImage.Warning);
-                            }
-                        }
-                        else if (files.Length >= 1)
-                        {
-                            MessageBoxResult result = MessageBox.Show("Já existe uma IMAGEM do cliente " + nomeClienteTextBox.Text +
-                                        " salva. Deseja substituir?", "SUBSTITUIR IMAGEM", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                            if (result == MessageBoxResult.Yes)
-                            {
-                                try
-                                {
-                                    File.Delete(myConfig.Imagem + @"\" + nomeClienteTextBox.Text);
-                                    File.Copy(fi.FullName, myConfig.Imagem + @"\" + nomeClienteTextBox.Text + fi.Extension, true);
-                                    btImagem.ImageSource = Foto.GetImagemByNome(cliente.NomeCliente);
-                                }
-                                catch (Exception exc)
-                                {
-                                    MessageBox.Show("ERRO ao SALVAR Imagem do CLIENTE: " + nomeClienteTextBox.Text + "\n na pasta: " + myConfig.Imagem + "\n\n\n" + exc, "ERRO!", MessageBoxButton.OK, MessageBoxImage.Warning);
-                                }
-                            }
-                            else
-                            {
-                                MessageBox.Show("Não foram feitas alterações na imagem do cliente: " + nomeClienteTextBox.Text, "INFORMAÇÃO!", MessageBoxButton.OK, MessageBoxImage.Information);
-                            }
-
-                        }
-
-
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Erro ao abrir Arquivo!\n\n" + ex, "ERRO!", MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
-
+                var retorno = Foto.CopiarArquivo(cliente.NomeCliente);
+                resultado = retorno.Item1;
+                if (resultado.estado) btImagem.ImageSource = retorno.Item2;
+                else MessageBox.Show(resultado.mensagem);
             }
-
         }
 
 
@@ -497,7 +470,7 @@ namespace SistemaControle_V3
                                 if (cont == 4)
                                 {
                                     string[] valor = substring.Split(":".ToCharArray());
-                                    BairroTextBox.Text = valor[1];
+                                    bairroTextBox.Text = valor[1];
                                 }
 
                                 //Localidade (Cidade)
@@ -586,7 +559,7 @@ namespace SistemaControle_V3
                                 if (cont == 4)
                                 {
                                     string[] valor = substring.Split(":".ToCharArray());
-                                    BairroEmpTextBox.Text = valor[1];
+                                    bairroEmpTextBox.Text = valor[1];
                                 }
 
                                 //Localidade (Cidade)
@@ -642,7 +615,7 @@ namespace SistemaControle_V3
                 return fail;
             }
         }
-       
+
 
         public bool IsCpf(string cpf)
         {
@@ -786,7 +759,7 @@ namespace SistemaControle_V3
             return str;
         }
 
-        
+
         private void nascimentoDT_LostFocus(object sender, RoutedEventArgs e)
         {
             DateTime dataConvertida = (DateTime)nascimentoDT.DateTime;
@@ -798,7 +771,7 @@ namespace SistemaControle_V3
 
         private void DataEmpresaDT_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (DataEmpresaDT.DateTime!= null)
+            if (DataEmpresaDT.DateTime != null)
             {
                 DateTime dataConvertida2 = (DateTime)DataEmpresaDT.DateTime;
                 int dias2 = (DateTime.Now - dataConvertida2).Days;
@@ -809,7 +782,7 @@ namespace SistemaControle_V3
         }
 
 
-        
+
 
         private void telefone_PreviewImput(object sender, TextCompositionEventArgs e)
         {
@@ -837,8 +810,8 @@ namespace SistemaControle_V3
                 e.Handled = true;
                 MessageBox.Show("A quantidade Maxima de 17 digitos já foram inseridos ");
             }
-        }                   
-        
+        }
+
 
 
     } //Fim Class
