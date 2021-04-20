@@ -387,8 +387,8 @@ namespace SistemaControle_V3
             }
             else
             {
-                //CameraView wc = new CameraView(this, nomeClienteTextBox.Text);
-                //wc.ShowDialog();
+                Camera wc = new Camera(this, nomeClienteTextBox.Text);
+                wc.ShowDialog();
 
             }
         }

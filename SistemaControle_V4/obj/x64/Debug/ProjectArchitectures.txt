@@ -1,1 +1,0 @@
-D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V4\SistemaControle_V4.csproj;x64

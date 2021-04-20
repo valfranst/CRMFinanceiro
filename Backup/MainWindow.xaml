@@ -1,0 +1,51 @@
+﻿<Window x:Class="Backup.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Backup"
+        mc:Ignorable="d"
+        Title="BACKUP" Height="550" Width="800" Loaded="Window_Loaded">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="100" />
+            <RowDefinition Height="260" />
+            <RowDefinition Height="100" />
+        </Grid.RowDefinitions>
+
+        <Label x:Name="Titulo" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="BACKUP DE DADOS" FontSize="22" FontWeight="Bold" Height="40" VerticalAlignment="Center" HorizontalAlignment="Center" />
+
+        <Button Name="Remetente" Grid.Row="1" Grid.Column="0" Width="180" Height="100"  Background="Transparent" BorderThickness="0" BorderBrush="Transparent" Click="btRemetente">
+            <StackPanel>
+                <Image Stretch="Uniform" Source="pack://application:,,,/Resources/folder.png" Width="150" Height="70" />
+                <TextBlock Text="DADOS DO SISTEMA" FontSize="16" FontWeight="Bold" />
+            </StackPanel>
+        </Button>
+
+        <Button Name="Destinatario" Grid.Row="1" Grid.Column="1" Width="180" Height="100" Background="Transparent" BorderThickness="0" BorderBrush="Transparent" Click="btDestinatario">
+            <StackPanel>
+                <Image Stretch="Uniform" Source="pack://application:,,,/Resources/folder_backup.png" Width="150" Height="70" />
+                <TextBlock Text="ENDEREÇO DO BACKUP" FontSize="16" FontWeight="Bold" />
+            </StackPanel>
+        </Button>
+
+
+        <TextBlock Name="txtRemetente" Text="Dados Sistema...." Grid.Row="2" Grid.Column="0" Margin="10 0 0 0"/>
+
+        <TextBlock Name="txtDestinatario" Text="Endereço do Backup...." Grid.Row="2" Grid.Column="1" Margin="10 0 0 0"/>
+
+
+        <Button Name="Iniciar" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Width="135" Height="100" Background="Transparent" BorderThickness="0" BorderBrush="Transparent" Click="btIniciar">
+            <StackPanel>
+                <Image Stretch="Uniform" Source="pack://application:,,,/Resources/play.png" Width="150" Height="70" />
+                <TextBlock Text="INICIAR BACKUP" FontSize="16" FontWeight="Bold" />
+            </StackPanel>
+        </Button>
+
+    </Grid>
+</Window>

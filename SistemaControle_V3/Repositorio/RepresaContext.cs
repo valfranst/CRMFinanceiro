@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
@@ -36,11 +38,12 @@ namespace SistemaControle_V3
         public virtual DbSet<Feriado> Feriados { get; set; }
         public virtual DbSet<FormaPagamento> FormaPagamentos { get; set; }
         public virtual DbSet<Parcela> Parcelas { get; set; }
+        public virtual DbSet<ViewListCliente> ViewListClientes { get; set; }
         public virtual DbSet<ViewProducao> ViewProducaos { get; set; }
         public virtual DbSet<ViewRecebimento> ViewRecebimentos { get; set; }
         public virtual DbSet<ViewRefinanciamento> ViewRefinanciamentos { get; set; }
 
-
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
@@ -175,6 +178,11 @@ namespace SistemaControle_V3
                     .WithMany(p => p.Parcelas)
                     .HasForeignKey(d => d.IdEmprestimo)
                     .HasConstraintName("FK_Emprestimo_Parcela");
+            });
+
+            modelBuilder.Entity<ViewListCliente>(entity =>
+            {
+                entity.ToView("ViewListCliente");
             });
 
             modelBuilder.Entity<ViewProducao>(entity =>

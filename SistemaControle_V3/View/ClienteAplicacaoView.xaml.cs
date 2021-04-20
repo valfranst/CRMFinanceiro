@@ -216,100 +216,112 @@ namespace SistemaControle_V3
 
         private void btInsert_Clikc(object sender, RoutedEventArgs e)
         {
-
             try
             {
+                if (!ValidarCampos()) return;
+
+                ProgressDialog pd = new ProgressDialog();
+                int countCods = 0;
+
+                using (RepresaContext dc = new RepresaContext()) countCods = dc.Emprestimos.Where(ep => (ep.CodEmprestimo.Contains(CodEmprestimo.Value.ToString()))).Count();
+                
+                if (countCods > 0)
+                {
+                    MessageBox.Show("Atenção: O Campo Código: " + CodEmprestimo.Value.ToString() + " já existe no banco de dados!\n\n Por favor insira o proximo Código.", "ERRO!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                Emprestimo emprestimo = new Emprestimo();
+
+                emprestimo.IdCliente = cliente.IdCliente;
+                emprestimo.CodEmprestimo = CodEmprestimo.Value.ToString();
+                emprestimo.DataCadastro = DataCadastro.DateTime;
+                emprestimo.Valor = Aplicacao.Value ?? 0;
+                emprestimo.Taxa = (decimal?)(Taxa.PercentValue ?? 0);
+                emprestimo.ValorTotal = ValorTotal.Value ?? 0;
+                emprestimo.QtdParcela = (int)(QtdParcela.Value ?? 0);
+                emprestimo.ValorParcela = ValorParcela.Value ?? 0;
+                emprestimo.ValorComissao = ValorComissao.Value ?? 0;
+                emprestimo.NomeAtendente = cbAtendente.Text;
+                emprestimo.PrimeiraParcela = PrimeiraParcela.DateTime;
+
+                if (!string.IsNullOrEmpty(Observacao.Text)) emprestimo.Observacao = Observacao.Text;
+                if (!string.IsNullOrEmpty(FPagamento.Text)) emprestimo.FormaPagamento = FPagamento.Text;
+
+                emprestimo.DataCadastroAlteracao = DateTime.Now;
+
+                emprestimo.Refinanciado = false;
+                emprestimo.Complemento = 0;
+                emprestimo.StatusEmprestimo = false;
+
+                pd.Show();
+
                 using (RepresaContext dc = new RepresaContext())
                 {
-                    if (!ValidarCampos()) return;
-
-                    ProgressDialog pd = new ProgressDialog();
-                    pd.Show();
-
-                    Emprestimo testCod = new Emprestimo();
-                    var testCods = dc.Emprestimos.Where(ep => (ep.CodEmprestimo.Contains(CodEmprestimo.Value.ToString()))).ToList();
-                    if (testCods.Count > 0)
-                    {
-                        MessageBox.Show("Atenção: O Campo Código: " + CodEmprestimo.Value.ToString() + " já existe no banco de dados!\n\n Por favor insira o proximo Código.", "ERRO!", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        return;
-                        pd.Close();
-                    }
-
-                    Emprestimo emprestimo = new Emprestimo();
-
-                    emprestimo.IdCliente = cliente.IdCliente;
-                    emprestimo.CodEmprestimo = CodEmprestimo.Value.ToString();
-                    emprestimo.DataCadastro = DataCadastro.DateTime;
-                    emprestimo.Valor = Aplicacao.Value ?? 0;
-                    emprestimo.Taxa = (decimal?)(Taxa.PercentValue ?? 0);
-                    emprestimo.ValorTotal = ValorTotal.Value ?? 0;
-                    emprestimo.QtdParcela = (int)(QtdParcela.Value ?? 0);
-                    emprestimo.ValorParcela = ValorParcela.Value ?? 0;
-                    emprestimo.ValorComissao = ValorComissao.Value ?? 0;
-                    emprestimo.NomeAtendente = cbAtendente.Text;
-                    emprestimo.PrimeiraParcela = PrimeiraParcela.DateTime;
-
-                    if (!string.IsNullOrEmpty(Observacao.Text)) emprestimo.Observacao = Observacao.Text;
-                    if (!string.IsNullOrEmpty(FPagamento.Text)) emprestimo.FormaPagamento = FPagamento.Text;
-
-                    emprestimo.DataCadastroAlteracao = DateTime.Now;
-
-                    emprestimo.Refinanciado = false;
-                    emprestimo.Complemento = 0;
-                    emprestimo.StatusEmprestimo = false;
-
-
                     dc.Emprestimos.Add(emprestimo);
                     dc.SaveChanges();
+                }
 
 
 
-                    idEmprestimo = emprestimo.IdEmprestimo;
+                idEmprestimo = emprestimo.IdEmprestimo;
 
-                    if (idEmprestimo > 0)
+                if (idEmprestimo > 0)
+                {
+                    if (parcelas.Count > 0)
                     {
-                        if (parcelas.Count > 0)
+                        foreach (var parcela1 in parcelas)
                         {
-                            foreach (var parcela1 in parcelas)
-                            {
-                                parcela1.IdEmprestimo = idEmprestimo;
-                                //mw.dc.Parcelas.Add(parcela1);
-                            }
+                            parcela1.IdEmprestimo = idEmprestimo;
+                            //mw.dc.Parcelas.Add(parcela1);
+                        }
+
+                        using (RepresaContext dc = new RepresaContext())
+                        {
                             dc.Parcelas.AddRange(parcelas);
                             dc.SaveChanges();
-                            emprestimo.IdEmprestimo = 0;
-
-                            foreach (var parcela1 in parcelas)
-                            {
-                                parcela1.IdParcela = 0;
-                            }
-
-                            var parameterIdEmprestimo = new SqlParameter
-                            {
-                                ParameterName = "@idEmprestimo",
-                                SqlDbType = System.Data.SqlDbType.Int,
-                                Value = idEmprestimo,
-                            };
-                            dc.Database.ExecuteSqlRaw("SP_EmprestimoP_Parcela @idEmprestimo", parameterIdEmprestimo);
-
-                            pd.Close();
-
-                            MessageBox.Show("Aplicação cadastrada com Sucesso.", "CONCLUIDO!", MessageBoxButton.OK, MessageBoxImage.Information);
                         }
-                        else
+
+                        emprestimo.IdEmprestimo = 0;
+
+                        foreach (var parcela1 in parcelas)
+                        {
+                            parcela1.IdParcela = 0;
+                        }
+
+                        var parameterIdEmprestimo = new SqlParameter
+                        {
+                            ParameterName = "@idEmprestimo",
+                            SqlDbType = System.Data.SqlDbType.Int,
+                            Value = idEmprestimo,
+                        };
+
+                        using (RepresaContext dc = new RepresaContext())
+                        {
+                            dc.Database.ExecuteSqlRaw("dbo.SP_EmprestimoP_Parcela @idEmprestimo", parameterIdEmprestimo);
+                        }
+
+                        pd.Close();
+
+                        MessageBox.Show("Aplicação cadastrada com Sucesso.", "CONCLUIDO!", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    else
+                    {
+                        using (RepresaContext dc = new RepresaContext())
                         {
                             Emprestimo empDelete = dc.Emprestimos.Where(em => (em.IdEmprestimo == idEmprestimo)).FirstOrDefault();
                             dc.Emprestimos.Remove(empDelete);
                             dc.SaveChanges();
-
-                            pd.Close();
-
-                            MessageBox.Show("Erro! ao gerar as Parcelas (PARCELAS MENOR QUE 0)!", "ERRO!", MessageBoxButton.OK, MessageBoxImage.Warning);
                         }
-                    }
 
-                    LimparControles();
+                        pd.Close();
+
+                        MessageBox.Show("Erro! ao gerar as Parcelas (PARCELAS MENOR QUE 0)!", "ERRO!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
                 }
+
+                LimparControles();
+
                 ClienteFichaView empView = new ClienteFichaView(mw, cliente.IdCliente);
                 mw.Navegador(empView);
 
@@ -329,8 +341,9 @@ namespace SistemaControle_V3
                 Clipboard.SetText(ex + "");
                 MessageBox.Show("Erro ao salvar a APLICAÇÃO!\n\n" + ex, "ERRO!", MessageBoxButton.OK, MessageBoxImage.Warning);
 
-            }
 
+
+            }
         }
 
         private void LimparControles()

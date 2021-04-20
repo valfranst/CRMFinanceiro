@@ -55,7 +55,6 @@ D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\bin\Release\net5.0-windows\ru
 D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\bin\Release\net5.0-windows\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
 D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\bin\Release\net5.0-windows\runtimes\win\lib\netcoreapp2.0\System.Management.dll
 D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\bin\Release\net5.0-windows\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
-D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Release\net5.0-windows\SistemaControle_V3.csprojAssemblyReference.cache
 D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Release\net5.0-windows\MainWindow.g.cs
 D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Release\net5.0-windows\View\ClienteAplicacaoView.g.cs
 D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Release\net5.0-windows\View\ClienteCadastroView.g.cs
@@ -95,3 +94,8 @@ D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Release\net5.0-windows\Si
 D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Release\net5.0-windows\ref\SistemaControle_V3.dll
 D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Release\net5.0-windows\SistemaControle_V3.pdb
 D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Release\net5.0-windows\SistemaControle_V3.genruntimeconfig.cache
+D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\bin\Release\net5.0-windows\AForge.dll
+D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\bin\Release\net5.0-windows\AForge.Video.dll
+D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\bin\Release\net5.0-windows\AForge.Video.DirectShow.dll
+D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Release\net5.0-windows\View\Camera.g.cs
+D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Release\net5.0-windows\View\Camera.baml

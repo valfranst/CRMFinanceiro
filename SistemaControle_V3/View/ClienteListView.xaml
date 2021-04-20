@@ -16,6 +16,28 @@
             <Setter Property="FontWeight" Value="Bold"/>
         </Style>
 
+        <!--Style of RowHeaderCell-->
+        <Style TargetType="syncfusion:GridRowHeaderCell">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="syncfusion:GridRowHeaderCell">
+                        <Border x:Name="PART_RowHeaderCellBorder"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <Grid>
+                                <!--RowIndex is displayed here -->
+                                <TextBlock HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Text="{Binding RowIndex}"
+                                        TextAlignment="Center" />
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>       
+
     </UserControl.Resources>
 
     <Grid Margin="0 0 0 20" HorizontalAlignment="Center" >
@@ -26,13 +48,23 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0 3 0 0">             
+            <Button Name="btAll" Height="30" Width="150" Content="TODOS" Click="btAll_Click"  />
+            <TextBlock Text="INATIVOS" VerticalAlignment="Center" FontSize="22" FontWeight="Bold" Margin="20 0 0 0" />
+            <Button Name="bt36" Height="30" Width="150" Content="3 A 6 MESES" Margin="20 0 0 0" Click="bt36_Click"  />
+            <Button Name="bt69" Height="30" Width="150" Content="6 A 9 MESES" Margin="20 0 0 0" Click="bt69_Click"  />
+            <Button Name="bt912" Height="30" Width="150" Content="9 A 12 MESES" Margin="20 0 0 0" Click="bt912_Click"  />
+            <Button Name="bt12Mais" Height="30" Width="150" Content="12 MESES +" Margin="20 0 0 0" Click="bt12Mais_Click"   />
+        </StackPanel>
+
         <syncfusion:SfDataGrid x:Name="DG_ClienteList" 
                                 HeaderStyle="{StaticResource headerStyle}" Foreground="Black"
-                                FontSize="16" RowHeight="35" Margin="0 0 0 10"
+                                FontSize="16" RowHeight="35" Margin="0 40 0 5"
                                 IsReadOnly="True" AutoGenerateColumns="False"
                                 NavigationMode="Row"  SelectionUnit="Row" AllowEditing="False" 
                                 SelectionMode="Single" MouseDoubleClick="DG_ClienteList_MouseDoubleClick"
-                                ItemsSource="{Binding Cliente}" SourceType="{x:Type local:Cliente}">
+                                ItemsSource="{Binding ViewListCliente}" SourceType="{x:Type local:ViewListCliente}">
+            
 
             <syncfusion:SfDataGrid.Columns>
 

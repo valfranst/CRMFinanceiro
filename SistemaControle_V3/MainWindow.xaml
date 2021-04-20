@@ -8,7 +8,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
         xmlns:syncfusion="http://schemas.syncfusion.com/wpf"  
         
-        mc:Ignorable="d" xml:lang="pt-BR" Title="APLICAÇÕES" WindowState="Maximized" Loaded="Window_Loaded" Closing="Window_Closing" 
+        mc:Ignorable="d" xml:lang="pt-BR" Title="APLICAÇÕES                   versão: 4.0" WindowState="Maximized" Loaded="Window_Loaded" Closing="Window_Closing" 
         MinHeight="700" MinWidth="1100" Height="{x:Static SystemParameters.PrimaryScreenHeight}" Width="{x:Static SystemParameters.PrimaryScreenWidth}" >
 
     <Grid >
@@ -16,7 +16,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
+            <RowDefinition Height="37" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -61,8 +61,8 @@
                     <Button x:Name="btReset" Height="30" Width="30" Margin="10 0 0 0" Background="Red" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" ToolTip="Status Banco de Dados" BorderBrush="Cyan" Click="btReset_Click"/>
 
                     <Button x:Name="btBackup" Margin="15 0 0 0" Style="{StaticResource MaterialDesignFloatingActionAccentButton}" ToolTip="Backup de Dados" Click="btUpload_Click" Background="Green" 
-                        Height="30" Width="30" VerticalAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center">
-                        <materialDesign:PackIcon Kind="ContentSaveCog" Height="18" Width="18"  />
+                        Height="30" Width="30" VerticalAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center" Visibility="Collapsed">
+                        <materialDesign:PackIcon Kind="ContentSaveCog" Height="18" Width="18" />
                     </Button>
 
                 </StackPanel>

@@ -92,6 +92,11 @@ D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Debug\net5.0-windows\Sist
 D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Debug\net5.0-windows\ref\SistemaControle_V3.dll
 D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Debug\net5.0-windows\SistemaControle_V3.pdb
 D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Debug\net5.0-windows\SistemaControle_V3.genruntimeconfig.cache
-D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Debug\net5.0-windows\SistemaControle_V3.csprojAssemblyReference.cache
 D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Debug\net5.0-windows\View\ParcelaAddView.g.cs
 D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Debug\net5.0-windows\View\ParcelaAddView.baml
+D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\bin\Debug\net5.0-windows\AForge.dll
+D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\bin\Debug\net5.0-windows\AForge.Video.dll
+D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\bin\Debug\net5.0-windows\AForge.Video.DirectShow.dll
+D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Debug\net5.0-windows\View\Camera.g.cs
+D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Debug\net5.0-windows\View\Camera.baml
+D:\App\Ap_DeskTop\CRMFinanceiro\SistemaControle_V3\obj\Debug\net5.0-windows\SistemaControle_V3.csprojAssemblyReference.cache

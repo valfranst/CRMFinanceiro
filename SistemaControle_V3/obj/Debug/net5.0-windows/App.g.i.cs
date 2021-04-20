@@ -62,7 +62,7 @@ namespace SistemaControle_V3 {
         /// InitializeComponent
         /// </summary>
         [System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "5.0.4.0")]
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "5.0.5.0")]
         public void InitializeComponent() {
             if (_contentLoaded) {
                 return;
@@ -74,7 +74,7 @@ namespace SistemaControle_V3 {
             
             #line default
             #line hidden
-            System.Uri resourceLocater = new System.Uri("/SistemaControle_V3;component/app.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/SistemaControle_V3;V1.0.0.0;component/app.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\App.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
@@ -88,7 +88,7 @@ namespace SistemaControle_V3 {
         /// </summary>
         [System.STAThreadAttribute()]
         [System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "5.0.4.0")]
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "5.0.5.0")]
         public static void Main() {
             SistemaControle_V3.App app = new SistemaControle_V3.App();
             app.InitializeComponent();

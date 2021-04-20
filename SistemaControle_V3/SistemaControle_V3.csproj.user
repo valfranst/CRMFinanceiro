@@ -10,6 +10,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="View\Camera.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="View\ClienteCadastroView.xaml">
       <SubType>Designer</SubType>
     </Page>

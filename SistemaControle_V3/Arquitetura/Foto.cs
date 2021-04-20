@@ -58,7 +58,7 @@ namespace SistemaControle_V3
             }
         }
 
-        public static Resultado SalvarImagemByNome(BitmapImage foto, string nomeCliente)
+        public static Resultado SalvarImagemByNome(BitmapImage foto, string nomeCliente)  
         {
             try
             {
@@ -70,6 +70,18 @@ namespace SistemaControle_V3
             }
             catch (Exception ex) { return Resultado.Erro("Erro ao Salvar Imagem! \n\n" + ex); }
         }
+
+        public static Resultado SalvarImagemByNome(PngBitmapEncoder encoder, string nomeCliente)   
+        {
+            try
+            {                  
+                ExcluirImagem(nomeCliente);
+                using (FileStream stream = new FileStream(myConfig.Imagem + @"\" + nomeCliente + ".jpg", FileMode.Create)) encoder.Save(stream);
+                return Resultado.Ok();
+            }
+            catch (Exception ex) { return Resultado.Erro("Erro ao Salvar Imagem! \n\n" + ex); }
+        }
+
 
         public static Resultado RenomearImagem(string nomeNovo, string nomeAntigo)
         {
@@ -124,6 +136,8 @@ namespace SistemaControle_V3
             }
             catch (Exception ex) { return (Resultado.Erro("Error\n\n" + ex), null); }
         }
+
+
 
 
     }//Fim Class

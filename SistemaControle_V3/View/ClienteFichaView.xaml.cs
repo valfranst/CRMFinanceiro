@@ -403,6 +403,8 @@ namespace SistemaControle_V3
             //dataGrid.GridColumnSizer.Refresh();
 
         }
+
+
     } //Fim Class
 }
 
